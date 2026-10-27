@@ -39,26 +39,35 @@
   var key = root.getAttribute('data-event');
   var E = (D.events || {})[key];
   if (!E) { return; }
-  var evc = (D.evc || {})[key] || (D.evc || {})._;
   var isOther = key === 'Other';
 
   var TICK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>';
   var TICK_DARK = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#1C1C1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 10.5l4 4 8-9"></path></svg>';
   var WA_ICON = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l1.2-3.6A7 7 0 1 1 7 15.8L3 17z"></path></svg>';
 
-  var PV = [
-    { bg: 'linear-gradient(180deg,' + evc.bg + ' 0%,' + evc.soft + ' 100%)', color: '#1C1C1E', ph: '#3F4651', weight: '600', border: '1px solid transparent', font: "'Heebo',sans-serif" },
-    { bg: '#FFFFFF', color: '#1C1C1E', ph: '#5B616B', weight: '500', border: '1px solid rgba(17,24,39,.12)', font: "'Rubik',sans-serif" },
-    { bg: '#1C1C1E', color: '#FFFFFF', ph: '#C7C7CC', weight: '300', border: '1px solid #1C1C1E', font: "'Heebo',sans-serif" }
-  ];
 
   function bundleSel() {
     var o = {};
     E.bundle.ids.forEach(function (id) { o[id] = true; });
     return o;
   }
-  var S = { st: 0, stPicked: false, sel: isOther ? {} : bundleSel(), mode: 'set', date: '', people: '', title: '', open: {} };
-  var lastFocus = null;
+  /* שאלון הכיוון ולוח ההשראה (assets/direction.js) */
+  var DC = D.direction, DIR = window.Direction;
+  var DS = DC && DIR ? DIR.emptyState(DC) : null;
+  var S = { sel: isOther ? {} : bundleSel(), mode: 'set', date: '', people: '', title: '', open: {} };
+  var lastFocus = null, focusNote = null;
+  var IMG_ICON = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 16-5-5-8 8"></path></svg>';
+  var BOARD_NAME = 'לוח-השראה-צופה.png';
+  var boardFile = null, boardTimer = null, bstat = '', imgTarget = null, fileEl = null;
+  var BSTAT = {
+    '': 'קודם שולחים לי את תמונת הלוח, ואחר כך את הסיכום.',
+    working: 'מכינה את התמונה…',
+    ready: 'התמונה מוכנה. לחצו שוב כדי לשתף אותה.',
+    shared: 'מעולה. עכשיו שלחו לי את הסיכום בכפתור למטה.',
+    cancelled: 'השיתוף בוטל. אפשר לנסות שוב.',
+    downloaded: 'תמונת הלוח ירדה למחשב. צרפו אותה לצ׳אט אחרי שתלחצו על הכפתור למטה.',
+    error: 'לא הצלחתי ליצור תמונה. אפשר לצלם את המסך של הלוח ולשלוח לי.'
+  };
   var s3In = false, io = null;
 
   function byId(id) { return E.items.filter(function (x) { return x.id === id; })[0]; }
@@ -107,10 +116,10 @@
         ? 'מחיר סט: חיסכון של ' + fmt(saving) + ' ₪. מחיר סגור, ללא הפתעות.'
         : 'מחיר לפי פריטים. מחיר סגור, ללא הפתעות.';
     }
-    var styleName = E.styles.length ? E.styles[S.st].name : '';
+    var dl = DS ? DIR.lines(DS, DC) : [];
     var lines = ['אירוע: ' + E.what];
     if (S.title) { lines.push('שם: ' + S.title); }
-    if (S.stPicked) { lines.push('סגנון: ' + styleName); }
+    dl.forEach(function (l) { lines.push(l); });
     if (custom) { lines.push('עיצוב אישי מאפס'); } else { names.forEach(function (n) { lines.push(n); }); }
     if (dateFmt) { lines.push('תאריך: ' + dateFmt); }
     if (peopleN > 0 && E.group) { lines.push('משתתפים: ' + peopleN); }
@@ -119,7 +128,11 @@
     var s = 'הצעה לאירוע (' + E.what + ').';
     if (S.title) { m += ' שם האירוע: ' + S.title + '.'; s += ' שם: ' + S.title + '.'; }
     if (dateFmt) { m += ' תאריך האירוע: ' + dateFmt + '.'; s += ' תאריך: ' + dateFmt + '.'; }
-    if (S.stPicked) { m += ' סגנון: ' + styleName + '.'; s += ' סגנון: ' + styleName + '.'; }
+    if (dl.length) {
+      m += '\n' + dl.join('\n') + '\n';
+      var dlShare = dl.filter(function (l) { return l !== 'מצרפת את לוח ההשראה'; });
+      if (dlShare.length) { s += ' ' + dlShare.join('. ') + '.'; }
+    }
     if (custom) { m += ' אני רוצה עיצוב אישי ואשמח לשאלון קצר.'; s += ' עיצוב אישי מאפס, החל מ-' + fmt(E.frm) + ' ₪.'; }
     else if (hasChoice) {
       m += ' כולל: ' + names.join(', ') + '. סה״כ: ' + fmt(price) + ' ₪.';
@@ -127,6 +140,7 @@
     } else { m += ' אשמח לשמוע אפשרויות.'; }
     if (peopleN > 0 && E.group) { m += ' מספר משתתפים: ' + peopleN + '.'; if (showPer) { s += ' ' + perText + '.'; } }
     s += ' מה דעתכם? אפשר לאשר ולהתקדם.';
+    m = m.replace(/\n /g, '\n');
     return {
       B: B, ids: ids, isBundleSel: isBundleSel, bundleSum: bundleSum, saving: saving, price: price, hasChoice: hasChoice,
       custom: custom, perText: perText, dateNote: dateNote, nudge: nudge, totalText: totalText, noteText: noteText,
@@ -151,28 +165,20 @@
   function render() {
     if (isOther) { other(); return; }
     var c = calc();
-    var pv = PV[S.st % 3];
-    var pvText = S.title || 'השם של האירוע שלכם';
-    var pvColor = S.title ? pv.color : pv.ph;
     var minVideo = Math.min.apply(null, E.items.filter(function (x) { return x.group === 'video'; }).map(function (x) { return x.price; }).concat([9999]));
     var h = '<div class="b-col">';
 
-    /* 1. שם וסגנון */
-    h += '<section class="card b-card" aria-labelledby="s1"><h2 id="s1">1. איך זה ייראה עם השם שלכם?</h2>' +
-      '<label class="sr-only" for="title">שם האירוע (אופציונלי)</label>' +
-      '<input id="title" class="field" type="text" maxlength="40" value="' + esc(S.title) + '" placeholder="' + esc(E.titleEx || '') + '" data-input="title" autocomplete="off">' +
-      '<div class="pv" role="img" aria-label="תצוגה מקדימה של כרטיס הפתיחה: ' + esc(pvText) + '" style="background:' + pv.bg + ';border:' + pv.border + '">' +
-      '<span class="pv-chip" aria-hidden="true">' + esc(E.what) + '</span>' +
-      '<strong class="pv-text" aria-hidden="true" style="color:' + pvColor + ';font-weight:' + pv.weight + ';font-family:' + pv.font + '">' + esc(pvText) + '</strong>' +
-      '<svg aria-hidden="true" viewBox="0 0 400 70" preserveAspectRatio="none"><ellipse cx="40" cy="62" rx="90" ry="34" fill="#FFFFFF" fill-opacity="0.75"></ellipse><ellipse cx="360" cy="64" rx="100" ry="36" fill="#FFFFFF" fill-opacity="0.75"></ellipse></svg></div>' +
-      '<div class="styles" role="group" aria-label="בחירת סגנון">';
-    E.styles.forEach(function (st, i) {
-      var p = PV[i % 3], on = S.stPicked && S.st === i;
-      h += '<button type="button" class="opt-style" data-k="st-' + i + '" data-act="style" data-i="' + i + '" aria-pressed="' + on + '">' +
-        '<span class="sw" aria-hidden="true" style="background:' + p.bg + ';color:' + p.color + ';font-family:' + p.font + ';font-weight:' + p.weight + '">אב</span>' +
-        '<span><span class="sn" style="display:block">' + esc(st.name) + '</span><span class="sd" style="display:block">' + esc(st.desc) + '</span><span class="sm" style="display:block">' + (on ? 'נבחר' : 'לבחור') + '</span></span></button>';
-    });
-    h += '</div><span class="note">תצוגה לדוגמה של כרטיס הפתיחה, לא הסרטון המלא. כל סגנון מגיע כסט שלם.</span></section>';
+    /* 1. הכיוון: שאלון ולוח השראה */
+    h += '<section class="card b-card" aria-labelledby="s1"><h2 id="s1">1. הכיוון של האירוע שלכם</h2>' +
+      '<p class="note" style="margin:0">פחות מדקה. לא חובה לענות על הכול, ומה שתדלגו עליו אני אציע.</p>' +
+      '<label class="dq-name" for="title">שם האירוע (לא חובה)</label>' +
+      '<input id="title" class="field" type="text" maxlength="40" value="' + esc(S.title) + '" placeholder="' + esc(E.titleEx || '') + '" data-input="title" autocomplete="off">';
+    if (DS) {
+      h += DIR.renderForm(DS, DC) +
+        '<div class="mb-wrap"><h3 class="mb-head">לוח ההשראה שלכם</h3>' + DIR.renderBoard(DS, DC, S.title) +
+        '<span class="note">ממנו אני מתחילה לעצב. בשלב 3 שולחים לי אותו.</span></div>';
+    }
+    h += '</section>';
 
     /* 2. כמה לעשות */
     var modes = [
@@ -203,11 +209,14 @@
     h += '</section>';
 
     /* 3. שליחה */
+    var hasBoard = !!(DS && DIR.hasAny(DS));
     h += '<section class="card b-card" aria-labelledby="s3"><h2 id="s3">3. שולחים לי</h2><ul class="sum">';
     c.lines.forEach(function (l) { h += '<li>' + esc(l) + '</li>'; });
     h += '</ul><div class="total" aria-live="polite"><strong>' + esc(c.totalText) + '</strong><span class="note">' + esc(c.noteText) + '</span>' +
       (c.perText ? '<span class="note">' + esc(c.perText) + '</span>' : '') + '</div>' +
-      '<div class="sub-actions"><a class="btn big" href="' + c.wa + '">' + WA_ICON + (c.ready ? 'לשלוח לי בוואטסאפ' : 'לשאול בוואטסאפ') + '</a>' +
+      (hasBoard ? '<div class="board-send"><button type="button" class="btn big light" data-k="bsend" data-act="bsend"' + (bstat === 'working' ? ' disabled' : '') + '>' + IMG_ICON + '1. לשתף את לוח ההשראה</button>' +
+        '<span class="note" aria-live="polite">' + esc(BSTAT[bstat]) + '</span></div>' : '') +
+      '<div class="sub-actions"><a class="btn big" href="' + c.wa + '">' + WA_ICON + (hasBoard ? '2. לשלוח לי את הסיכום' : (c.ready ? 'לשלוח לי בוואטסאפ' : 'לשאול בוואטסאפ')) + '</a>' +
       (c.ready ? '<a class="link" href="' + c.share + '">שיתוף הבחירה עם הוועד או המשפחה</a>' : '') + '</div>' +
       '<details class="details" data-d="dp"' + (S.open.dp ? ' open' : '') + '><summary>תאריך ומספר משתתפים (אופציונלי)</summary><div class="in">' +
       '<label>מתי האירוע?<input class="field" id="date" type="date" value="' + esc(S.date) + '" data-input="date"></label>' +
@@ -233,9 +242,16 @@
     }
     h += '</div>';
     h += '<div class="sticky' + (c.ready && c.totalText !== '—' ? ' on' : '') + '" id="sticky" aria-hidden="' + !(c.ready && c.totalText !== '—') + '"><span class="p">' + esc(c.totalText) + '</span>' +
-      '<a class="btn" href="' + c.wa + '"' + (c.ready ? '' : ' tabindex="-1"') + '>' + WA_ICON + 'לשלוח בוואטסאפ</a></div>';
+      (hasBoard
+        ? '<a class="btn" href="#s3"' + (c.ready ? '' : ' tabindex="-1"') + '>' + IMG_ICON + 'לשליחת הלוח</a></div>'
+        : '<a class="btn" href="' + c.wa + '"' + (c.ready ? '' : ' tabindex="-1"') + '>' + WA_ICON + 'לשלוח בוואטסאפ</a></div>');
 
     root.innerHTML = h;
+    if (focusNote) {
+      var nt = document.getElementById('note-' + focusNote);
+      focusNote = null;
+      if (nt) { nt.focus({ preventScroll: true }); }
+    }
     document.body.classList.add('has-sticky');
     if ('IntersectionObserver' in window) {
       if (io) { io.disconnect(); }
@@ -269,7 +285,16 @@
     if (!b || !root.contains(b)) { return; }
     lastFocus = b.getAttribute('data-k');
     var act = b.getAttribute('data-act');
-    if (act === 'style') { S.st = parseInt(b.getAttribute('data-i'), 10); S.stPicked = true; }
+    if (act === 'dpick') {
+      var dq = b.getAttribute('data-q');
+      DIR.pick(DS, DC.questions.filter(function (q) { return q.k === dq; })[0], parseInt(b.getAttribute('data-i'), 10));
+      boardChanged();
+    }
+    else if (act === 'davoid') { DIR.toggleAvoid(DS, parseInt(b.getAttribute('data-i'), 10)); boardChanged(); }
+    else if (act === 'dnote') { var nk = b.getAttribute('data-q'); DS.open[nk] = !DS.open[nk]; if (DS.open[nk]) { focusNote = nk; lastFocus = null; } }
+    else if (act === 'dimg') { imgTarget = b.getAttribute('data-q'); fileInput().click(); return; }
+    else if (act === 'dimgx') { DS.imgs[b.getAttribute('data-q')].splice(parseInt(b.getAttribute('data-j'), 10), 1); boardChanged(); lastFocus = null; }
+    else if (act === 'bsend') { sendBoard(); return; }
     else if (act === 'mode') {
       S.mode = b.getAttribute('data-mode');
       if (S.mode === 'set') { S.sel = bundleSel(); }
@@ -285,15 +310,64 @@
     rerender();
   });
   root.addEventListener('input', function (ev) {
+    var nk = ev.target.getAttribute && ev.target.getAttribute('data-note');
+    if (nk && DS) { DS.notes[nk] = ev.target.value; boardChanged(); rerender(); return; }
     var f = ev.target.getAttribute && ev.target.getAttribute('data-input');
     if (!f) { return; }
     S[f] = ev.target.value;
+    if (f === 'title') { boardChanged(); }
     rerender();
   });
   root.addEventListener('toggle', function (ev) {
     var d = ev.target.getAttribute && ev.target.getAttribute('data-d');
     if (d) { S.open[d] = ev.target.open; }
   }, true);
+
+  /* תמונות השראה: נקראות ומוקטנות בדפדפן, לא עולות לשום מקום */
+  function fileInput() {
+    if (!fileEl) {
+      fileEl = document.createElement('input');
+      fileEl.type = 'file'; fileEl.accept = 'image/*'; fileEl.multiple = true; fileEl.hidden = true;
+      fileEl.addEventListener('change', function () {
+        var k = imgTarget, list = DS.imgs[k];
+        var room = Math.min(DIR.MAX_PER_Q - list.length, DIR.MAX_TOTAL - DIR.imgTotal(DS));
+        var files = Array.prototype.slice.call(fileEl.files, 0, Math.max(0, room));
+        fileEl.value = '';
+        Promise.all(files.map(function (fl) { return DIR.readImage(fl).then(null, function () { return null; }); }))
+          .then(function (urls) {
+            urls.forEach(function (u) { if (u) { list.push(u); } });
+            boardChanged();
+            lastFocus = 'di-' + k;
+            rerender();
+          });
+      });
+      document.body.appendChild(fileEl);
+    }
+    return fileEl;
+  }
+
+  /* תמונת הלוח מוכנה מראש, כדי שהשיתוף יקרה בתוך הלחיצה (נדרש באייפון) */
+  function boardChanged() {
+    boardFile = null; bstat = '';
+    clearTimeout(boardTimer);
+    if (!DS || !DIR.hasAny(DS)) { return; }
+    boardTimer = setTimeout(prepareBoard, 900);
+  }
+  function prepareBoard() {
+    var el = document.getElementById('board');
+    if (!el) { return; }
+    DIR.makeFile(el, BOARD_NAME).then(function (fl) { boardFile = fl; }, function () { boardFile = null; });
+  }
+  function setStat(v) { bstat = v; lastFocus = 'bsend'; rerender(); }
+  function sendBoard() {
+    if (boardFile) { DIR.shareFile(boardFile).then(setStat, function () { setStat('error'); }); return; }
+    setStat('working');
+    DIR.makeFile(document.getElementById('board'), BOARD_NAME).then(function (fl) {
+      boardFile = fl;
+      if (navigator.canShare && navigator.canShare({ files: [fl] })) { setStat('ready'); }
+      else { DIR.shareFile(fl).then(setStat, function () { setStat('error'); }); }
+    }, function () { setStat('error'); });
+  }
 
   render();
 })();
