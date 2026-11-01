@@ -414,8 +414,8 @@ body.has-bar{padding-bottom:96px}
 .tile .pr{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600}
 .tile .bx{position:absolute;top:10px;inset-inline-start:10px;width:24px;height:24px;border-radius:8px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;background:#fff}
 .tile.is-radio .bx{border-radius:50%}
-.tile .bx svg{opacity:0}
-.tile[aria-pressed="true"] .bx{background:var(--ink);border-color:var(--ink)}
+.tile .bx svg{opacity:0;display:block}
+.tile[aria-pressed="true"] .bx{background:var(--ink);border-color:var(--ink);color:#fff}
 .tile[aria-pressed="true"] .bx svg{opacity:1}
 .items .tiles + .grp{margin-top:18px}
 .set-kit{display:flex;flex-wrap:wrap;gap:0;margin-block:2px}

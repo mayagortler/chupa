@@ -73,8 +73,11 @@
     return '<section class="card b-card" aria-labelledby="s-h">' + heading('items') +
       '<p class="note" style="margin:0">לחצו על מה שתרצו לכלול, והמחיר יתעדכן למטה.</p>' +
       '<div class="items">' +
-      (videos.length ? '<h3 class="grp">סרטון <span>(אחד)</span></h3><div class="tiles">' + videos.map(itemTile).join('') + '</div>' : '') +
-      (extras.length ? '<h3 class="grp">תוספות <span>(כמה שרוצים)</span></h3><div class="tiles">' + extras.map(itemTile).join('') + '</div>' : '') +
+      /* כשיש רק סרטון אחד אין מה לבחור ביניהם, אז הכול ברשת אחת */
+      (videos.length > 1
+        ? '<h3 class="grp">סרטון <span>(אחד)</span></h3><div class="tiles">' + videos.map(itemTile).join('') + '</div>' +
+          (extras.length ? '<h3 class="grp">תוספות <span>(כמה שרוצים)</span></h3><div class="tiles">' + extras.map(itemTile).join('') + '</div>' : '')
+        : '<div class="tiles">' + E.items.map(itemTile).join('') + '</div>') +
       (q.nudge ? '<div class="nudge">' + esc(q.nudge) + '</div>' : '') + '</div></section>';
   }
 
