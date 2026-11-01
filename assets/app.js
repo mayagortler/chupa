@@ -35,6 +35,18 @@
     });
   });
 
+  /* איך זה עובד: לחיצה על כרטיס פותחת את הפירוט (בלי JavaScript הפירוט פשוט פתוח) */
+  Array.prototype.forEach.call(document.querySelectorAll('.pc-tog'), function (b) {
+    var dl = document.getElementById(b.getAttribute('aria-controls'));
+    if (!dl) { return; }
+    dl.hidden = true;
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', String(open));
+      dl.hidden = !open;
+    });
+  });
+
   /* איך זה עובד: הכרטיסים נכנסים בגלילה */
   Array.prototype.forEach.call(document.querySelectorAll('[data-path]'), function (ol) {
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
