@@ -2,6 +2,7 @@
 (function () {
   'use strict';
   var C = window.Chopa, L = window.BuilderLogic, DIR = window.Direction, D = window.SITE_DATA || {};
+  var ART = window.ChopaArt || { art: function () { return ''; } };
   var root = document.getElementById('builder');
   if (!root || !C || !L || !DIR) { return; }
   var E = (D.events || {})[root.getAttribute('data-event')];
@@ -19,6 +20,7 @@
   function steps() { var a = ['mode']; if (!other && S.mode === 'build') { a.push('items'); } return a.concat(['dir', 'send']); }
   var ROW_ORDER = ['title', 'mood', 'pal', 'font', 'el', 'where', 'have', 'date', DC.extra.k];
   var openRow = null, lastFocus = null, focusNote = null, showWhy = false, focusHeading = false;
+  var justAdded = null; /* הפריט שנבחר עכשיו, כדי שרק האיור שלו יקפוץ */
 
   var TICK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>';
   var TICK_DARK = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#1C1C1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 10.5l4 4 8-9"></path></svg>';
@@ -28,11 +30,13 @@
   function nextRow(k) { var i = ROW_ORDER.indexOf(k); return i >= 0 && i + 1 < ROW_ORDER.length ? ROW_ORDER[i + 1] : null; }
 
   /* ---------- מסך 1: מה צריך וכמה זה עולה ---------- */
-  function itemBtn(x) {
+  /* כרטיס מוצר: האיור, השם והמחיר. לוחצים כדי להכניס או להוציא מהערכה */
+  function itemTile(x) {
     var on = !!S.sel[x.id];
-    return '<button type="button" class="item' + (x.group ? ' is-radio' : '') + '" data-k="it-' + x.id + '" data-act="item" data-id="' + x.id + '" aria-pressed="' + on + '">' +
+    return '<button type="button" class="tile' + (x.group ? ' is-radio' : '') + (x.id === justAdded ? ' is-new' : '') + '" data-k="it-' + x.id + '" data-act="item" data-id="' + x.id + '" aria-pressed="' + on + '">' +
       '<span class="bx" aria-hidden="true">' + TICK + '</span>' +
-      '<span class="tx"><strong>' + esc(x.name) + '</strong><span class="ds">' + esc(x.detail) + '</span></span>' +
+      '<span class="tl-art">' + ART.art(x.id, 96, true) + '</span>' +
+      '<strong>' + esc(x.name) + '</strong><span class="ds">' + esc(x.detail) + '</span>' +
       '<span class="pr">החל מ-' + fmt(x.price) + ' ₪</span></button>';
   }
 
@@ -55,6 +59,7 @@
     modes.forEach(function (m) {
       h += '<button type="button" class="opt" data-k="m-' + m.k + '" data-act="mode" data-mode="' + m.k + '" aria-pressed="' + (S.mode === m.k) + '">' +
         (m.b ? '<span class="bd">' + esc(m.b) + '</span>' : '') + '<strong>' + esc(m.t) + '</strong>' +
+        (m.k === 'set' ? '<span class="set-kit" aria-hidden="true">' + E.bundle.ids.map(function (id) { return ART.art(id, 42, true); }).join('') + '</span>' : '') +
         '<span class="ds">' + m.d.split('\n').map(function (t) { return m.k === 'set' ? '<span class="ln">' + esc(t) + '</span>' : esc(t); }).join('') + '</span>' +
         (m.x ? '<span class="sv">' + esc(m.x) + '</span>' : '') +
         '<span class="pr"><small>החל מ-</small>' + m.p + ' ₪</span></button>';
@@ -66,9 +71,10 @@
     var videos = E.items.filter(function (x) { return x.group === 'video'; });
     var extras = E.items.filter(function (x) { return x.group !== 'video'; });
     return '<section class="card b-card" aria-labelledby="s-h">' + heading('items') +
+      '<p class="note" style="margin:0">לחצו על מה שתרצו לכלול, והמחיר יתעדכן למטה.</p>' +
       '<div class="items">' +
-      (videos.length ? '<h3 class="grp">סרטון <span>(אחד)</span></h3>' + videos.map(itemBtn).join('') : '') +
-      (extras.length ? '<h3 class="grp">תוספות</h3>' + extras.map(itemBtn).join('') : '') +
+      (videos.length ? '<h3 class="grp">סרטון <span>(אחד)</span></h3><div class="tiles">' + videos.map(itemTile).join('') + '</div>' : '') +
+      (extras.length ? '<h3 class="grp">תוספות <span>(כמה שרוצים)</span></h3><div class="tiles">' + extras.map(itemTile).join('') + '</div>' : '') +
       (q.nudge ? '<div class="nudge">' + esc(q.nudge) + '</div>' : '') + '</div></section>';
   }
 
@@ -141,6 +147,7 @@
     var q = L.quote(E, S);
     var screen = cur === 'mode' ? screenMode(q) : cur === 'items' ? screenItems(q) : cur === 'dir' ? screenDir() : screenSend(q);
     root.innerHTML = stepper() + screen + bar(q);
+    justAdded = null;
     document.body.classList.add('has-bar');
     if (focusNote) {
       var nt = document.getElementById('note-' + focusNote);
@@ -208,6 +215,7 @@
       else {
         if (x.group) { E.items.forEach(function (o) { if (o.group === x.group) { delete sel[o.id]; } }); }
         sel[id] = true;
+        justAdded = id;
       }
       S.sel = sel; showWhy = false;
     }
