@@ -67,8 +67,8 @@
 
   /* האם אפשר להמשיך מהמסך. page: 'mode' | 'items' | 'dir' | 'send'. רק שני המסכים הראשונים יכולים להיחסם. */
   function canAdvance(E, S, page) {
-    if (page === 'mode' && isOther(E) && !S.eventName.trim()) { return { ok: false, why: 'כתבו איזה אירוע זה' }; }
-    if (page === 'items' && !isOther(E) && S.mode === 'build' && !quote(E, S).hasChoice) { return { ok: false, why: 'בחרו לפחות פריט אחד' }; }
+    if (page === 'mode' && isOther(E) && !S.eventName.trim()) { return { ok: false, why: 'כתבו איזה אירוע זה כדי להמשיך' }; }
+    if (page === 'items' && !isOther(E) && S.mode === 'build' && !quote(E, S).hasChoice) { return { ok: false, why: 'בחרו לפחות פריט אחד כדי להמשיך' }; }
     return { ok: true, why: '' };
   }
 
@@ -76,9 +76,9 @@
     if (!S.date) { return { fmt: '', note: '' }; }
     var p = S.date.split('-');
     var days = Math.ceil((new Date(S.date).getTime() - (now || Date.now())) / 86400000);
-    var note = days < 0 ? 'התאריך כבר עבר.'
+    var note = days < 0 ? 'התאריך שבחרתם כבר עבר. בדקו שהוא נכון.'
       : days <= 10 ? 'האירוע בעוד ' + days + ' ימים. כתבו לי עכשיו ואבדוק אם אספיק. עבודה דחופה (פחות מ-5 ימים) בתוספת 30%.'
-      : 'מצוין, יש זמן. חומרים עד 10 ימים לפני האירוע.';
+      : 'מצוין, יש זמן. את החומרים שולחים עד 10 ימים לפני האירוע.';
     return { fmt: p[2] + '/' + p[1] + '/' + p[0], note: note };
   }
 
@@ -99,7 +99,7 @@
   function message(E, S, dirLines) {
     var q = quote(E, S), m;
     var other = isOther(E);
-    m = other ? 'היי, יש לי אירוע: ' + S.eventName.trim() + '.' : 'היי, מעוניינת בעיצוב ל' + E.what + '.';
+    m = other ? 'היי, יש לי אירוע: ' + S.eventName.trim() + '.' : 'היי, אשמח לעיצוב ל' + E.what + '.';
     var pl = practicalLines(S);
     pl.forEach(function (l) {
       if (l.indexOf('שם: ') === 0) { m += ' שם האירוע: ' + l.slice(4) + '.'; }

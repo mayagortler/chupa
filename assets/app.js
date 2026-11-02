@@ -35,6 +35,13 @@
     });
   });
 
+  /* רשימת המשימות בפתיחה: לחיצה מוחקת את השורה בקו, לחיצה נוספת מחזירה */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-todo]'), function (b) {
+    b.addEventListener('click', function () {
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+
   /* איך זה עובד: לחיצה על כרטיס פותחת את הפירוט (בלי JavaScript הפירוט פשוט פתוח) */
   Array.prototype.forEach.call(document.querySelectorAll('.pc-tog'), function (b) {
     var dl = document.getElementById(b.getAttribute('aria-controls'));
@@ -44,6 +51,8 @@
       var open = b.getAttribute('aria-expanded') !== 'true';
       b.setAttribute('aria-expanded', String(open));
       dl.hidden = !open;
+      var lbl = b.querySelector('.pc-more-t');
+      if (lbl) { lbl.textContent = open ? 'לסגור' : 'לפרטים'; }
     });
   });
 

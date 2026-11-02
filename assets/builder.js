@@ -16,7 +16,7 @@
   var LABELS = { mode: 'מה צריך', items: 'בחירת פריטים', dir: 'הכיוון והפרטים', send: 'שליחה' };
   var TITLES = { mode: 'מה צריך וכמה זה עולה', items: 'מה אתם רוצים?', dir: 'הכיוון והפרטים', send: 'סיכום ושליחה' };
   var cur = 'mode';
-  /* מסך בחירת הפריטים נוסף רק למי שבחר "אני מרכיבה בעצמי" */
+  /* מסך בחירת הפריטים נוסף רק למי שבחר "להרכיב בעצמכם" */
   function steps() { var a = ['mode']; if (!other && S.mode === 'build') { a.push('items'); } return a.concat(['dir', 'send']); }
   var ROW_ORDER = ['title', 'mood', 'pal', 'font', 'el', 'where', 'have', 'date', DC.extra.k];
   var openRow = null, lastFocus = null, focusNote = null, showWhy = false, focusHeading = false;
@@ -24,7 +24,7 @@
 
   var TICK = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>';
   var TICK_DARK = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#1C1C1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 10.5l4 4 8-9"></path></svg>';
-  var WA_ICON = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l1.2-3.6A7 7 0 1 1 7 15.8L3 17z"></path></svg>';
+  var WA_ICON = '<svg class="wa-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
 
   function nameOf(list, k) { var n = ''; list.forEach(function (w) { if (w[0] === k) { n = w[1]; } }); return n; }
   function nextRow(k) { var i = ROW_ORDER.indexOf(k); return i >= 0 && i + 1 < ROW_ORDER.length ? ROW_ORDER[i + 1] : null; }
@@ -43,7 +43,7 @@
   function screenMode(q) {
     if (other) {
       return '<section class="card b-card" aria-labelledby="s-h">' + heading('mode') +
-        '<p class="note" style="margin:0">כתבו איזה אירוע זה, ובהמשך תוכלו לספר לי על הכיוון. את ההצעה אתן אחרי שאראה את הבקשה.</p>' +
+        '<p class="note" style="margin:0">כתבו בכמה מילים איזה אירוע זה. בהמשך תוכלו לספר לי על הכיוון, ואת הצעת המחיר אשלח אחרי שאראה את הבקשה.</p>' +
         '<div class="dq"><h3><label for="event-name">איזה אירוע?</label></h3>' +
         '<input id="event-name" class="field" type="text" maxlength="60" value="' + esc(S.eventName) + '" placeholder="למשל: יום פתיחה של העסק" data-input="eventName" autocomplete="off"></div>' +
         '<p class="note" style="margin:0"><strong>עיצוב אישי מאפס ' + esc(q.totalText) + '</strong></p></section>';
@@ -51,7 +51,7 @@
     var minVideo = Math.min.apply(null, E.items.filter(function (x) { return x.group === 'video'; }).map(function (x) { return x.price; }).concat([9999]));
     var names = E.bundle.ids.map(function (id) { return E.items.filter(function (x) { return x.id === id; })[0].name; });
     var modes = [
-      { k: 'build', t: 'אני מרכיבה בעצמי', d: 'בוחרים סרטון ותוספות, ומשלמים רק על מה שצריך.', p: fmt(minVideo), b: '', x: '' },
+      { k: 'build', t: 'להרכיב בעצמכם', d: 'בוחרים סרטון ותוספות, ומשלמים רק על מה שצריך.', p: fmt(minVideo), b: '', x: '' },
       { k: 'set', t: E.bundle.name, d: names.join('\n'), p: fmt(E.bundle.price), b: 'מומלץ', x: 'חיסכון של ' + fmt(q.saving) + ' ₪' },
       { k: 'custom', t: 'עיצוב אישי מאפס', d: 'שאלון קצר, ועיצוב של הכול מאפס.', p: fmt(E.frm), b: '', x: '' }
     ];
@@ -107,7 +107,7 @@
       '<p class="note" style="margin:0">לא חובה לענות על הכול. מה שלא תמלאו, אשאל בוואטסאפ.</p>' +
       '<div class="rows">' + titleRow + DIR.renderRows(DS, DC, openRow, practicalRows()) + '</div>' +
       '<div class="mb-wrap"><h3 class="mb-head">לוח ההשראה שלכם</h3>' + DIR.renderBoard(DS, DC, S.title.trim()) +
-      '<span class="note">הוא מתעדכן תוך כדי, ובו אני מתחילה לעצב.</span></div></section>';
+      '<span class="note">הלוח מתעדכן עם כל תשובה, וממנו אני מתחילה לעצב.</span></div></section>';
   }
 
   /* ---------- מסך 3: סיכום ושליחה ---------- */
@@ -117,7 +117,7 @@
       (other ? '<li>אירוע: ' + esc(S.eventName.trim()) + '</li>' : '<li>אירוע: ' + esc(E.what) + '</li>' + (q.custom ? '<li>עיצוב אישי מאפס</li>' : q.names.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join(''))) + '</ul></div>';
     var rest = DIR.lines(DS, DC).concat(L.practicalLines(S));
     h += '<div class="sum-group"><div class="sum-h"><strong>הכיוון והפרטים</strong><button type="button" class="link-btn" data-k="e2" data-act="edit" data-step="dir">עריכה</button></div>' +
-      (rest.length ? '<ul class="sum">' + rest.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : '<p class="note" style="margin:0">לא מילאתם כלום, ואשאל בוואטסאפ.</p>') + '</div>';
+      (rest.length ? '<ul class="sum">' + rest.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : '<p class="note" style="margin:0">עוד לא מילאתם פרטים. זה בסדר, אשאל בוואטסאפ.</p>') + '</div>';
     h += '<div class="total" aria-live="polite"><strong>' + esc(q.totalText) + '</strong><span class="note">' + esc(q.noteText) + '</span></div>' +
       '<span class="note">בלי התחייבות עד שמאשרים הצעת מחיר. אחזור אליכם עם סיכום, ומקדמה של 50% בביט מתחילה את העבודה.</span></section>';
     return h;
@@ -140,7 +140,7 @@
     if (cur !== 'send') {
       h += '<button type="button" class="btn" data-k="next" data-act="next"' + (ca.ok ? '' : ' aria-disabled="true"') + '>הבא</button>';
     } else {
-      h += '<a class="btn" href="' + C.waUrl(L.message(E, S, DIR.lines(DS, DC))) + '">' + WA_ICON + 'לשלוח לי בוואטסאפ</a>';
+      h += '<a class="btn btn-wa" href="' + C.waUrl(L.message(E, S, DIR.lines(DS, DC))) + '">' + WA_ICON + 'לשלוח לי בוואטסאפ</a>';
     }
     h += '</span></div>' + (!ca.ok && showWhy ? '<p class="bar-why" role="alert">' + esc(ca.why) + '</p>' : '') + '</div>';
     return h;
