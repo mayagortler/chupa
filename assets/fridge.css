@@ -7,7 +7,7 @@
 :root{
   /* חומרים */
   --wall:#B9BE9F; --wall-deep:#A9AF8D;
-  --enamel:#F8F6F0; --enamel-edge:#ECE8DD; --seam:#DDD7C9;
+  --enamel:#FBFAF6; --enamel-edge:#F0EDE5; --seam:#E0DBD0;
   --chrome-hi:#FFFDF8; --chrome:#DCD4C3; --chrome-lo:#B7AD98;
   --print:#FDFCF9; --pad:#FFFFFF; --pad-line:#C9DAF0; --pad-margin:#D2412F; --pad-ink:#6A8FC4; --pad-paper:#F3F7FC;   /* הדף של רשימת המשימות: לבן עם נגיעת תכלת, כמו בתמונת ההשראה */
   --note-butter:#FFFFFF; --note-blush:#F6D3CC; --note-sage:#E3EAD6; --note-paper:#F7E3A3;
@@ -525,3 +525,6 @@ h1,h2{font-weight:600;letter-spacing:-.015em}
 /* אריחי צ׳ופה בגודל של שאר המגנטים (כל אריח בערך 55px) */
 .hero-txt .hero-logo{width:240px}
 @media (max-width:860px){.hero-txt .hero-logo{width:220px}}
+
+/* בכרטיסי ההמלצות המגנט יושב מעל המסגרת הלבנה */
+.chat > .mag-dome{top:-15px}
