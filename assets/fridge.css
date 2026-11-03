@@ -541,3 +541,19 @@ h1,h2{font-weight:600;letter-spacing:-.015em}
 .cert:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
 @media (max-width:900px){.cert{right:-20px;bottom:-30px;width:100px}}
 @media (max-width:640px){.about-pics{align-self:center}.cert{right:-4px;bottom:-26px;width:88px}}
+
+/* ==========================================================================
+   יישור: רוחב תוכן אחד (1080px) בכל דפי המקרר, כך שהפתיחה, הכותרות וכל המקטעים
+   מתחילים על אותו קו. ההמלצות והשירותים נמתחים לרוחב המלא במקום טור צר במרכז.
+   במובייל גם הפתיחה מיושרת להתחלה, כמו כל הכותרות.
+   ========================================================================== */
+.fridge .wrap:not(.narrow){width:min(1080px,100% - 2 * var(--gutter))}
+.rev{grid-template-columns:repeat(3,minmax(0,1fr));justify-content:stretch;gap:var(--sp-8)}
+@media (max-width:760px){.rev{grid-template-columns:1fr;max-width:none;margin-inline:0}}
+@media (max-width:860px){
+  .hero-txt{align-items:flex-start;text-align:start}
+  .hero-cta{justify-content:flex-start}
+}
+@media (max-width:860px){.hero-txt .hero-logo{margin-inline:0}}
+/* במובייל: מכל התמונות מקבל רוחב משלו, והפולרואיד ממלא אותו (אחרת הוא מתכווץ) */
+@media (max-width:640px){.about-pics{width:min(270px,78%);align-self:center}.about-pics .polaroid{width:100%}}

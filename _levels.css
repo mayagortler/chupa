@@ -1,0 +1,32 @@
+/* הדמיית רמות ריאליסטיות. קובץ זמני, לא חלק מהאתר */
+.l3,.l2,.l1{--paper-grain:none;--enamel-grain:none}
+.l3 :is(.note-card,.mini-note,.pad,.print,.svc-print,.polaroid,.faq,.planner,.std)::after,
+.l2 :is(.note-card,.mini-note,.pad,.print,.svc-print,.polaroid,.faq,.planner,.std)::after,
+.l1 :is(.note-card,.mini-note,.pad,.print,.svc-print,.polaroid,.faq,.planner,.std)::after{display:none}
+/* רמה 3: מגנטים מצולמים, כל השאר פשוט */
+.l3{--shadow-stuck:-2px 4px 10px rgba(50,46,30,.14);--shadow-lifted:-3px 8px 18px rgba(50,46,30,.16);--mag-shadow:drop-shadow(-2px 4px 4px rgba(35,28,14,.25))}
+.l3 .fridge{background:linear-gradient(90deg,rgba(255,255,255,0) 60%,rgba(255,255,255,.5) 80%,rgba(255,255,255,0) 95%),var(--enamel)}
+/* רמה 2: איור תלת-ממדי רך */
+.l2{--shadow-stuck:0 3px 10px rgba(50,46,30,.1);--shadow-lifted:0 8px 18px rgba(50,46,30,.14);--mag-shadow:drop-shadow(0 2px 3px rgba(35,28,14,.2))}
+.l2 .fridge{background:var(--enamel);box-shadow:0 20px 50px rgba(30,34,32,.18)}
+.l2 .handle,.l1 .handle{filter:none}
+.l2 .handle::after{background:linear-gradient(90deg,#BDBEB9,#E9E9E5 45%,#C7C8C3);box-shadow:none}
+.l2 .handle::before{background:linear-gradient(90deg,#BDBEB9,#E9E9E5) top/100% 18px no-repeat,linear-gradient(90deg,#BDBEB9,#E9E9E5) bottom/100% 18px no-repeat}
+/* רמה 1: שטוח לגמרי */
+.l1{--shadow-stuck:0 0 0 1px rgba(40,38,34,.14);--shadow-lifted:0 0 0 1px rgba(40,38,34,.22);--mag-shadow:none;--mag-shadow-sm:none}
+.l1 .fridge{background:var(--enamel);box-shadow:0 0 0 1.5px rgba(40,38,34,.12)}
+.l1 .freezer::after{background:rgba(40,38,34,.18);height:2px;bottom:0}
+.l1 .handle::after{background:#CFCFC9;box-shadow:none}.l1 .handle::before{background:none}
+.l1 .mag-dome,.l1 .ldome{background:var(--m)!important;box-shadow:none!important}
+.l1 .lt,.l1 .hero-tiles .lt{background:#F4ECDC!important;box-shadow:0 3px 0 #D9CCB2!important}.l1 .lt::after{display:none}
+.l1 .hero h1{text-shadow:none}
+/* מגנטים מרחפים כעיגולים (רמות 1-2) */
+.ldome{border-radius:50%;width:38px!important;height:38px!important;
+  background:radial-gradient(circle at 36% 30%,rgba(255,255,255,.9) 0 1.5px,rgba(255,255,255,.35) 3px,rgba(255,255,255,0) 8px),radial-gradient(circle at 45% 40%,color-mix(in srgb,var(--m) 86%,#fff) 0,var(--m) 55%,color-mix(in srgb,var(--m) 74%,#000) 100%);
+  box-shadow:inset 0 -2px 3px rgba(0,0,0,.14),0 3px 6px rgba(35,28,14,.2)}
+.l2 .hero-tiles,.l1 .hero-tiles{display:flex;gap:8px;margin:0 0 var(--sp-2)}
+.l2 .hero-tiles .lt,.l1 .hero-tiles .lt{--t:52px}
+/* בהדמיה: בלי אנימציות כניסה וחשיפה, כדי שהכול ייראה מיד */
+html[class^="l"] *{animation:none!important}
+html[class^="l"] .rv-hide{opacity:1!important;translate:none!important;scale:none!important;rotate:none!important}
+html[class^="l"] .pc-hide{opacity:1!important;transform:none!important}
