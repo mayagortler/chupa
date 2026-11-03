@@ -572,3 +572,37 @@ h1,h2{font-weight:600;letter-spacing:-.015em}
 :is(.note-card,.mini-note,.pad,.print,.svc-print,.polaroid,.faq,.planner,.std)::after{display:none}
 .fridge{background:linear-gradient(90deg,rgba(255,255,255,0) 60%,rgba(255,255,255,.5) 80%,rgba(255,255,255,0) 95%),var(--enamel)}
 .page-fridge .card{background:var(--print)}
+
+/* ==========================================================================
+   צבעים לפי הרפרנס (2026-11-03): קיר משבצות תכלת (גינגהם בשלושה גוונים)
+   ומקרר בגוון קרם חם. הצל של המקרר על הקיר קריר, כדי שלא ייראה חום על תכלת.
+   ========================================================================== */
+:root{
+  --wall:#E3EDF5; --wall-deep:#D9E7F2; --wall-check:rgba(207,225,239,.5);
+  --enamel:#F7F1EB; --enamel-edge:#EEE6DE; --seam:#DCD3CA;
+}
+body{background:
+    linear-gradient(90deg,var(--wall-check) 50%,transparent 0) 0 0/144px 144px,
+    linear-gradient(180deg,var(--wall-check) 50%,transparent 0) 0 0/144px 144px,
+    var(--wall)}
+.fridge{box-shadow:
+    inset 0 3px 2px -1px rgba(255,255,255,.95),
+    inset -4px 0 5px -2px rgba(255,255,255,.85),
+    inset 5px 0 10px -3px rgba(110,95,75,.14),
+    inset 0 -8px 12px -6px rgba(110,95,75,.14),
+    0 1px 2px rgba(40,60,90,.16),-5px 9px 16px rgba(40,60,90,.12),-16px 30px 56px rgba(40,60,90,.18)}
+@media (max-width:640px){
+  body{background-size:96px 96px,96px 96px,auto}
+}
+
+/* ==========================================================================
+   "נעים להכיר": התמונה צמודה לקו התוכן בצד ימין כמו כל הכותרות, הכותרת
+   מתחילה בגובה התמונה, והתעודה תלויה בפינה הפנימית (לכיוון הטקסט) כדי
+   שלא תחרוג מעבר לשפת המקרר.
+   ========================================================================== */
+.about{align-items:flex-start;gap:clamp(56px,7vw,96px)}
+.about-pics{margin-top:6px}
+.about-body{padding-top:0}
+.cert{right:auto;left:-62px;bottom:-30px;--rot:-6deg}
+@media (max-width:900px){.cert{right:auto;left:-40px;bottom:-26px;width:96px}}
+@media (max-width:640px){.cert{right:auto;left:-18px;bottom:-22px;width:84px}.about{align-items:stretch}.about-pics{margin-top:0}}
