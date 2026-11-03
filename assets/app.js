@@ -90,6 +90,56 @@
     prep(stick, true);
   })();
 
+  /* מגנטים: גוררים אותם לכל מקום על הדלת. נגיעה בלי תזוזה נשארת לחיצה רגילה.
+     ההזזה יושבת ב-translate, כך שההטיה (transform) של כל מגנט נשמרת */
+  (function () {
+    var z = 20;
+    function lift(el) {
+      /* מעלים את כל השרשרת עד המקרר, כדי שהמגנט לא ייעלם מתחת לכרטיס הבא */
+      z++;
+      for (var a = el; a && !a.classList.contains('fridge') && a !== document.body; a = a.parentElement) {
+        if (getComputedStyle(a).position === 'static') { a.style.position = 'relative'; }
+        a.style.zIndex = z;
+      }
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.mag, .loose, .hero-logo'), function (el) {
+      el.classList.add('mv');
+      if (el.tagName === 'IMG') { el.draggable = false; }
+      var x = 0, y = 0, sx, sy, id = null, moved = false;
+      el.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0 || id !== null) { return; }
+        id = e.pointerId; moved = false;
+        sx = e.clientX - x; sy = e.clientY - y;
+        el.setPointerCapture(id);
+      });
+      el.addEventListener('pointermove', function (e) {
+        if (e.pointerId !== id) { return; }
+        var nx = e.clientX - sx, ny = e.clientY - sy;
+        if (!moved) {
+          if (Math.abs(nx - x) + Math.abs(ny - y) < 4) { return; }
+          moved = true;
+          el.style.animation = 'none';
+          el.classList.add('mv-drag');
+          lift(el);
+        }
+        x = nx; y = ny;
+        el.style.translate = x + 'px ' + y + 'px';
+      });
+      function drop(e) {
+        if (e.pointerId !== id) { return; }
+        id = null;
+        el.classList.remove('mv-drag');
+        if (moved) {
+          /* גרירה שהסתיימה מעל קישור לא פותחת אותו */
+          window.addEventListener('click', function stop(ev) { ev.preventDefault(); ev.stopPropagation(); }, { capture: true, once: true });
+          setTimeout(function () { moved = false; }, 0);
+        }
+      }
+      el.addEventListener('pointerup', drop);
+      el.addEventListener('pointercancel', drop);
+    });
+  })();
+
   /* איך זה עובד: הכרטיסים נכנסים בגלילה */
   Array.prototype.forEach.call(document.querySelectorAll('[data-path]'), function (ol) {
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }

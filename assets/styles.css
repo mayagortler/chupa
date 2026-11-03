@@ -649,3 +649,9 @@ body.has-bar{padding-bottom:96px}
 .rv{transition:opacity .6s var(--ease),translate .6s var(--ease),scale .6s var(--ease),rotate .6s var(--ease)}
 .rv-hide{opacity:0;translate:0 18px}
 .rv-hide.rv-stick{translate:0 -8px;scale:1.05;rotate:-2deg}
+
+/* מגנטים שאפשר להזיז: מתרוממים קצת כשתופסים, ונלחצים חזרה לדלת כשעוזבים */
+.mv{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;transition:scale var(--dur-2) var(--ease)}
+@media (hover:hover) and (pointer:fine){.mv{cursor:grab}}
+.mv.mv-drag{cursor:grabbing;scale:1.08;transition-duration:var(--dur-1)}
+@media (prefers-reduced-motion:reduce){.mv{transition:none}}
