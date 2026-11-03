@@ -557,3 +557,18 @@ h1,h2{font-weight:600;letter-spacing:-.015em}
 @media (max-width:860px){.hero-txt .hero-logo{margin-inline:0}}
 /* במובייל: מכל התמונות מקבל רוחב משלו, והפולרואיד ממלא אותו (אחרת הוא מתכווץ) */
 @media (max-width:640px){.about-pics{width:min(270px,78%);align-self:center}.about-pics .polaroid{width:100%}}
+
+/* ==========================================================================
+   רמת ריאליסטיות 3, "מוחשי" (נבחרה 2026-11-03): המגנטים והלוגו מצולמים,
+   וכל השאר פשוט ורך. בלי גרעין נייר, בלי טקסטורת אמייל, צל אחד רך במקום שכבות.
+   ========================================================================== */
+:root{
+  --paper-grain:none;--enamel-grain:none;
+  --shadow-stuck:-2px 4px 10px rgba(50,46,30,.14);
+  --shadow-lifted:-3px 8px 18px rgba(50,46,30,.16);
+  --mag-shadow:drop-shadow(-2px 4px 4px rgba(35,28,14,.25));
+  --mag-shadow-sm:drop-shadow(-1.5px 3px 3px rgba(35,28,14,.22));
+}
+:is(.note-card,.mini-note,.pad,.print,.svc-print,.polaroid,.faq,.planner,.std)::after{display:none}
+.fridge{background:linear-gradient(90deg,rgba(255,255,255,0) 60%,rgba(255,255,255,.5) 80%,rgba(255,255,255,0) 95%),var(--enamel)}
+.page-fridge .card{background:var(--print)}
