@@ -56,6 +56,40 @@
     });
   });
 
+  /* חשיפה בגלילה: רק מה שמתחת לקפל מוסתר, כדי שמה שכבר על המסך לא יהבהב.
+     פריטים שנכנסים יחד נכנסים בהשהיה קטנה זה אחרי זה, ו-.rv יורד בסוף כדי להחזיר את המעברים של ה-hover */
+  (function () {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var rise = '.sec > h2, .sec > .sub, .about, .faq, .rev-more';
+    var stick = '.prints > li, .notes > li, .svcs > li, .rev > .chat, .std';
+    var io = new IntersectionObserver(function (es) {
+      var n = 0;
+      es.forEach(function (e) {
+        if (!e.isIntersecting) { return; }
+        var el = e.target;
+        io.unobserve(el);
+        el.style.transitionDelay = Math.min(n++, 5) * 70 + 'ms';
+        el.classList.remove('rv-hide');
+        el.addEventListener('transitionend', function done(ev) {
+          if (ev.target !== el || ev.propertyName !== 'opacity') { return; }
+          el.removeEventListener('transitionend', done);
+          el.classList.remove('rv', 'rv-stick');
+          el.style.transitionDelay = '';
+        });
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    function prep(sel, isStick) {
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+        if (el.getBoundingClientRect().top <= window.innerHeight) { return; }
+        el.classList.add('rv', 'rv-hide');
+        if (isStick) { el.classList.add('rv-stick'); }
+        io.observe(el);
+      });
+    }
+    prep(rise, false);
+    prep(stick, true);
+  })();
+
   /* איך זה עובד: הכרטיסים נכנסים בגלילה */
   Array.prototype.forEach.call(document.querySelectorAll('[data-path]'), function (ol) {
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }

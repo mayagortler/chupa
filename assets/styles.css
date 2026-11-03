@@ -626,3 +626,26 @@ body.has-bar{padding-bottom:96px}
 .sample-txt h2{font-size:var(--fs-3xl);margin:0 0 var(--sp-2)}
 .sample-txt p{margin:0}
 .sample-txt .link{margin-top:var(--sp-3)}
+
+/* ==========================================================================
+   Motion: כניסה בטעינה וחשיפה בגלילה.
+   מזיזים את translate/scale/rotate הנפרדים כדי לא לדרוס את ה-transform של .stuck
+   ========================================================================== */
+@media (prefers-reduced-motion:no-preference){
+  .hero-txt > *,.hero-board,.page-head > *,.ev-head > *,.grid > .ev,.works > *{animation:mo-rise .6s var(--ease) both;animation-delay:calc(var(--mo-i,0) * 70ms + 60ms)}
+  .hero-txt > :nth-child(2),.page-head > :nth-child(2),.ev-head > :nth-child(2){--mo-i:1}
+  .hero-txt > :nth-child(3),.page-head > :nth-child(3),.ev-head > :nth-child(3){--mo-i:2}
+  .hero-txt > :nth-child(4),.page-head > :nth-child(4){--mo-i:3}
+  .hero-board{--mo-i:3;animation-name:mo-stick;animation-duration:.7s}
+  .hero-txt > .hero-logo{animation-name:mo-stick}
+  .grid > .ev,.works > *{--mo-i:calc(var(--mo-n,0) + 2);animation-name:mo-stick}
+  .grid > .ev:nth-child(2),.works > :nth-child(2){--mo-n:1}.grid > .ev:nth-child(3),.works > :nth-child(3){--mo-n:2}
+  .grid > .ev:nth-child(4){--mo-n:3}.grid > .ev:nth-child(5){--mo-n:4}.grid > .ev:nth-child(n+6){--mo-n:5}
+}
+@keyframes mo-rise{from{opacity:0;translate:0 14px}}
+/* מגנט שננעץ על המקרר: מגיע קצת קרוב ומוטה, ומתיישב */
+@keyframes mo-stick{from{opacity:0;scale:1.05;rotate:-2deg;translate:0 -8px}}
+
+.rv{transition:opacity .6s var(--ease),translate .6s var(--ease),scale .6s var(--ease),rotate .6s var(--ease)}
+.rv-hide{opacity:0;translate:0 18px}
+.rv-hide.rv-stick{translate:0 -8px;scale:1.05;rotate:-2deg}
