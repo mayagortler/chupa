@@ -533,3 +533,11 @@ h1,h2{font-weight:600;letter-spacing:-.015em}
 .fridge{outline:1px solid rgba(90,76,50,.10);outline-offset:-1px}
 /* במובייל: ידית דקה צמודה לשפת הדלת, כדי שלא תעלה על התוכן */
 @media (max-width:640px){.fridge .handle{left:3px;width:7px;border-radius:4px}}
+
+/* התעודה מהמילואים: תלויה קטנה ליד הפולרואיד של מאיה, במגנט פימו לבן. לחיצה פותחת בגודל מלא */
+.about-pics{position:relative;flex:none}
+.cert{--rot:7deg;position:absolute;right:-58px;bottom:-34px;z-index:2;display:block;width:112px;background:#fff;padding:5px;border-radius:2px;box-shadow:var(--shadow-stuck)}
+.cert img{display:block;width:100%;height:auto;border-radius:1px}
+.cert:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+@media (max-width:900px){.cert{right:-20px;bottom:-30px;width:100px}}
+@media (max-width:640px){.about-pics{align-self:center}.cert{right:-4px;bottom:-26px;width:88px}}

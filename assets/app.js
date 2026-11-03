@@ -131,8 +131,9 @@
         el.classList.remove('mv-drag');
         if (moved) {
           /* גרירה שהסתיימה מעל קישור לא פותחת אותו */
-          window.addEventListener('click', function stop(ev) { ev.preventDefault(); ev.stopPropagation(); }, { capture: true, once: true });
-          setTimeout(function () { moved = false; }, 0);
+          var stop = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+          window.addEventListener('click', stop, { capture: true, once: true });
+          setTimeout(function () { window.removeEventListener('click', stop, { capture: true }); }, 0);
         }
       }
       el.addEventListener('pointerup', drop);
