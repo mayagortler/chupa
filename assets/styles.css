@@ -336,8 +336,10 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .nav a[aria-current="page"]{color:var(--text);text-decoration:underline;text-decoration-color:var(--olive-300)}
 .bar-cta{min-height:var(--tap);padding:0 var(--sp-5);font-size:var(--fs-xs)}
 .bar-cta svg{width:16px;height:16px}
-.bar-cta[aria-current="page"]{background:var(--btn-ghost-bg-hover);border-color:var(--btn-ghost-bg-hover);color:var(--btn-primary-fg-hover)}
-@media (hover:hover){.nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}}
+.bar-cta{background:var(--wa);border-color:var(--wa);color:var(--wa-fg)}   /* "בואו נדבר": אותו ירוק זית כמו כפתורי הוואטסאפ */
+.bar-cta[aria-current="page"]{background:var(--wa-hover);border-color:var(--wa-hover);color:var(--wa-fg)}
+@media (hover:hover){.nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}
+  .btn-ghost.bar-cta:hover{background:var(--wa-hover);border-color:var(--wa-hover);color:var(--wa-fg)}}
 
 /* --- פוטר: נייר, ממורכז, טקסט שקט --- */
 .foot{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-3);padding-top:var(--sp-12);padding-bottom:var(--sp-10);font-size:var(--fs-sm);color:var(--text-muted);background:var(--surface-paper)}
