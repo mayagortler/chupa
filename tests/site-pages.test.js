@@ -23,6 +23,36 @@ pages.forEach(function (page) {
   }
 });
 
+/* shared header/footer: no fridge wrapper or letter-tile logo on any page */
+pages.forEach(function (page) {
+  var html = fs.readFileSync(path.join(root, page), 'utf8');
+  assert.ok(!/class="fridge/.test(html), page + ': still has the fridge wrapper');
+  assert.ok(!/class="vr"/.test(html), page + ': header still has the .vr divider');
+  assert.ok(!/lt-icon/.test(html), page + ': header still has the letter-tile logo');
+  assert.match(html, /<a class="logo" href="index\.html"[^>]*>צ׳ופה<\/a>/, page + ': logo is not the word צ׳ופה');
+  assert.match(html, /class="btn btn-ghost bar-cta"/, page + ': header CTA is not a ghost button');
+});
+
+/* home: the rope of polaroids is the only events listing */
+(function () {
+  var html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  var cards = html.match(/<a class="rope-card"[^>]*>/g) || [];
+  assert.strictEqual(cards.length, 10, 'index.html: expected 10 rope cards, found ' + cards.length);
+  cards.forEach(function (tag) {
+    var href = (tag.match(/href="([^"]+)"/) || [])[1];
+    assert.ok(/^event-[a-z-]+\.html$/.test(href || ''), 'rope card href: ' + href);
+    assert.ok(fs.existsSync(path.join(root, href)), 'rope card links to a missing page: ' + href);
+    assert.ok(!/tabindex="-1"/.test(tag), 'rope card is not keyboard reachable: ' + href);
+  });
+  var lights = (html.match(/class="rope-light"/g) || []).length;
+  assert.ok(lights >= 8, 'index.html: expected at least 8 rope lights, found ' + lights);
+  assert.ok(/<symbol id="sprig-poppy"/.test(html) && /<symbol id="sprig-corn"/.test(html), 'index.html: sprig symbols missing');
+  assert.ok(!/assets\/magnets\//.test(html), 'index.html: still references assets/magnets/');
+  assert.ok(!/logo-magnet\.webp/.test(html), 'index.html: still references logo-magnet.webp');
+  assert.ok(!/id="events-strip"/.test(html), 'index.html: #events-strip should be replaced by the rope');
+  assert.ok(!/class="freezer"|class="door-main"/.test(html), 'index.html: freezer/door wrappers still present');
+})();
+
 /* one version per asset across all pages */
 Object.keys(versions).forEach(function (file) {
   var vs = Object.keys(versions[file]);

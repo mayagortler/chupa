@@ -328,62 +328,71 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 /* פולארויד בודד שלא על חבל (אודות, עבודות) */
 .pol-solo{position:relative;margin:0;width:var(--pol-w);margin-left:0}
 .pol-solo .pol-sway{animation:none;transform:rotate(-3deg)}
-@media (prefers-reduced-motion:reduce){.pol-sway,.light-halo{animation:none}}
+@media (prefers-reduced-motion:reduce){.pol-sway,.rope-light{animation:none}}
 
-/* --- ניווט עליון --- */
-.top{padding:var(--sp-4) var(--sp-4) var(--sp-3);display:flex;justify-content:center;position:relative;z-index:20}
-.bar{display:flex;align-items:center;gap:var(--sp-2);max-width:100%;padding:var(--sp-2);background:var(--surface);border:1px solid rgba(16,24,40,.06);border-radius:var(--r-pill);box-shadow:0 1px 2px rgba(16,24,40,.05),0 10px 28px rgba(16,24,40,.09)}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;padding:0 6px 0 10px;border-radius:var(--r-pill)}
-.logo img{display:block;height:40px;width:auto}
-.vr{width:1px;height:28px;background:var(--line);margin:0 var(--sp-1)}
-.nav{display:flex;align-items:center;gap:var(--sp-1)}
-.nav a{text-decoration:none;border-radius:var(--r-pill);font-weight:var(--fw-medium);font-size:var(--fs-base);padding:0 18px;min-height:var(--tap);display:inline-flex;align-items:center;-webkit-tap-highlight-color:transparent;
-  transition:background-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
-.nav a:active{transform:scale(var(--press))}
-.nav a[aria-current="page"]{background:var(--sky-100);font-weight:var(--fw-semibold)}
-.bar-cta{text-decoration:none;background:var(--ink);color:var(--on-ink);border-radius:var(--r-pill);font-weight:var(--fw-semibold);font-size:var(--fs-base);padding:0 var(--sp-6);min-height:48px;display:inline-flex;align-items:center;gap:var(--sp-2);margin-inline-start:6px;-webkit-tap-highlight-color:transparent;
-  transition:background-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
-.bar-cta:active{transform:scale(var(--press))}
-@media (hover:hover){
-  .nav a:hover{background:var(--sky-100)}
-  .nav a[aria-current="page"]:hover{background:var(--sky-200)}
-  .bar-cta:hover{background:var(--ink-900)}
-}
+/* --- ניווט עליון: השם בפרנק רוהל, קישורים שקטים, כפתור רפאים קטן --- */
+.top{position:relative;z-index:20}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);padding-block:var(--sp-5)}
+.logo{font-family:var(--font-display);font-size:var(--fs-4xl);font-weight:var(--fw-regular);line-height:1;color:var(--text);text-decoration:none;border-radius:var(--r-xs);padding-block:var(--sp-1)}
+.nav{display:flex;align-items:center;gap:var(--sp-1);margin-inline-start:auto}
+.nav a{font-family:var(--font-sans);font-size:var(--fs-sm);color:var(--text-body);text-decoration:none;text-underline-offset:.35em;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-xs);-webkit-tap-highlight-color:transparent;transition:color var(--dur-2) var(--ease)}
+.nav a[aria-current="page"]{color:var(--text);text-decoration:underline;text-decoration-color:var(--olive-300)}
+.bar-cta{min-height:var(--tap);padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.bar-cta svg{width:16px;height:16px}
+.bar-cta[aria-current="page"]{background:var(--btn-ghost-bg-hover)}
+@media (hover:hover){.nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}}
 
-/* --- פוטר --- */
-.foot{display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);padding-top:var(--sp-12);padding-bottom:var(--sp-8);font-size:var(--fs-sm);color:var(--muted)}
+/* --- פוטר: נייר, ממורכז, טקסט שקט --- */
+.foot{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-3);padding-top:var(--sp-12);padding-bottom:var(--sp-10);font-size:var(--fs-sm);color:var(--text-muted);background:var(--surface-paper)}
 .foot-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-1) var(--sp-2)}
-.foot .foot-nav a{font-size:var(--fs-md);font-weight:var(--fw-medium);color:var(--ink);text-decoration:none;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-pill);transition:background-color var(--dur-2) var(--ease)}
+.foot .foot-nav a{font-size:var(--fs-sm);color:var(--text-body);text-decoration:none;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-xs);transition:color var(--dur-2) var(--ease)}
 .foot-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3) var(--sp-5)}
-.foot-meta a{min-height:var(--tap);display:inline-flex;align-items:center}
-@media (hover:hover){.foot .foot-nav a:hover{background:var(--sky-100)}}
+.foot-meta a{min-height:var(--tap);display:inline-flex;align-items:center;color:var(--text-muted)}
+@media (hover:hover){.foot .foot-nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}}
 
 /* ==========================================================================
    Home
    ========================================================================== */
 
-/* hero */
-.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-4);padding-top:clamp(12px,3vw,32px)}
-.hero h1{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--tr-display)}
+/* hero: נייר, כותרת-על, כותרת, שני כפתורים, שני ענפים בשוליים, והחבל */
+.home-hero{position:relative;overflow:hidden}
+.hero{text-align:center;padding-top:var(--sp-10)}
+.hero-txt{display:flex;flex-direction:column;align-items:center}
 .hero h1 span{display:block}
-.hero .lead{max-width:520px;margin:0}
+.hero .lead{margin:var(--sp-5) auto var(--sp-8)}
 .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3)}
+/* מיקומי הענפים כמו בתצוגה (120/260/110/72), פחות ~80px של הניווט שכאן יושב מעל הסקשן ולא בתוכו */
+.hero-sprig-poppy{top:40px;inset-inline-end:4%;transform:rotate(-12deg)}
+.hero-sprig-corn{top:180px;inset-inline-start:5%;transform:rotate(14deg)}
+@media (max-width:1000px){.hero-sprig-corn{top:30px}}
+@media (max-width:640px){.home-hero{--sprig-size:32px}.hero-sprig-poppy{top:0}.hero-sprig-corn{display:none}}
 
-/* rope of events */
-.rope{position:relative;overflow:hidden;height:530px;margin-top:-110px;margin-bottom:-40px}
+/* rope of events: חבל שזור, נורות קטנות, פולארואידים לבנים על אטבי עץ שנעים לאורכו */
+/* החבל שוקע במרכז (y=20 בקצוות, 210 באמצע), ובמסך צר רואים רק את המרכז. השוליים השליליים מרימים אותו
+   כך שהחבל הנראה מתחיל כ-40px מתחת לכפתורים. החלק הריק שעולה על הכפתורים לא תופס לחיצות */
+.rope{position:relative;overflow:hidden;overflow:clip;height:500px;margin-top:clamp(-140px,8.9vw - 229px,-40px);pointer-events:none}
 .rope-track{position:absolute;top:0;left:50%;width:2000px;height:490px;margin-left:-1000px;transform-origin:50% 0}
 .rope-line{position:absolute;inset:0;overflow:visible}
-.rope-card{position:absolute;left:0;top:0;width:204px;display:block;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent;
-  offset-path:path("M -250 20 Q 1000 400 2250 20");offset-rotate:auto;offset-anchor:50% 0;transform-origin:50% 0;animation:rope-run 80s linear infinite}
-.rope-sway{position:relative;margin-top:var(--sp-1);transform-origin:50% 0;animation:rope-sway 4.2s ease-in-out infinite alternate;background:var(--paper);border-radius:3px;padding:var(--sp-3) var(--sp-3) 0;box-shadow:var(--shadow-photo);text-align:center;transition:box-shadow .25s var(--ease)}
-.rope-peg{position:absolute;top:-16px;left:50%;margin-left:-7px;width:14px;height:32px;border-radius:5px;background:linear-gradient(180deg,var(--wood-cap) 0 7px,var(--wood) 7px);box-shadow:inset 0 0 0 1px rgba(120,80,40,.18),0 2px 4px rgba(16,24,40,.2)}
-.rope-art{aspect-ratio:1/1;border-radius:1px;overflow:hidden;outline:1px solid rgba(16,24,40,.06);outline-offset:-1px}
-.rope-name{display:block;padding:10px 6px 13px;font-size:var(--fs-xl);font-weight:var(--fw-medium);letter-spacing:0}
-.rope:hover .rope-card{animation-play-state:paused}
+.rope-line path{fill:none;stroke:var(--rope-color);stroke-width:var(--rope-width);stroke-linecap:round}
+.rope-light{fill:url(#rope-halo);animation:twinkle var(--dur-twinkle) var(--ease-soft) infinite alternate}
+.rope-light-core{fill:var(--glow-core);stroke:var(--glow-edge);stroke-width:.6}
+.rope-card{position:absolute;left:0;top:0;width:var(--pol-w);display:block;pointer-events:auto;text-decoration:none;color:var(--text);-webkit-tap-highlight-color:transparent;
+  offset-path:path("M -250 20 Q 1000 400 2250 20");offset-rotate:auto;offset-anchor:50% 0;transform-origin:50% 0;animation:rope-run var(--dur-drift) linear infinite}
+.rope-sway{position:relative;margin-top:var(--sp-1);transform-origin:50% 0;animation:sway var(--dur-sway) var(--ease-soft) infinite alternate;
+  background:var(--pol-bg);border-radius:var(--pol-radius);padding:var(--pol-pad) var(--pol-pad) 0;box-shadow:var(--pol-shadow);text-align:center;transition:box-shadow var(--dur-2) var(--ease)}
+.rope-peg{position:absolute;z-index:1;top:calc(var(--peg-h) / -2);left:50%;margin-left:calc(var(--peg-w) / -2);width:var(--peg-w);height:var(--peg-h);border-radius:3px;
+  background:linear-gradient(180deg,var(--peg-cap) 0 6px,var(--peg-color) 6px);box-shadow:inset 0 0 0 1px rgba(120,80,40,.16),0 2px 3px rgba(60,48,28,.18)}
+.rope-art{aspect-ratio:1/1;background:var(--paper-50);border-radius:1px;overflow:hidden}
+.rope-art svg{display:block;width:100%;height:100%}
+.rope-name{display:block;font-family:var(--font-display);font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-snug);padding:var(--sp-3) var(--sp-2) var(--sp-4)}
+/* עכבר מעל החבל או פוקוס מקלדת בתוכו: הכול עוצר. הכרטיס שבפוקוס זז למרכז החבל כדי שלא יישאר מחוץ למסך */
+.rope:hover .rope-card,.rope:focus-within .rope-card{animation-play-state:paused}
+.rope-card:focus-visible{outline:none;z-index:2;animation:none;offset-distance:50%}
+.rope-card:focus-visible .rope-sway{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
 @media (hover:hover){.rope-card:hover .rope-sway{box-shadow:var(--shadow-2)}}
 @keyframes rope-run{from{offset-distance:100%}to{offset-distance:0%}}
-@keyframes rope-sway{from{transform:rotate(-3.5deg)}to{transform:rotate(3.5deg)}}
-@media (max-width:640px){.rope{height:410px;margin-top:-120px;margin-bottom:-40px}.rope-track{transform:scale(.72)}}
+@keyframes twinkle{from{opacity:.55}to{opacity:1}}
+@media (max-width:640px){.rope{height:370px;margin-top:-80px}.rope-track{transform:scale(.72)}}
 @media (prefers-reduced-motion:reduce){.rope-card,.rope-sway{animation-play-state:paused!important}}
 
 /* for you: balloons */
@@ -737,13 +746,9 @@ body.has-bar{padding-bottom:96px}
 @media (max-width:860px){.svcs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){
   :root{--gutter:16px}
-  .vr{display:none}
-  .logo{padding:0 2px}
-  .bar{flex-wrap:wrap;justify-content:space-between;border-radius:26px;width:100%;gap:var(--sp-1);row-gap:2px}
-  .bar-cta{padding:0 var(--sp-4);margin-inline-start:0}
-  .nav{order:3;width:100%;justify-content:center;border-top:1px solid var(--line-soft);padding-top:var(--sp-1)}
-  .nav{gap:0}
-  .nav a{padding:0 var(--sp-3);font-size:var(--fs-md);white-space:nowrap}
+  .bar{flex-wrap:wrap;padding-block:var(--sp-3) 0;row-gap:0}
+  .nav{order:3;width:100%;justify-content:center;margin-inline-start:0;gap:0;border-top:1px solid var(--line-soft)}
+  .nav a{padding:0 var(--sp-2);white-space:nowrap}
   .b-card{padding:22px 18px}
   .faq{padding:var(--sp-1) 18px}
   .svcs{gap:var(--sp-8) var(--sp-4)}
