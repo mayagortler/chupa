@@ -1,83 +1,157 @@
 /* צ׳ופה – עיצוב גרפי ומדיה לאירועים */
 
 /* ==========================================================================
-   Design tokens
-   כל הצבעים, הגדלים, הריווחים והתנועה של האתר. משנים כאן, לא בתוך הרכיבים.
+   Design tokens – גרסת "חתונת צהריים" (מקור: docs/design-system/tokens.css)
+   שלוש שכבות: פרימיטיביים (ערכים גולמיים) → סמנטיים (תפקיד) → רכיבים.
+   hex מופיע רק כאן. רכיבים משתמשים בשכבה הסמנטית ובשכבת הרכיבים.
    ========================================================================== */
 :root{
-  /* ניטרליים. --muted ו---ink-500 עוברים 4.5:1 גם על --page */
-  --ink:#1C1C1E; --ink-900:#0F1012; --ink-700:#2F3640; --muted:#4B5057; --ink-500:#646A78; --ink-300:#B8BEC6; --ink-100:#E3E8EE;
-  --line-input:#8E949D;                 /* גבול של שדה קלט: 3:1 על לבן */
-  --line-strong:rgba(17,24,39,.28); --line:rgba(17,24,39,.12); --line-soft:rgba(17,24,39,.08);
-  --surface:#FFFFFF; --page:#F5F6F8; --paper:#FFFEFB; --chat:#F3EFE8; --chat-line:#ECE5DA;
-  --on-ink:#FFFFFF;
+  /* ===================== 1. פרימיטיביים ===================== */
 
-  /* שמיים: הצבע של המותג */
-  --sky-50:#F2F8FE; --sky-100:#E4EFFA; --sky-200:#BFD9F2; --sky-300:#8DB6E0; --sky-500:#4F8FD0; --sky-700:#3F6F9F;
-  --sky-soft:var(--sky-100); --sky:var(--sky-200); --sky-deep:var(--sky-300);
+  /* הפלטה מלוח ההשראה. הגוונים המקוריים (300) הם צבעי נגיעה בלבד,
+     משטחים הם הגוונים הבהירים (50), וטקסט צבעוני הוא הגוון הכהה (700) */
 
-  /* עץ ונייר: החבל, האטבים והפולרויד */
-  --wood:#D9B48A; --wood-cap:#B9834C; --cream:#E6D6B8; --string:#B9A88A;
+  /* נייר */
+  --paper-50:#FCFCF6; --paper-white:#FFFFFF; --cream-50:#FAFBEE; --cream-300:#F6F8DB;
+  /* דיו: טקסט. 500 הוא הבהיר ביותר שעובר 4.5:1 על כל המשטחים */
+  --ink-900:#2E2D28; --ink-700:#4A4840; --ink-500:#6B685E; --ink-300:#B5B1A5; --ink-100:#E8E6DC;
 
-  /* סמנטיים */
-  --wa:#0C823E; --wa-hover:#0A7136;
-  --success:#3B9B5C; --success-ink:#157255;
-  --danger:#B42318; --danger-ring:rgba(180,35,24,.18);
-  --highlight:#FFF4C7;
+  /* זית: הצבע המוביל */
+  --olive-50:#F3F5E7; --olive-100:#E4E8C9; --olive-300:#A1AC4E; --olive-700:#5E6532; --olive-800:#4A5027;
+  /* כחול ערפל */
+  --mist-50:#F1F4F7; --mist-100:#DFE5EC; --mist-300:#ADBACB; --mist-700:#56657A;
+  /* ורוד עלה */
+  --petal-50:#FBF3F1; --petal-100:#F4DCD9; --petal-300:#E5A39D; --petal-700:#96564F;
+  /* משמש */
+  --apricot-50:#FCF7EC; --apricot-100:#F8E6C2; --apricot-300:#EEC474; --apricot-700:#8A6420;
+  /* עץ וחבל */
+  --wood-300:#DDBF94; --wood-500:#C9A578; --twine:#B4A386;
+  /* אור */
+  --glow-core:#FFF3C4; --glow-edge:#F1CF6A; --glow-halo:#FFD978;
 
   /* טיפוגרפיה */
+  --font-display:'Frank Ruhl Libre','David Libre',Georgia,serif;
   --font-sans:'Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --fs-2xs:.75rem;  --fs-xs:.8125rem; --fs-sm:.875rem; --fs-md:.9375rem; --fs-base:1rem; --fs-lg:1.0625rem;
+  --fs-2xs:.75rem; --fs-xs:.8125rem; --fs-sm:.875rem; --fs-md:.9375rem; --fs-base:1rem; --fs-lg:1.0625rem;
   --fs-xl:1.125rem; --fs-2xl:1.25rem; --fs-3xl:1.375rem; --fs-4xl:1.5rem; --fs-5xl:2rem;
-  --fs-h2:clamp(1.75rem,4vw,2.25rem);
-  --fs-h1:clamp(1.875rem,5.6vw,3rem);
-  --fs-display:clamp(1.375rem,5.8vw,3.5rem);
-  --lh-tight:1.12; --lh-snug:1.3; --lh-body:1.6; --lh-relaxed:1.75;
-  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
-  --tr-tight:-.01em; --tr-title:-.02em; --tr-display:-.03em;
+  --fs-h3:clamp(1.25rem,2.6vw,1.5rem);
+  --fs-h2:clamp(1.75rem,4vw,2.5rem);
+  --fs-h1:clamp(2rem,5.6vw,3.5rem);
+  --lh-tight:1.15; --lh-snug:1.3; --lh-body:1.65; --lh-relaxed:1.8;
+  --fw-light:300; --fw-regular:400; --fw-medium:500; --fw-semibold:600;
+  --tr-kicker:.28em; --tr-display:-.01em;
 
-  /* ריווח: יחידת בסיס של 4px */
+  /* ריווח: בסיס 4px */
   --sp-1:.25rem; --sp-2:.5rem; --sp-3:.75rem; --sp-4:1rem; --sp-5:1.25rem; --sp-6:1.5rem; --sp-7:1.75rem;
-  --sp-8:2rem; --sp-10:2.5rem; --sp-12:3rem; --sp-14:3.5rem; --sp-18:4.5rem;
+  --sp-8:2rem; --sp-10:2.5rem; --sp-12:3rem; --sp-14:3.5rem; --sp-18:4.5rem; --sp-24:6rem;
   --sp-section:clamp(4.5rem,10vw,8rem);
-  --gutter:24px; --w-page:960px; --w-narrow:720px;
+  --gutter:24px; --w-page:1040px; --w-text:640px; --w-narrow:720px;
 
-  /* פינות */
-  --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:20px; --r-xl:24px; --r-2xl:28px; --r-pill:999px;
+  /* פינות: נייר, לא אפליקציה. רק כפתורים וצ'יפים עגולים לגמרי */
+  --r-photo:2px; --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:999px;
 
-  /* צללים: תמיד עם היסט וטשטוש, בלי הילה צבעונית */
-  --shadow-xs:0 1px 2px rgba(16,24,40,.06);
-  --shadow-1:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
-  --shadow-2:0 2px 4px rgba(16,24,40,.08),0 16px 34px rgba(16,24,40,.14);
-  --shadow-3:0 2px 6px rgba(16,24,40,.08),0 24px 48px rgba(16,24,40,.16);
-  --shadow-raise:0 1px 2px rgba(16,24,40,.06),0 6px 16px rgba(16,24,40,.08);
-  --shadow-raise-hover:0 2px 4px rgba(16,24,40,.08),0 12px 26px rgba(16,24,40,.14);
-  --shadow-photo:0 1px 1px rgba(16,24,40,.08),0 2px 4px rgba(16,24,40,.06),0 16px 30px rgba(16,24,40,.13);
+  /* צללים: תמיד חומים-חמים, אף פעם לא אפורים-כחולים */
+  --shadow-xs:0 1px 2px rgba(60,48,28,.07);
+  --shadow-1:0 1px 2px rgba(60,48,28,.06),0 8px 22px rgba(60,48,28,.07);
+  --shadow-2:0 2px 4px rgba(60,48,28,.08),0 16px 34px rgba(60,48,28,.12);
+  --shadow-photo:0 1px 1px rgba(60,48,28,.10),0 3px 6px rgba(60,48,28,.06),0 14px 28px rgba(60,48,28,.12);
 
-  /* רכיבי שליטה */
-  --tap:44px; --ctl:50px; --ctl-btn:52px; --ctl-lg:56px;
-  --ring-field:0 0 0 4px rgba(141,182,224,.45);
+  /* תנועה */
+  --ease:cubic-bezier(.22,1,.36,1); --ease-soft:cubic-bezier(.45,0,.55,1);
+  --dur-1:.15s; --dur-2:.22s; --dur-3:.4s; --dur-sway:4.2s; --dur-twinkle:3.6s; --dur-drift:80s;
+  --lift:-2px; --press:.97;
 
-  /* תנועה. --lift ו---press מתאפסים כשמבקשים פחות תנועה */
-  --ease:cubic-bezier(.22,1,.36,1); --ease-spring:cubic-bezier(.34,1.56,.64,1);
-  --dur-1:.15s; --dur-2:.2s; --dur-3:.35s;
-  --lift:-2px; --lift-sm:-1px; --press:.97;
+  /* ===================== 2. סמנטיים ===================== */
+
+  --bg-page:var(--paper-50);
+  --text:var(--ink-900);
+  --text-body:var(--ink-700);
+  --text-muted:var(--ink-500);
+  --text-accent:var(--olive-700);       /* כותרות-על, קישורים */
+
+  --line:rgba(43,42,38,.12); --line-soft:rgba(43,42,38,.07); --line-strong:rgba(43,42,38,.28);
+  --line-input:#9C968A;
+
+  --accent:var(--olive-700);  --accent-hover:var(--olive-800); --accent-soft:var(--olive-50);
+
+  --wa:#0C823E; --wa-hover:#0A7136;
+  --danger:#A8322A; --danger-ring:rgba(168,50,42,.16); --success:#3F7A4E;
+  --ring:0 0 0 3px var(--paper-50),0 0 0 5px var(--olive-700);
+
+  /* ---- משטחי סקשנים: כל סקשן בוחר אחד דרך מחלקת .surface-* ---- */
+  /* רוב העמוד על נייר. קרם משמש להפרדה בין סקשנים */
+  --surface-paper:var(--paper-50);
+  --surface-cream:var(--cream-50);
+  /* משטחים כהים: אותם גוונים של הטקסט הצבעוני (700). טקסט עליהם בנייר/קרם, 4.9:1 ומעלה */
+  --surface-olive:var(--olive-700);
+  --surface-mist:var(--mist-700);
+  --surface-petal:var(--petal-700);
+  --surface-apricot:var(--apricot-700);
+  --text-on-dark:var(--paper-50);
+  --text-on-dark-body:var(--cream-300);
+  --surface-card:var(--paper-white);
+
+  /* ===================== 3. רכיבים ===================== */
+
+  /* כפתור */
+  --btn-h:52px; --btn-px:var(--sp-7); --btn-radius:var(--r-pill); --btn-font:var(--fw-medium);
+  --btn-primary-bg:var(--ink-900); --btn-primary-fg:var(--paper-50); --btn-primary-bg-hover:#000;
+  --btn-ghost-border:var(--ink-900); --btn-ghost-fg:var(--ink-900); --btn-ghost-bg-hover:rgba(43,42,38,.05);
+  --btn-soft-bg:var(--olive-50); --btn-soft-fg:var(--olive-800); --btn-soft-bg-hover:var(--olive-100);
+
+  /* פולארויד */
+  --pol-w:204px; --pol-pad:12px; --pol-bottom:46px; --pol-bg:var(--paper-white); --pol-radius:var(--r-photo);
+  --pol-shadow:var(--shadow-photo); --pol-tilt:3.5deg;
+  --peg-w:12px; --peg-h:30px; --peg-color:var(--wood-300); --peg-cap:var(--wood-500);
+
+  /* חבל ואורות */
+  --rope-color:var(--twine); --rope-width:1.4px;
+  --light-size:4px; --light-halo:16px;
+
+  /* כרטיס נייר (הזמנה) */
+  --card-bg:var(--surface-card); --card-radius:var(--r-xs); --card-pad:clamp(1.5rem,4vw,2.5rem);
+  --card-shadow:var(--shadow-1); --card-border:1px solid var(--line-soft);
+
+  /* שדות וצ'יפים */
+  --field-h:52px; --field-bg:var(--paper-white); --field-radius:var(--r-sm); --field-border:var(--line-input);
+  --chip-h:40px; --chip-bg:var(--paper-white); --chip-border:var(--line); --chip-on-bg:var(--olive-800); --chip-on-fg:var(--paper-50);
+
+  /* קישוט פרחוני */
+  --sprig-size:clamp(44px,7vw,72px); --sprig-opacity:.92;
+
+  /* ===================== legacy aliases =====================
+     שמות מהעיצוב הקודם שעדיין בשימוש בבילדר, בטופס ובעמוד האירועים.
+     כל אחד מצביע על טוקן חדש. נמחקים כשהרכיבים שמשתמשים בהם נכתבים מחדש */
+  --ink:var(--ink-900); --muted:var(--ink-500); --on-ink:var(--paper-50);
+  --page:var(--paper-50); --surface:var(--paper-white); --paper:var(--paper-white);
+  --chat:var(--apricot-50); --chat-line:var(--apricot-100); --highlight:var(--apricot-100);
+  --sky-50:var(--olive-50); --sky-100:var(--olive-50); --sky-200:var(--olive-100);
+  --sky-300:var(--olive-300); --sky-500:var(--olive-300); --sky-700:var(--olive-700); --sky-soft:var(--olive-50);
+  --string:var(--twine); --wood:var(--wood-300); --wood-cap:var(--wood-500);
+  --success-ink:var(--success);
+  --fw-bold:var(--fw-semibold); --fs-display:var(--fs-h1);
+  --tr-tight:-.01em; --tr-title:var(--tr-display);
+  --r-xl:var(--r-lg); --r-2xl:var(--r-lg);
+  --shadow-3:var(--shadow-2); --shadow-raise:var(--shadow-1); --shadow-raise-hover:var(--shadow-2);
+  --tap:44px; --ctl:var(--field-h); --ctl-btn:var(--btn-h); --ctl-lg:56px;
+  --ring-field:0 0 0 3px var(--olive-100);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1); --lift-sm:-1px;
 }
+/* פחות תנועה: --lift ו---press מתאפסים */
 @media (prefers-reduced-motion:reduce){:root{--lift:0px;--lift-sm:0px;--press:1}}
 
 /* ==========================================================================
    Base
    ========================================================================== */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;interpolate-size:allow-keywords;scrollbar-color:var(--ink-300) transparent;accent-color:var(--ink)}
+html{-webkit-text-size-adjust:100%;interpolate-size:allow-keywords;scrollbar-color:var(--ink-300) transparent;accent-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{margin:0;font-family:var(--font-sans);color:var(--ink);line-height:var(--lh-body);min-height:100vh;
-  background:url(sky-top.svg?v=1793700000) center top/100% 1100px no-repeat,url(sky-bottom.svg?v=1793700000) center bottom/100% 800px no-repeat,var(--surface)}
-::selection{background:var(--sky-200);color:var(--ink)}
-a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+body{margin:0;background:var(--bg-page);color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh-body);min-height:100vh;-webkit-font-smoothing:antialiased}
+::selection{background:var(--olive-100);color:var(--text)}
+a{color:var(--text-accent);text-underline-offset:.25em;text-decoration-thickness:1px}
 img{max-width:100%}
-input,textarea,select{caret-color:var(--ink)}
-:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+input,textarea,select{caret-color:var(--text)}
+:focus-visible{outline:none;box-shadow:var(--ring);border-radius:var(--r-xs)}
 /* hidden תמיד מנצח, גם כשלרכיב יש display משלו */
 [hidden]{display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -92,69 +166,117 @@ input,textarea,select{caret-color:var(--ink)}
 .wrap.narrow{width:min(var(--w-narrow),100% - 2 * var(--gutter))}
 .sec{padding-top:var(--sp-section)}
 .pb{padding-bottom:var(--sp-18)}
+.section{position:relative;padding-block:var(--sp-section)}
+.section-head{text-align:center;max-width:var(--w-text);margin:0 auto var(--sp-12)}
+.section-head .lead{margin:var(--sp-4) auto 0}
 
-/* type */
-h1,h2,h3{margin:0;font-weight:var(--fw-bold);letter-spacing:var(--tr-title)}
-h2{font-size:var(--fs-h2);line-height:1.15}
+/* type: כותרות בפרנק רוהל, קלות */
+h1,h2,h3{font-family:var(--font-display);color:var(--text);margin:0;letter-spacing:var(--tr-display)}
+h1{font-size:var(--fs-h1);font-weight:var(--fw-light);line-height:var(--lh-tight)}
+h2{font-size:var(--fs-h2);font-weight:var(--fw-light);line-height:var(--lh-tight)}
+h3{font-size:var(--fs-h3);font-weight:var(--fw-regular);line-height:var(--lh-snug)}
+p{margin:0}
 .sec > h2{text-align:center;margin-bottom:var(--sp-6);text-wrap:balance}
 .sec > h2 + .sub{text-align:center;margin:calc(var(--sp-4) * -1) 0 var(--sp-6)}
 .sec > .card{margin-top:0}
-.lead{font-size:var(--fs-xl);line-height:var(--lh-body);color:var(--muted);text-wrap:balance}
+.kicker{display:block;font-size:var(--fs-xs);letter-spacing:var(--tr-kicker);color:var(--text-accent);font-weight:var(--fw-regular);margin-bottom:var(--sp-3)}
+.lead{font-size:var(--fs-lg);font-weight:var(--fw-light);color:var(--text-muted);max-width:var(--w-text);line-height:var(--lh-relaxed);text-wrap:balance}
 .sub{margin:6px 0 0;font-size:var(--fs-base);color:var(--muted)}
 .note{font-size:var(--fs-sm);line-height:var(--lh-body);color:var(--muted)}
+
+/* ==========================================================================
+   Surfaces: משטחי סקשנים
+   צבע שטוח, בלי שטיפות, גרדיאנטים או מרקם.
+   בהירים: נייר (ברירת מחדל) וקרם. כהים: זית, ערפל, ורוד, משמש בגוון הטקסט (700).
+   שני סקשני נייר צמודים מופרדים בקו דק (.rule-top). שני סקשנים צבעוניים לא צמודים.
+   ========================================================================== */
+.surface-paper{--sec-bg:var(--surface-paper);background:var(--sec-bg)}
+.surface-cream{--sec-bg:var(--surface-cream);background:var(--sec-bg)}
+.surface-olive{--sec-bg:var(--surface-olive)}
+.surface-mist{--sec-bg:var(--surface-mist)}
+.surface-petal{--sec-bg:var(--surface-petal)}
+.surface-apricot{--sec-bg:var(--surface-apricot)}
+.surface-dark{background:var(--sec-bg);color:var(--text-on-dark-body)}
+.surface-dark h1,.surface-dark h2,.surface-dark h3{color:var(--text-on-dark)}
+.surface-dark .kicker,.surface-dark .lead{color:var(--text-on-dark-body)}
+.surface-dark a:not(.btn){color:var(--text-on-dark)}
+.surface-dark .btn-primary{background:var(--paper-50);color:var(--sec-bg)}
+.surface-dark .btn-primary:hover{background:var(--paper-white)}
+.surface-dark .btn-ghost{color:var(--text-on-dark);border-color:var(--text-on-dark-body)}
+.surface-dark .btn-ghost:hover{background:rgba(252,252,246,.1)}
+.surface-dark .sheet{color:var(--text-body)}
+.surface-dark .sheet h3{color:var(--text)}
+.surface-dark .sheet .kicker{color:var(--text-accent)}
+.surface-dark .sheet .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.surface-dark :focus-visible{box-shadow:0 0 0 3px var(--sec-bg),0 0 0 5px var(--paper-50)}
+.rule-top>.wrap{border-top:1px solid var(--line-soft);padding-top:var(--sp-section)}
+.section.rule-top{padding-top:0}
 
 /* ==========================================================================
    Components
    ========================================================================== */
 
-/* --- כרטיס --- */
-.card{background:var(--surface);border-radius:var(--r-2xl);box-shadow:var(--shadow-1)}
+/* --- כרטיס נייר: כמו הזמנה מודפסת. .card הישן מקבל את אותו מראה --- */
+.card{background:var(--card-bg);border-radius:var(--card-radius);box-shadow:var(--card-shadow)}
+.sheet{background:var(--card-bg);border-radius:var(--card-radius);padding:var(--card-pad);box-shadow:var(--card-shadow);position:relative}
+.sheet-framed{outline:1px solid var(--line);outline-offset:-10px}
 
-/* --- כפתורים: ראשי (דיו), משני (לבן), וואטסאפ --- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:var(--ctl-btn);padding:0 var(--sp-7);border-radius:var(--r-pill);border:0;
-  font:inherit;font-size:var(--fs-lg);font-weight:var(--fw-semibold);line-height:1.2;text-decoration:none;cursor:pointer;
-  background:var(--ink);color:var(--on-ink);box-shadow:var(--shadow-xs);-webkit-tap-highlight-color:transparent;
-  transition:transform var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease),background-color var(--dur-2) var(--ease)}
+/* --- כפתורים: .btn לבד הוא הראשי (דיו). רפאים, רך ווואטסאפ הם וריאציות --- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:var(--btn-h);padding:0 var(--btn-px);border-radius:var(--btn-radius);border:1px solid transparent;
+  font:var(--btn-font) var(--fs-md)/1.2 var(--font-sans);text-decoration:none;cursor:pointer;
+  background:var(--btn-primary-bg);color:var(--btn-primary-fg);-webkit-tap-highlight-color:transparent;
+  transition:background-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease),box-shadow var(--dur-2) var(--ease)}
 .btn svg{flex:none}
-.btn:active{transform:scale(var(--press));box-shadow:var(--shadow-xs);transition-duration:var(--dur-1)}
-.btn.light{background:var(--surface);color:var(--ink);font-weight:var(--fw-medium);font-size:var(--fs-base);box-shadow:var(--shadow-raise)}
+.btn:active{transform:scale(var(--press))}
 .btn.big{min-height:var(--ctl-lg);padding:0 30px}
-.btn-wa{background:var(--wa);color:var(--on-ink)}
-.btn[aria-disabled="true"],.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.btn-ghost,.btn.light{background:transparent;color:var(--btn-ghost-fg);border-color:var(--btn-ghost-border)}
+.btn-soft{background:var(--btn-soft-bg);color:var(--btn-soft-fg)}
+.btn-wa{background:var(--wa);color:var(--paper-white)}
+.btn[aria-disabled="true"],.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .wa-ic{width:20px;height:20px;flex:none;fill:currentColor}
 @media (hover:hover){
-  .btn:hover{transform:translateY(var(--lift-sm));background:var(--ink-900);box-shadow:var(--shadow-raise-hover)}
-  .btn.light:hover{background:var(--surface)}
+  .btn:hover,.btn-primary:hover{background:var(--btn-primary-bg-hover)}
+  .btn-ghost:hover,.btn.light:hover{background:var(--btn-ghost-bg-hover)}
+  .btn-soft:hover{background:var(--btn-soft-bg-hover)}
   .btn-wa:hover{background:var(--wa-hover)}
-  .btn[aria-disabled="true"]:hover,.btn:disabled:hover{transform:none;box-shadow:none}
-  .btn:active{transform:scale(var(--press))}
+  .btn[aria-disabled="true"]:hover,.btn:disabled:hover{transform:none}
 }
 
 /* --- קישורים --- */
-.link{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:var(--tap);font-weight:var(--fw-medium);color:var(--ink);transition:text-decoration-color var(--dur-2) var(--ease)}
+.link{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:var(--tap);font-weight:var(--fw-medium);color:var(--text-accent);transition:text-decoration-color var(--dur-2) var(--ease)}
 .link-btn,.cf-back{font:inherit;font-size:var(--fs-md);background:none;border:0;color:var(--ink);text-decoration:underline;text-underline-offset:.22em;text-decoration-color:var(--line-strong);cursor:pointer;min-height:var(--tap);padding:0 var(--sp-1);border-radius:var(--r-xs);transition:text-decoration-color var(--dur-2) var(--ease)}
 @media (hover:hover){.link:hover,.link-btn:hover,.cf-back:hover{text-decoration-thickness:2px;text-decoration-color:currentColor}}
 
-/* --- שדות קלט --- */
-.field{font:inherit;font-size:var(--fs-base);min-height:var(--ctl);padding:0 var(--sp-4);border:1px solid var(--line-input);border-radius:var(--r-md);background:var(--surface);color:var(--ink);width:100%;
+/* --- שדות קלט ---
+   .field על קלט עצמו (הבילדר והטופס), או .field כעוטף של תווית + קלט + רמז (העיצוב החדש) */
+.field:not(input):not(textarea):not(select){display:grid;gap:var(--sp-2)}
+.field label{font-size:var(--fs-sm);color:var(--text);font-weight:var(--fw-medium)}
+.field .hint{font-size:var(--fs-xs);color:var(--text-muted)}
+input.field,textarea.field,select.field,.field input,.field textarea,.field select{
+  font:inherit;font-size:var(--fs-base);min-height:var(--field-h);padding:0 var(--sp-4);border:1px solid var(--field-border);border-radius:var(--field-radius);background:var(--field-bg);color:var(--text);width:100%;
   transition:border-color var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease),background-color var(--dur-2) var(--ease)}
-.field::placeholder{color:var(--ink-500);opacity:1}
-.field:focus{outline:none;border-color:var(--ink);box-shadow:var(--ring-field)}
+.field::placeholder,.field input::placeholder,.field textarea::placeholder{color:var(--ink-500);opacity:1}
+input.field:focus,textarea.field:focus,select.field:focus,.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--olive-700);box-shadow:var(--ring-field)}
 .field[aria-invalid="true"]{border-color:var(--danger)}
-.field[aria-invalid="true"]:focus{box-shadow:0 0 0 4px var(--danger-ring)}
+.field[aria-invalid="true"]:focus{box-shadow:0 0 0 3px var(--danger-ring)}
 .field:disabled{background:var(--page);color:var(--ink-500);cursor:not-allowed}
-@media (hover:hover){.field:hover:not(:focus):not(:disabled){border-color:var(--ink-500)}}
-textarea.field{padding:var(--sp-3) var(--sp-4);line-height:1.5;resize:vertical}
+@media (hover:hover){input.field:hover:not(:focus):not(:disabled),textarea.field:hover:not(:focus):not(:disabled),select.field:hover:not(:focus):not(:disabled){border-color:var(--ink-500)}}
+textarea.field,.field textarea{padding:var(--sp-3) var(--sp-4);line-height:1.5;resize:vertical}
 select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp-10);cursor:pointer;
-  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20' fill='none' stroke='%231C1C1E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E") no-repeat left 16px center}
+  background:var(--field-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20' fill='none' stroke='%232E2D28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E") no-repeat left 16px center}
 
 /* --- צ'יפים לבחירה: שאלון הכיוון, הטופס, הפלטה --- */
-.dq-opt,.cf-chip span{display:inline-flex;align-items:center;font:inherit;font-size:var(--fs-md);min-height:var(--tap);padding:0 var(--sp-4);border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transition:background-color var(--dur-2) var(--ease),color var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
+.chip,.dq-opt,.cf-chip span{display:inline-flex;align-items:center;gap:var(--sp-2);font:var(--fw-regular) var(--fs-sm) var(--font-sans);min-height:var(--chip-h);padding:0 var(--sp-4);border-radius:var(--r-pill);border:1px solid var(--chip-border);background:var(--chip-bg);color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:background-color var(--dur-2) var(--ease),color var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),opacity var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
+.dq-opt,.cf-chip span{font-size:var(--fs-md);min-height:var(--tap)}
+/* צ'יפ צבע בפלטה: עיגול צבע, שם וכפתור הסרה, לא לחיץ בעצמו */
+.chip:has(.chip-x){padding:0 6px 0 var(--sp-3);cursor:default}
 .dq-opt:active,.cf-chip span:active{transform:scale(var(--press))}
-.dq-opt[aria-pressed="true"],.cf-chip input:checked + span{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.chip[aria-pressed="true"],.dq-opt[aria-pressed="true"],.cf-chip input:checked + span{background:var(--chip-on-bg);color:var(--chip-on-fg);border-color:var(--chip-on-bg)}
 @media (hover:hover){
-  .dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{background:var(--sky-50);border-color:var(--line-strong)}
+  .chip:hover,.dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{border-color:var(--line-strong)}
+  .dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{background:var(--olive-50)}
 }
 
 /* --- כרטיסי בחירה: מצבי ההזמנה והפריטים. הבחירה בטבעת פנימית, בלי קפיצה בפריסה --- */
@@ -166,21 +288,44 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
   .opt:hover:not([aria-pressed="true"]),.tile:hover:not([aria-pressed="true"]){border-color:var(--line-strong);box-shadow:var(--shadow-raise)}
 }
 
-/* --- אקורדיון: שאלות נפוצות --- */
-.faq{padding:var(--sp-2) var(--sp-7)}
-.faq details{border-bottom:1px solid var(--line-soft);padding:var(--sp-2) 0}
-.faq details:last-child{border-bottom:0}
-.faq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);min-height:56px;padding:var(--sp-2) 0;font-size:var(--fs-lg);font-weight:var(--fw-semibold);line-height:var(--lh-snug);cursor:pointer;border-radius:var(--r-sm);-webkit-tap-highlight-color:transparent}
+/* --- שאלות נפוצות: קו מעל ומתחת, שאלה בפרנק רוהל, + שמסתובב --- */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4);padding:var(--sp-5) 0;
+  font-family:var(--font-display);font-size:var(--fs-2xl);line-height:var(--lh-snug);color:var(--text);-webkit-tap-highlight-color:transparent}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"";flex:none;width:28px;height:28px;border-radius:50%;background:var(--page) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20' fill='none' stroke='%231C1C1E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E") no-repeat center/16px;
-  transition:transform var(--dur-3) var(--ease),background-color var(--dur-2) var(--ease)}
-.faq details[open] summary::after{transform:rotate(180deg);background-color:var(--sky-100)}
-.faq p{margin:0;padding:var(--sp-1) 0 var(--sp-3);font-size:var(--fs-md);line-height:var(--lh-relaxed);color:var(--muted);max-width:65ch}
-@media (hover:hover){.faq summary:hover::after{background-color:var(--sky-100)}}
+.faq summary::after{content:"+";flex:none;font:var(--fw-light) var(--fs-3xl)/1 var(--font-sans);color:var(--text-accent);transition:transform var(--dur-3) var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding-bottom:var(--sp-5);max-width:var(--w-text)}
+/* שאלות בתוך כרטיס (הבית, עד שייכתב מחדש) */
+.card.faq{border-top:0;padding:var(--sp-2) var(--sp-7)}
+.card.faq details:last-child{border-bottom:0}
 @supports selector(::details-content){
   .faq details::details-content{block-size:0;overflow:hidden;transition:block-size var(--dur-3) var(--ease),content-visibility var(--dur-3) allow-discrete}
   .faq details[open]::details-content{block-size:auto}
 }
+
+/* --- קישוטים פרחוניים ---
+   כלל: עד שני ענפים בכל גובה מסך, תמיד בשוליים, אף פעם לא מאחורי טקסט. */
+.sprig{position:absolute;width:var(--sprig-size);opacity:var(--sprig-opacity);pointer-events:none}
+.divider{display:flex;align-items:center;justify-content:center;gap:var(--sp-4);color:var(--olive-300)}
+.divider::before,.divider::after{content:"";height:1px;width:min(120px,20vw);background:currentColor;opacity:.6}
+.divider svg{width:28px;height:28px}
+
+/* --- פולארויד ואטב: תלוי על החבל, מתנדנד קלות --- */
+.pol{position:absolute;width:var(--pol-w);margin-left:calc(var(--pol-w) / -2);transform-origin:50% 0;text-decoration:none;color:var(--text)}
+.pol-sway{position:relative;background:var(--pol-bg);padding:var(--pol-pad) var(--pol-pad) 0;border-radius:var(--pol-radius);box-shadow:var(--pol-shadow);
+  transform-origin:50% 0;animation:sway var(--dur-sway) var(--ease-soft) infinite alternate;transition:box-shadow var(--dur-2) var(--ease)}
+.pol:hover .pol-sway{box-shadow:var(--shadow-2)}
+.pol-art{aspect-ratio:1/1;background:var(--paper-50);overflow:hidden;position:relative}
+.pol-name{display:block;text-align:center;font-family:var(--font-display);font-size:var(--fs-xl);padding:var(--sp-3) var(--sp-2) var(--sp-4)}
+.peg{position:absolute;top:calc(var(--peg-h) / -2);left:50%;margin-left:calc(var(--peg-w) / -2);width:var(--peg-w);height:var(--peg-h);border-radius:3px;
+  background:linear-gradient(180deg,var(--peg-cap) 0 6px,var(--peg-color) 6px);box-shadow:inset 0 0 0 1px rgba(120,80,40,.16),0 2px 3px rgba(60,48,28,.18)}
+@keyframes sway{from{transform:rotate(calc(var(--pol-tilt) * -1))}to{transform:rotate(var(--pol-tilt))}}
+/* פולארויד בודד שלא על חבל (אודות, עבודות) */
+.pol-solo{position:relative;margin:0;width:var(--pol-w);margin-left:0}
+.pol-solo .pol-sway{animation:none;transform:rotate(-3deg)}
+@media (prefers-reduced-motion:reduce){.pol-sway,.light-halo{animation:none}}
 
 /* --- ניווט עליון --- */
 .top{padding:var(--sp-4) var(--sp-4) var(--sp-3);display:flex;justify-content:center;position:relative;z-index:20}
@@ -278,7 +423,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .chat:nth-child(1){transform:rotate(-1.5deg)}
 .chat:nth-child(2){transform:rotate(1.2deg)}
 .chat:nth-child(3){transform:rotate(-1deg)}
-.chat .msg{position:relative;align-self:flex-start;max-width:100%;background:var(--surface);color:#111B21;border-radius:14px 0 14px 14px;margin-inline-end:var(--sp-2);padding:7px 10px 8px;box-shadow:0 1px 1px rgba(11,20,26,.13);font-size:var(--fs-md);line-height:1.5}
+.chat .msg{position:relative;align-self:flex-start;max-width:100%;background:var(--surface);color:var(--ink-900);border-radius:14px 0 14px 14px;margin-inline-end:var(--sp-2);padding:7px 10px 8px;box-shadow:0 1px 1px rgba(11,20,26,.13);font-size:var(--fs-md);line-height:1.5}
 .msg::before{content:"";position:absolute;top:0;right:-7.5px;width:8px;height:13px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M6.467 3.568 0 12.837V1h5.5c1.2 0 1.9 1.4.967 2.568z' fill='%23fff'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;filter:drop-shadow(1px 1px 0 rgba(11,20,26,.07))}
 .msg.photo{padding:3px 3px 8px}
 .msg.photo img{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover;border-radius:11px}
@@ -286,15 +431,15 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .msg p{margin:0}
 .msg.cont{border-radius:14px}
 .msg.cont::before{display:none}
-.time{display:block;text-align:end;font-size:var(--fs-2xs);line-height:1;color:#5F6F78;margin-top:2px}
+.time{display:block;text-align:end;font-size:var(--fs-2xs);line-height:1;color:var(--ink-500);margin-top:2px}
 @media (max-width:760px){.rev{grid-template-columns:1fr;max-width:340px;margin-inline:auto}.chat:nth-child(n){transform:rotate(0)}}
 
 /* how it works: framed cards that open */
 .path{list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-5);align-items:start}
-.pc{position:relative;min-width:0;background:var(--surface);border-radius:var(--r-xl);padding:var(--sp-2);border:1px solid #EEF1F4;box-shadow:0 1px 2px rgba(16,24,40,.05),0 12px 28px rgba(16,24,40,.07);
+.pc{position:relative;min-width:0;background:var(--surface);border-radius:var(--r-xl);padding:var(--sp-2);border:1px solid var(--line-soft);box-shadow:0 1px 2px rgba(16,24,40,.05),0 12px 28px rgba(16,24,40,.07);
   transition:transform var(--dur-3) var(--ease),box-shadow var(--dur-3) var(--ease),opacity .6s var(--ease)}
 .pc:active{transform:scale(.99)}
-.pc-art{position:relative;height:150px;border-radius:17px;background:#F4F8FC;border:1px solid #E6EEF7;overflow:hidden}
+.pc-art{position:relative;height:150px;border-radius:17px;background:var(--olive-50);border:1px solid var(--olive-100);overflow:hidden}
 .pc-txt{padding:var(--sp-4) var(--sp-3) 10px}
 .pc-n{display:block;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--sky-700);letter-spacing:.04em;margin-bottom:6px}
 .pc h3{font-size:var(--fs-2xl);font-weight:var(--fw-semibold);letter-spacing:var(--tr-tight);margin-bottom:var(--sp-1)}
@@ -324,7 +469,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .pc-art svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .pa-ask{display:flex;flex-direction:column;justify-content:center;gap:var(--sp-2);padding:0 var(--sp-4);background:var(--chat);border-color:var(--chat-line)}
 .pa-msg{max-width:78%;font-size:var(--fs-xs);line-height:1.4;padding:7px 11px;border-radius:var(--r-sm);color:var(--ink);box-shadow:0 1px 1px rgba(16,24,40,.06)}
-.pa-msg.out{align-self:flex-end;background:#D9FDD3;border-end-end-radius:4px}
+.pa-msg.out{align-self:flex-end;background:var(--olive-100);border-end-end-radius:4px}
 .pa-msg.in{align-self:flex-start;background:var(--surface);border-end-start-radius:4px}
 .pa-msg i{display:block;height:6px;border-radius:3px;background:rgba(17,24,39,.14);margin:4px 0}
 .pa-typing{align-self:flex-start;display:flex;gap:var(--sp-1);background:var(--surface);padding:9px 11px;border-radius:var(--r-sm)}
@@ -335,11 +480,11 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .pa-note{width:72%;background:var(--surface);border-radius:var(--r-sm);padding:var(--sp-3) 14px;display:flex;flex-direction:column;gap:var(--sp-2);box-shadow:0 1px 2px rgba(16,24,40,.05),0 6px 14px rgba(16,24,40,.06);transform:rotate(-2deg)}
 .pa-row{display:flex;align-items:center;gap:7px;color:var(--sky-500)}
 .pa-row i{height:6px;border-radius:3px;background:var(--ink-100)}
-.pa-make{background:#F4F8FC}
+.pa-make{background:var(--olive-50)}
 .pa-ph{position:absolute;object-fit:cover;background:var(--surface);padding:4px 4px 12px;border-radius:3px;box-shadow:0 1px 2px rgba(16,24,40,.08),0 6px 14px rgba(16,24,40,.1)}
 .pa-ph.a{width:118px;height:104px;top:18px;inset-inline-start:22px;transform:rotate(5deg)}
 .pa-ph.b{width:92px;height:112px;top:28px;inset-inline-end:26px;transform:rotate(-6deg)}
-.pa-title{display:block;width:44%;height:8px;border-radius:4px;background:#C9D2DC;margin-bottom:2px}
+.pa-title{display:block;width:44%;height:8px;border-radius:4px;background:var(--ink-300);margin-bottom:2px}
 .pa-done{position:absolute;bottom:14px;left:50%;margin-left:-14px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--success);color:var(--on-ink);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(16,24,40,.14)}
 .pc-art .pa-done svg{width:15px;height:15px;stroke-width:2.2}
 .pa-files{position:relative;width:100%;height:100%}
@@ -348,18 +493,18 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .pa-f i.s{width:60%}
 .pa-f.inv{width:72px;height:96px;top:26px;inset-inline-start:calc(50% - 37px);z-index:2;align-items:center;justify-content:center;background:var(--paper);border-top:4px solid var(--wood)}
 .pa-f.inv i{width:80%}.pa-f.inv i.s{width:50%}
-.pa-f.vid{width:96px;height:62px;top:42px;inset-inline-start:calc(50% - 118px);transform:rotate(-5deg);background:#1F2733;align-items:center;justify-content:center}
+.pa-f.vid{width:96px;height:62px;top:42px;inset-inline-start:calc(50% - 118px);transform:rotate(-5deg);background:var(--ink-900);align-items:center;justify-content:center}
 .pa-f.deck{width:96px;height:62px;top:42px;inset-inline-start:calc(50% + 22px);transform:rotate(5deg);background:var(--sky-100);justify-content:flex-end;align-items:flex-end}
 .pa-f.deck i{width:70%}.pa-f.deck i.s{width:45%}
 .pa-play{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.16);position:relative}
-.pa-play::after{content:"";position:absolute;top:50%;left:50%;margin:-5px 0 0 -2px;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent #fff}
+.pa-play::after{content:"";position:absolute;top:50%;left:50%;margin:-5px 0 0 -2px;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent var(--paper-white)}
 .pa-quiz{display:flex;align-items:center;justify-content:center;background:var(--chat);border-color:var(--chat-line)}
 .pa-card{width:70%;background:var(--surface);border-radius:var(--r-sm);padding:var(--sp-3) 14px;display:flex;flex-direction:column;gap:var(--sp-2);box-shadow:0 1px 2px rgba(16,24,40,.05),0 6px 14px rgba(16,24,40,.06);transform:rotate(2deg)}
 .pa-card .pa-title.s{width:30%}
 .pa-chips{display:flex;gap:6px}
-.pa-chips b{height:16px;width:44px;border-radius:var(--r-pill);border:1.5px solid #D5DCE4;background:var(--surface)}
+.pa-chips b{height:16px;width:44px;border-radius:var(--r-pill);border:1.5px solid var(--ink-300);background:var(--surface)}
 .pa-chips b.on{background:var(--ink);border-color:var(--ink)}
-.pa-rev{display:flex;align-items:center;justify-content:center;background:#F4F8FC}
+.pa-rev{display:flex;align-items:center;justify-content:center;background:var(--olive-50)}
 .pa-rev .pa-f.inv{position:relative;top:auto;inset-inline-start:auto}
 .pa-badge{position:absolute;font-size:var(--fs-2xs);font-weight:var(--fw-semibold);padding:var(--sp-1) 10px;border-radius:var(--r-pill);background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(16,24,40,.06),0 6px 14px rgba(16,24,40,.09)}
 .pa-badge.b1{top:30px;inset-inline-start:calc(50% + 44px);transform:rotate(4deg)}
@@ -377,7 +522,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 @media (max-width:640px){.about{flex-direction:column;gap:var(--sp-8)}.polaroid{width:min(270px,78%)}}
 
 /* cta box */
-.cta{position:relative;overflow:hidden;border-radius:32px;background:linear-gradient(180deg,#DDEDFB 0%,var(--sky-50) 100%);padding:var(--sp-14) var(--sp-7) 100px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.cta{position:relative;overflow:hidden;border-radius:32px;background:var(--surface-cream);padding:var(--sp-14) var(--sp-7) 100px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
 .cta h2{text-wrap:balance;max-width:560px}
 .cta p{margin:0;font-size:var(--fs-lg);line-height:var(--lh-body);color:var(--ink-700);max-width:480px}
 .cta .btn,.cta .link{position:relative;z-index:1}
@@ -462,7 +607,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .items .tiles + .grp{margin-top:18px}
 .tile{position:relative;padding:14px var(--sp-3);display:flex;flex-direction:column;align-items:center;gap:var(--sp-1);text-align:center}
-.tile[aria-pressed="true"]{background:#FBFAF7}
+.tile[aria-pressed="true"]{background:var(--paper-50)}
 .tile .tl-art{margin-bottom:6px;border-radius:18px;transition:opacity var(--dur-2) var(--ease),filter var(--dur-2) var(--ease)}
 .tile[aria-pressed="false"] .tl-art{opacity:.6;filter:saturate(.4)}
 @media (hover:hover){.tile[aria-pressed="false"]:hover .tl-art{opacity:.85;filter:saturate(.75)}}
@@ -531,7 +676,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .mb-sw{width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,.08);display:inline-block;position:relative}
 .mb-sw-own{border:1.5px dashed var(--ink-500);background:transparent}
 .mb-icons{display:flex;gap:6px}
-.mb-note{font-size:var(--fs-2xs);line-height:1.45;background:var(--highlight);color:#3A3A3C;padding:var(--sp-1) var(--sp-2);border-radius:var(--r-xs);overflow-wrap:anywhere;max-width:100%}
+.mb-note{font-size:var(--fs-2xs);line-height:1.45;background:var(--highlight);color:var(--ink-700);padding:var(--sp-1) var(--sp-2);border-radius:var(--r-xs);overflow-wrap:anywhere;max-width:100%}
 .mb-sign{grid-column:1/-1;text-align:center;font-size:var(--fs-2xs);color:var(--ink-500)}
 
 /* שלב 3: סיכום */
@@ -629,29 +774,22 @@ body.has-bar{padding-bottom:96px}
 
 /* ==========================================================================
    Motion: כניסה בטעינה וחשיפה בגלילה.
-   מזיזים את translate/scale/rotate הנפרדים כדי לא לדרוס את ה-transform של .stuck
+   מזיזים את translate/scale/rotate הנפרדים כדי לא לדרוס transform של הרכיב עצמו
    ========================================================================== */
 @media (prefers-reduced-motion:no-preference){
-  .hero-txt > *,.hero-board,.page-head > *,.ev-head > *,.grid > .ev,.works > *{animation:mo-rise .6s var(--ease) both;animation-delay:calc(var(--mo-i,0) * 70ms + 60ms)}
+  .hero-txt > *,.page-head > *,.ev-head > *,.grid > .ev,.works > *{animation:mo-rise .6s var(--ease) both;animation-delay:calc(var(--mo-i,0) * 70ms + 60ms)}
   .hero-txt > :nth-child(2),.page-head > :nth-child(2),.ev-head > :nth-child(2){--mo-i:1}
   .hero-txt > :nth-child(3),.page-head > :nth-child(3),.ev-head > :nth-child(3){--mo-i:2}
   .hero-txt > :nth-child(4),.page-head > :nth-child(4){--mo-i:3}
-  .hero-board{--mo-i:3;animation-name:mo-stick;animation-duration:.7s}
-  .hero-txt > .hero-logo{animation-name:mo-stick}
   .grid > .ev,.works > *{--mo-i:calc(var(--mo-n,0) + 2);animation-name:mo-stick}
   .grid > .ev:nth-child(2),.works > :nth-child(2){--mo-n:1}.grid > .ev:nth-child(3),.works > :nth-child(3){--mo-n:2}
   .grid > .ev:nth-child(4){--mo-n:3}.grid > .ev:nth-child(5){--mo-n:4}.grid > .ev:nth-child(n+6){--mo-n:5}
 }
 @keyframes mo-rise{from{opacity:0;translate:0 14px}}
-/* מגנט שננעץ על המקרר: מגיע קצת קרוב ומוטה, ומתיישב */
+/* כרטיס שמונח במקומו: מגיע קצת קרוב ומוטה, ומתיישב */
 @keyframes mo-stick{from{opacity:0;scale:1.05;rotate:-2deg;translate:0 -8px}}
 
 .rv{transition:opacity .6s var(--ease),translate .6s var(--ease),scale .6s var(--ease),rotate .6s var(--ease)}
 .rv-hide{opacity:0;translate:0 18px}
 .rv-hide.rv-stick{translate:0 -8px;scale:1.05;rotate:-2deg}
 
-/* מגנטים שאפשר להזיז: מתרוממים קצת כשתופסים, ונלחצים חזרה לדלת כשעוזבים */
-.mv{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;transition:scale var(--dur-2) var(--ease)}
-@media (hover:hover) and (pointer:fine){.mv{cursor:grab}}
-.mv.mv-drag{cursor:grabbing;scale:1.08;transition-duration:var(--dur-1)}
-@media (prefers-reduced-motion:reduce){.mv{transition:none}}

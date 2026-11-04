@@ -30,7 +30,7 @@ Object.keys(versions).forEach(function (file) {
 });
 
 /* no hex colors in styles.css outside the first :root block */
-var ENABLE_HEX_CHECK = false; // enabled in Task 2
+var ENABLE_HEX_CHECK = true;
 if (ENABLE_HEX_CHECK) {
   var css = fs.readFileSync(path.join(root, 'assets', 'styles.css'), 'utf8');
   css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/url\(\s*["']?data:[^)]*\)/g, 'url()');
@@ -42,7 +42,8 @@ if (ENABLE_HEX_CHECK) {
     else if (css[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
   }
   var rest = css.slice(0, start) + css.slice(end + 1);
-  var hex = rest.match(/#[0-9a-fA-F]{3,8}\b/g);
+  /* only look inside declaration blocks (innermost {...}), so id selectors like #add are not flagged */
+  var hex = (rest.match(/\{[^{}]*\}/g) || []).join('').match(/#[0-9a-fA-F]{3,8}\b/g);
   assert.ok(!hex, 'styles.css has hex outside :root: ' + (hex || []).slice(0, 5).join(', '));
 }
 
