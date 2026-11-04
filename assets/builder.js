@@ -119,7 +119,8 @@
     h += '<div class="sum-group"><div class="sum-h"><strong>הכיוון והפרטים</strong><button type="button" class="link-btn" data-k="e2" data-act="edit" data-step="dir">עריכה</button></div>' +
       (rest.length ? '<ul class="sum">' + rest.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : '<p class="note" style="margin:0">עוד לא מילאתם פרטים. זה בסדר, אשאל בוואטסאפ.</p>') + '</div>';
     h += '<div class="total" aria-live="polite"><strong>' + esc(q.totalText) + '</strong><span class="note">' + esc(q.noteText) + '</span></div>' +
-      '<span class="note">בלי התחייבות עד שמאשרים הצעת מחיר. אחזור אליכם עם סיכום, ומקדמה של 50% בביט מתחילה את העבודה.</span></section>';
+      '<span class="note">בלי התחייבות עד שמאשרים הצעת מחיר. אחזור אליכם עם סיכום, ומקדמה של 50% בביט מתחילה את העבודה.</span>' +
+      '<p class="send-wish">שיהיה במזל טוב!</p></section>';
     return h;
   }
 
