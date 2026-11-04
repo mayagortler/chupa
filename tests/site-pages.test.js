@@ -102,6 +102,79 @@ pages.forEach(function (page) {
   assert.ok(/surface-olive surface-dark[\s\S]*class="btn btn-primary big"/.test(main), 'index.html: closing has no .btn-primary');
 })();
 
+/* no fridge magnets anywhere: no magnet images, no .mag or .stuck classes */
+pages.forEach(function (page) {
+  var html = fs.readFileSync(path.join(root, page), 'utf8');
+  assert.ok(!/assets\/magnets\//.test(html), page + ': still references assets/magnets/');
+  assert.ok(!/logo-magnet\.webp/.test(html), page + ': still references logo-magnet.webp');
+  assert.ok(!/class="mag/.test(html), page + ': still has a class="mag…" element');
+  assert.ok(!/class="[^"]*\bstuck\b[^"]*"/.test(html), page + ': still has a .stuck class');
+});
+
+/* inner pages: every section in <main> has one surface; at most two dark, never adjacent,
+   no adjacent cream, adjacent paper separated by .rule-top */
+function surfaces(page) {
+  var html = fs.readFileSync(path.join(root, page), 'utf8');
+  var main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  var secs = (main.match(/<section\b[^>]*>/g) || []).map(function (tag) {
+    var cls = ((tag.match(/class="([^"]*)"/) || [])[1] || '').split(/\s+/);
+    var surf = cls.filter(function (c) { return /^surface-/.test(c) && c !== 'surface-dark'; });
+    assert.strictEqual(surf.length, 1, page + ': section needs exactly one surface: ' + tag);
+    return { surface: surf[0].slice(8), dark: cls.indexOf('surface-dark') !== -1, rule: cls.indexOf('rule-top') !== -1 };
+  });
+  assert.ok(secs.length > 0, page + ': no sections in <main>');
+  assert.ok(secs.filter(function (s) { return s.dark; }).length <= 2, page + ': more than two dark sections');
+  secs.forEach(function (s, i) {
+    if (i === 0) { return; }
+    var prev = secs[i - 1];
+    assert.ok(!(prev.dark && s.dark), page + ': two adjacent dark sections');
+    assert.ok(!(prev.surface === 'cream' && s.surface === 'cream'), page + ': two adjacent cream sections');
+    if (prev.surface === 'paper' && s.surface === 'paper') { assert.ok(s.rule, page + ': adjacent paper sections without .rule-top'); }
+  });
+  return { main: main, secs: secs.map(function (s) { return s.surface; }) };
+}
+
+/* events: paper head with kicker + h1, eleven polaroids with pegs, cream closing section */
+(function () {
+  var r = surfaces('events.html');
+  assert.deepStrictEqual(r.secs, ['paper', 'cream'], 'events.html: surface order');
+  assert.ok(/<span class="kicker">[^<]+<\/span><h1>/.test(r.main), 'events.html: head needs .kicker before h1');
+  var cards = r.main.match(/<a class="ev pol pol-solo" href="event-[a-z-]+\.html"><span class="peg"><\/span><div class="pol-sway">/g) || [];
+  assert.strictEqual(cards.length, 11, 'events.html: expected 11 polaroid event cards, found ' + cards.length);
+  assert.ok(!/class="cloud"/.test(r.main), 'events.html: sky cloud still in the closing box');
+})();
+
+/* works: paper, the ceremony video unchanged inside a framed sheet */
+(function () {
+  var r = surfaces('works.html');
+  assert.deepStrictEqual(r.secs, ['paper'], 'works.html: surface order');
+  assert.ok(/<article class="sheet sheet-framed sample" data-sample /.test(r.main), 'works.html: sample is not a .sheet-framed card');
+  assert.ok(/<video src="assets\/samples\/01-graduation-reel\.mp4\?v=1" poster="assets\/samples\/01-graduation-poster\.webp\?v=1" muted loop playsinline preload="metadata"/.test(r.main), 'works.html: video source/poster/attributes changed');
+})();
+
+/* contact: paper head, the form in a .sheet on a cream section */
+(function () {
+  var r = surfaces('contact.html');
+  assert.deepStrictEqual(r.secs, ['paper', 'cream'], 'contact.html: surface order');
+  var cream = r.main.slice(r.main.indexOf('surface-cream'));
+  assert.ok(/<div class="sheet cf-card">\s*<form id="cf"/.test(cream), 'contact.html: form is not inside a .sheet on the cream section');
+  assert.ok(/<h1 id="contact-h">/.test(r.main.slice(0, r.main.indexOf('surface-cream'))), 'contact.html: h1 is not in the paper head');
+})();
+
+/* styles.css: warm shadows only, loaded weights only, scroll reveal is a plain fade/rise */
+(function () {
+  var css = fs.readFileSync(path.join(root, 'assets', 'styles.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  var body = css.slice(css.indexOf('}', css.indexOf(':root{')) + 1); /* skip the token block */
+  body = body.slice(body.indexOf('}') + 1); /* and its reduced-motion override line */
+  assert.ok(!/rgba\(\s*(16,\s*24,\s*40|17,\s*24,\s*39)/.test(css), 'styles.css: cold grey-blue shadow left');
+  assert.ok(!/var\(--fw-(semibold|bold)\)/.test(body), 'styles.css: uses --fw-semibold/--fw-bold (weights not loaded)');
+  assert.ok(!/font-weight:\s*(600|700|800|bold)/.test(body), 'styles.css: font-weight 600+ (not loaded)');
+  var stick = (css.match(/\.rv-hide\.rv-stick\{[^}]*\}/) || [''])[0];
+  assert.ok(!/rotate|scale/.test(stick), 'styles.css: .rv-hide.rv-stick still tilts or scales');
+  var mo = (css.match(/@keyframes mo-stick\{[^}]*\}\}?/) || [''])[0];
+  assert.ok(!/rotate|scale/.test(mo), 'styles.css: mo-stick still tilts or scales');
+})();
+
 /* one version per asset across all pages */
 Object.keys(versions).forEach(function (file) {
   var vs = Object.keys(versions[file]);
