@@ -53,6 +53,55 @@ pages.forEach(function (page) {
   assert.ok(!/class="freezer"|class="door-main"/.test(html), 'index.html: freezer/door wrappers still present');
 })();
 
+/* home: section surfaces in a fixed order, at most two dark, no unseparated repeats */
+(function () {
+  var html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  var main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  var secs = (main.match(/<section\b[^>]*>/g) || []).map(function (tag) {
+    var cls = ((tag.match(/class="([^"]*)"/) || [])[1] || '').split(/\s+/);
+    var surf = cls.filter(function (c) { return /^surface-/.test(c) && c !== 'surface-dark'; });
+    assert.strictEqual(surf.length, 1, 'index.html: section needs exactly one surface: ' + tag);
+    return { surface: surf[0].slice(8), dark: cls.indexOf('surface-dark') !== -1, rule: cls.indexOf('rule-top') !== -1 };
+  });
+  assert.deepStrictEqual(secs.map(function (s) { return s.surface; }),
+    ['paper', 'paper', 'cream', 'paper', 'cream', 'mist', 'paper', 'olive'], 'index.html: surface order');
+  var darks = secs.filter(function (s) { return s.dark; });
+  assert.ok(darks.length <= 2, 'index.html: more than two dark sections');
+  secs.forEach(function (s, i) {
+    var isDarkColor = ['olive', 'mist', 'petal', 'apricot'].indexOf(s.surface) !== -1;
+    assert.strictEqual(s.dark, isDarkColor, 'index.html: section ' + i + ' surface-dark must match a dark surface');
+    if (i === 0) { return; }
+    var prev = secs[i - 1];
+    if (prev.surface === s.surface) {
+      assert.ok(s.rule, 'index.html: sections ' + (i - 1) + ' and ' + i + ' share ' + s.surface + ' without .rule-top');
+    }
+    assert.ok(!(prev.dark && s.dark), 'index.html: two adjacent dark sections');
+  });
+  assert.ok(secs[1].rule, 'index.html: "for you" section needs .rule-top');
+
+  /* fridge leftovers are gone from the home page */
+  assert.ok(!/class="[^"]*\b(stuck|mag|mag-bar|planner|note-card|notes|svc-print|polaroid|std)\b/.test(main), 'index.html: fridge classes still in <main>');
+  assert.ok(/<symbol id="sprig-leafy"/.test(html), 'index.html: sprig-leafy symbol missing');
+  assert.ok(/<use href="#sprig-leafy"\/>/.test(main), 'index.html: closing section has no leafy sprig');
+  /* services: six white sheets in .svcs */
+  assert.strictEqual((main.match(/<li class="svc sheet"/g) || []).length, 6, 'index.html: expected six .svc.sheet cards');
+  assert.ok(/<ul class="svcs"/.test(main), 'index.html: .svcs list missing');
+  /* how: six accordion buttons, each controlling an existing dl */
+  var togs = main.match(/<button type="button" class="pc-tog" aria-expanded="false" aria-controls="step-\d"/g) || [];
+  assert.strictEqual(togs.length, 6, 'index.html: expected six .pc-tog buttons');
+  togs.forEach(function (t) {
+    var id = t.match(/aria-controls="([^"]+)"/)[1];
+    assert.ok(new RegExp('<dl class="pc-dl" id="' + id + '"').test(main), 'index.html: missing dl#' + id);
+  });
+  /* reviews and about */
+  assert.ok(/<div class="rev"/.test(main) && (main.match(/<figure class="chat"/g) || []).length === 3, 'index.html: reviews changed');
+  assert.ok(/<figure class="pol pol-solo[^"]*"[^>]*><span class="peg"/.test(main), 'index.html: about photo is not a .pol-solo with peg');
+  assert.ok(/<a class="[^"]*pol-solo[^"]*" href="assets\/cert-miluim-full\.webp" target="_blank" rel="noopener" aria-label="[^"]+"/.test(main), 'index.html: certificate link lost its href/target/label');
+  /* FAQ uses the plain .faq component, closing CTA is a primary button */
+  assert.ok(/<div class="faq">/.test(main), 'index.html: FAQ is not the plain .faq component');
+  assert.ok(/surface-olive surface-dark[\s\S]*class="btn btn-primary big"/.test(main), 'index.html: closing has no .btn-primary');
+})();
+
 /* one version per asset across all pages */
 Object.keys(versions).forEach(function (file) {
   var vs = Object.keys(versions[file]);

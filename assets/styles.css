@@ -300,9 +300,6 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .faq summary::after{content:"+";flex:none;font:var(--fw-light) var(--fs-3xl)/1 var(--font-sans);color:var(--text-accent);transition:transform var(--dur-3) var(--ease)}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details p{padding-bottom:var(--sp-5);max-width:var(--w-text)}
-/* שאלות בתוך כרטיס (הבית, עד שייכתב מחדש) */
-.card.faq{border-top:0;padding:var(--sp-2) var(--sp-7)}
-.card.faq details:last-child{border-bottom:0}
 @supports selector(::details-content){
   .faq details::details-content{block-size:0;overflow:hidden;transition:block-size var(--dur-3) var(--ease),content-visibility var(--dur-3) allow-discrete}
   .faq details[open]::details-content{block-size:auto}
@@ -395,44 +392,52 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 @media (max-width:640px){.rope{height:370px;margin-top:-80px}.rope-track{transform:scale(.72)}}
 @media (prefers-reduced-motion:reduce){.rope-card,.rope-sway{animation-play-state:paused!important}}
 
-/* for you: balloons */
-.bl{position:relative;max-width:var(--w-page);margin:var(--sp-2) auto 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-6)}
-.bl-item{display:flex;flex-direction:column;align-items:center}
-.bl-stage{position:relative;width:130px;height:166px}
-.bl-b{position:absolute;left:0;top:0;width:130px;height:166px;margin:0;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transform-origin:50% 100%;animation:bl-float 3.6s ease-in-out infinite alternate;animation-delay:calc(var(--d) * -1);
-  transition:transform .45s var(--ease-spring),opacity .3s}
-.bl-shape{position:absolute;left:0;top:0;width:130px;height:166px;overflow:visible;transition:transform var(--dur-2) var(--ease)}
-/* הבלון עצמו בלי פינות: הקו המתאר מקבל פינות משלו */
-.bl-b:focus-visible{border-radius:var(--r-md)}
-.bl-conf{position:absolute;left:65px;top:70px;width:0;height:0}
-.bl-conf i{position:absolute;left:-3px;top:-3px;width:7px;height:10px;border-radius:2px;opacity:0}
-.bl-item p{margin:14px 0 0;max-width:230px;font-size:var(--fs-base);line-height:var(--lh-body);text-align:center;text-wrap:balance}
-.bl-item.popped .bl-b{animation:none;transform:scale(.2);opacity:0;pointer-events:none;transition:transform .14s ease-out,opacity .14s ease-out}
-.bl-item.popped .bl-conf i{animation:bl-conf .7s ease-out forwards}
-@media (hover:hover){.bl-b:hover .bl-shape{transform:scale(1.04)}}
-@media (max-width:760px){.bl{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:var(--sp-8)}}
-@media (max-width:700px){.bl-stage,.bl-b,.bl-shape{width:104px;height:133px}.bl-conf{left:52px;top:56px}.bl-item p{font-size:var(--fs-md)}}
-@keyframes bl-float{from{transform:rotate(-3deg) translateY(0)}to{transform:rotate(3deg) translateY(-6px)}}
-@keyframes bl-conf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
-@media (prefers-reduced-motion:reduce){.bl-b{animation:none}.bl-item.popped .bl-conf i{animation:none}}
+/* זה בשבילכם אם: רשימה שקטה על נייר, ניצן במקום תבליט */
+.for-list{list-style:none;margin:0 auto;padding:0;max-width:var(--w-text);display:grid;gap:var(--sp-5)}
+.for-list li{display:flex;align-items:flex-start;gap:var(--sp-4);font-size:var(--fs-xl);font-weight:var(--fw-light);line-height:var(--lh-body);color:var(--text-body);text-wrap:pretty}
+.for-bud{flex:none;width:28px;height:28px}
 
-/* services */
-.svcs{list-style:none;margin:0 auto;padding:0;max-width:880px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px var(--sp-8)}
-.svc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
-.svc-art{height:112px;display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-1)}
-.svc-art > .art{width:112px;height:112px}
+/* services: שישה דפי נייר לבנים על קרם, 3/2/1 עמודות, האיור מעל */
+.svcs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-6)}
+.svc{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-2);padding:var(--sp-6) var(--sp-5) var(--sp-8)}
+.svc-art{height:132px;display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-3)}
+.svc-art svg{display:block;width:132px;height:132px}
 .svc-set{display:flex;align-items:center}
-.svc-set .art + .art{margin-inline-start:-10px}
-.svc h3{font-size:var(--fs-2xl);font-weight:var(--fw-semibold);letter-spacing:var(--tr-tight)}
-.svc > p{margin:0;max-width:260px;font-size:var(--fs-md);line-height:var(--lh-body);color:var(--muted);text-wrap:balance}
-.sec-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--sp-3) var(--sp-4);margin:var(--sp-8) 0 0;text-align:center}
-.sec-cta span{font-size:var(--fs-lg);font-weight:var(--fw-medium)}
+.svc-set svg{width:92px;height:92px;border-radius:var(--r-xs);box-shadow:var(--shadow-xs)}
+.svc-set svg + svg{margin-inline-start:-24px}
+.svc h3{font-size:var(--fs-h3)}
+.svc > p{max-width:260px;font-size:var(--fs-md);line-height:var(--lh-body);color:var(--text-muted);text-wrap:balance}
+.sec-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--sp-3) var(--sp-4);margin:var(--sp-10) 0 0;text-align:center}
+@media (max-width:860px){.svcs{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-4)}}
+@media (max-width:560px){.svcs{grid-template-columns:1fr;max-width:360px;margin-inline:auto}.svc-art{height:112px}.svc-art svg{width:112px;height:112px}.svc-set svg{width:80px;height:80px}}
 
-/* reviews */
+/* how it works: רשימה אנכית, מספר בפרנק רוהל בזית, כל שלב נפתח */
+.path{list-style:none;margin:0 auto;padding:0;max-width:var(--w-narrow);border-top:1px solid var(--line)}
+.pc{position:relative;min-width:0;border-bottom:1px solid var(--line);transition:transform var(--dur-3) var(--ease),opacity .6s var(--ease)}
+.pc.pc-hide{opacity:0;transform:translateY(16px)}
+.pc-txt{display:grid;grid-template-columns:3ch minmax(0,1fr);column-gap:var(--sp-5);align-items:center;padding-block:var(--sp-3)}
+.pc-n{font-family:var(--font-display);font-size:var(--fs-5xl);font-weight:var(--fw-light);line-height:1;color:var(--text-accent);font-variant-numeric:lining-nums}
+.pc h3{font-size:var(--fs-h3);font-weight:var(--fw-regular);margin:0}
+.pc-tog{font:inherit;color:inherit;background:none;border:0;padding:var(--sp-2) 0;margin:0;width:100%;min-height:var(--tap);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);text-align:start;cursor:pointer;letter-spacing:inherit;-webkit-tap-highlight-color:transparent}
+.pc-tog::after{content:"";position:absolute;inset:0}
+.pc-tog:focus-visible{outline:none}
+.pc:has(.pc-tog:focus-visible){outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
+.pc-more{flex:none;display:inline-flex;align-items:center;gap:var(--sp-1);min-height:28px;font:var(--fw-medium) var(--fs-xs)/1 var(--font-sans);letter-spacing:0;color:var(--btn-soft-fg);background:var(--btn-soft-bg);border-radius:var(--r-pill);padding:var(--sp-1) 10px var(--sp-1) var(--sp-2);transition:background-color var(--dur-2) var(--ease)}
+.pc-more svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s var(--ease)}
+.pc-tog[aria-expanded="true"] .pc-more svg{transform:rotate(180deg)}
+.pc-dl{grid-column:2;margin:0 0 var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2)}
+.pc-dl[hidden]{display:none}
+.pc-dl div{display:grid;grid-template-columns:58px minmax(0,1fr);gap:var(--sp-2);align-items:baseline}
+.pc-dl dt{font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text-accent)}
+.pc-dl dd{margin:0;font-size:var(--fs-md);line-height:1.55;color:var(--text-muted)}
+.pc-dl .get dd{color:var(--text);font-weight:var(--fw-medium)}
+@media (hover:hover){.pc:hover .pc-more{background:var(--btn-soft-bg-hover)}}
+@media (max-width:600px){.pc-txt{column-gap:var(--sp-3)}.pc-n{font-size:var(--fs-4xl)}.pc-dl{grid-column:1 / -1}.pc-dl div{grid-template-columns:52px minmax(0,1fr)}}
+
+/* reviews: צילומי הוואטסאפ כמו שהם, על קרם */
 .rev{display:grid;grid-template-columns:repeat(3,minmax(0,300px));justify-content:center;gap:var(--sp-7);align-items:stretch;padding:var(--sp-2) 0}
 .chat{position:relative;min-width:0;padding:var(--sp-5) var(--sp-3) var(--sp-4);border-radius:26px;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;margin:0;
-  background-color:var(--chat);border:6px solid var(--surface);box-shadow:0 1px 2px rgba(16,24,40,.05),0 18px 40px rgba(16,24,40,.10)}
+  background-color:var(--chat);border:6px solid var(--surface);box-shadow:var(--shadow-2)}
 .chat:nth-child(1){transform:rotate(-1.5deg)}
 .chat:nth-child(2){transform:rotate(1.2deg)}
 .chat:nth-child(3){transform:rotate(-1deg)}
@@ -445,94 +450,32 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .msg.cont{border-radius:14px}
 .msg.cont::before{display:none}
 .time{display:block;text-align:end;font-size:var(--fs-2xs);line-height:1;color:var(--ink-500);margin-top:2px}
+@media (max-width:1040px){.rev{gap:var(--sp-5)}}
 @media (max-width:760px){.rev{grid-template-columns:1fr;max-width:340px;margin-inline:auto}.chat:nth-child(n){transform:rotate(0)}}
 
-/* how it works: framed cards that open */
-.path{list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-5);align-items:start}
-.pc{position:relative;min-width:0;background:var(--surface);border-radius:var(--r-xl);padding:var(--sp-2);border:1px solid var(--line-soft);box-shadow:0 1px 2px rgba(16,24,40,.05),0 12px 28px rgba(16,24,40,.07);
-  transition:transform var(--dur-3) var(--ease),box-shadow var(--dur-3) var(--ease),opacity .6s var(--ease)}
-.pc:active{transform:scale(.99)}
-.pc-art{position:relative;height:150px;border-radius:17px;background:var(--olive-50);border:1px solid var(--olive-100);overflow:hidden}
-.pc-txt{padding:var(--sp-4) var(--sp-3) 10px}
-.pc-n{display:block;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--sky-700);letter-spacing:.04em;margin-bottom:6px}
-.pc h3{font-size:var(--fs-2xl);font-weight:var(--fw-semibold);letter-spacing:var(--tr-tight);margin-bottom:var(--sp-1)}
-.pc p{margin:0;font-size:var(--fs-md);line-height:1.65;color:var(--muted);text-wrap:pretty}
-.pc.pc-hide{opacity:0;transform:translateY(16px)}
-.pc-tog{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;width:100%;min-height:var(--tap);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);text-align:start;cursor:pointer;letter-spacing:inherit;-webkit-tap-highlight-color:transparent}
-.pc-tog::after{content:"";position:absolute;inset:0;border-radius:var(--r-xl)}
-.pc-tog:focus-visible{outline:none}
-.pc:has(.pc-tog:focus-visible){outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
-.pc-more{flex:none;display:inline-flex;align-items:center;gap:var(--sp-1);min-height:28px;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--sky-700);background:var(--sky-100);border-radius:var(--r-pill);padding:var(--sp-1) 10px var(--sp-1) var(--sp-2);transition:background-color var(--dur-2) var(--ease)}
-.pc-more svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s var(--ease)}
-.pc-tog[aria-expanded="true"] .pc-more svg{transform:rotate(180deg)}
-.pc-dl{margin:var(--sp-2) 0 0;display:flex;flex-direction:column;gap:var(--sp-2)}
-.pc-dl[hidden]{display:none}
-.pc-dl div{display:grid;grid-template-columns:58px 1fr;gap:var(--sp-2);align-items:baseline}
-.pc-dl dt{font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--sky-700)}
-.pc-dl dd{margin:0;font-size:var(--fs-md);line-height:1.55;color:var(--muted)}
-.pc-dl .get dd{color:var(--ink);font-weight:var(--fw-medium)}
-@media (hover:hover){
-  .pc:hover{transform:translateY(var(--lift));box-shadow:0 2px 4px rgba(16,24,40,.06),0 18px 36px rgba(16,24,40,.1)}
-  .pc:hover .pc-more{background:var(--sky-200)}
-}
-@media (max-width:900px){.path{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:600px){.path{grid-template-columns:1fr;max-width:360px;gap:14px}.pc-art{height:112px}.pc-txt{padding:var(--sp-3) 10px 6px}}
+/* about: ערפל כהה. התמונה של מאיה כפולארויד בודד על אטב, התעודה פולארויד קטן שני (קישור) */
+.about{display:flex;align-items:center;gap:var(--sp-14)}
+.about-pics{flex:none;position:relative;width:280px;padding:var(--sp-4) 0 var(--sp-12)}
+.about-pics .peg{z-index:1}
+.about-photo{--pol-w:240px}
+.about-photo .pol-sway{padding-bottom:var(--sp-12)}
+.about-photo .pol-art img{display:block;width:100%;height:100%;object-fit:cover}
+.about-cert{--pol-w:104px;--peg-h:24px;position:absolute;bottom:0;inset-inline-end:0;display:block;border-radius:var(--r-xs)}
+.about-cert .pol-sway{display:block;padding:6px 6px 16px;transform:rotate(5deg)}
+.about-cert img{display:block;width:100%;height:auto}
+.about-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.about-body h2{text-wrap:balance}
+.about-txt{display:flex;flex-direction:column;gap:var(--sp-4);margin-top:var(--sp-6)}
+.about-txt p{font-size:var(--fs-lg);font-weight:var(--fw-light);line-height:var(--lh-relaxed);color:var(--text-on-dark-body);text-wrap:pretty;max-width:65ch}
+.about-txt p:first-child{color:var(--text-on-dark)}
+@media (max-width:760px){.about{flex-direction:column;align-items:stretch;gap:var(--sp-8)}.about-pics{align-self:center}}
 
-/* step art (איורים קטנים בתוך כרטיסי התהליך) */
-.pc-art svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.pa-ask{display:flex;flex-direction:column;justify-content:center;gap:var(--sp-2);padding:0 var(--sp-4);background:var(--chat);border-color:var(--chat-line)}
-.pa-msg{max-width:78%;font-size:var(--fs-xs);line-height:1.4;padding:7px 11px;border-radius:var(--r-sm);color:var(--ink);box-shadow:0 1px 1px rgba(16,24,40,.06)}
-.pa-msg.out{align-self:flex-end;background:var(--olive-100);border-end-end-radius:4px}
-.pa-msg.in{align-self:flex-start;background:var(--surface);border-end-start-radius:4px}
-.pa-msg i{display:block;height:6px;border-radius:3px;background:rgba(17,24,39,.14);margin:4px 0}
-.pa-typing{align-self:flex-start;display:flex;gap:var(--sp-1);background:var(--surface);padding:9px 11px;border-radius:var(--r-sm)}
-.pa-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-300)}
-@media (prefers-reduced-motion:no-preference){.pa-typing i{animation:pa-dot 1.2s infinite}.pa-typing i:nth-child(2){animation-delay:.15s}.pa-typing i:nth-child(3){animation-delay:.3s}}
-@keyframes pa-dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-3px);opacity:1}}
-.pa-focus{display:flex;align-items:center;justify-content:center}
-.pa-note{width:72%;background:var(--surface);border-radius:var(--r-sm);padding:var(--sp-3) 14px;display:flex;flex-direction:column;gap:var(--sp-2);box-shadow:0 1px 2px rgba(16,24,40,.05),0 6px 14px rgba(16,24,40,.06);transform:rotate(-2deg)}
-.pa-row{display:flex;align-items:center;gap:7px;color:var(--sky-500)}
-.pa-row i{height:6px;border-radius:3px;background:var(--ink-100)}
-.pa-make{background:var(--olive-50)}
-.pa-ph{position:absolute;object-fit:cover;background:var(--surface);padding:4px 4px 12px;border-radius:3px;box-shadow:0 1px 2px rgba(16,24,40,.08),0 6px 14px rgba(16,24,40,.1)}
-.pa-ph.a{width:118px;height:104px;top:18px;inset-inline-start:22px;transform:rotate(5deg)}
-.pa-ph.b{width:92px;height:112px;top:28px;inset-inline-end:26px;transform:rotate(-6deg)}
-.pa-title{display:block;width:44%;height:8px;border-radius:4px;background:var(--ink-300);margin-bottom:2px}
-.pa-done{position:absolute;bottom:14px;left:50%;margin-left:-14px;z-index:3;width:28px;height:28px;border-radius:50%;background:var(--success);color:var(--on-ink);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(16,24,40,.14)}
-.pc-art .pa-done svg{width:15px;height:15px;stroke-width:2.2}
-.pa-files{position:relative;width:100%;height:100%}
-.pa-f{position:absolute;display:flex;flex-direction:column;gap:5px;background:var(--surface);border-radius:6px;padding:9px;box-shadow:0 1px 2px rgba(16,24,40,.06),0 6px 14px rgba(16,24,40,.09)}
-.pa-f i{display:block;height:5px;border-radius:3px;background:var(--ink-100)}
-.pa-f i.s{width:60%}
-.pa-f.inv{width:72px;height:96px;top:26px;inset-inline-start:calc(50% - 37px);z-index:2;align-items:center;justify-content:center;background:var(--paper);border-top:4px solid var(--wood)}
-.pa-f.inv i{width:80%}.pa-f.inv i.s{width:50%}
-.pa-f.vid{width:96px;height:62px;top:42px;inset-inline-start:calc(50% - 118px);transform:rotate(-5deg);background:var(--ink-900);align-items:center;justify-content:center}
-.pa-f.deck{width:96px;height:62px;top:42px;inset-inline-start:calc(50% + 22px);transform:rotate(5deg);background:var(--sky-100);justify-content:flex-end;align-items:flex-end}
-.pa-f.deck i{width:70%}.pa-f.deck i.s{width:45%}
-.pa-play{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.16);position:relative}
-.pa-play::after{content:"";position:absolute;top:50%;left:50%;margin:-5px 0 0 -2px;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent var(--paper-white)}
-.pa-quiz{display:flex;align-items:center;justify-content:center;background:var(--chat);border-color:var(--chat-line)}
-.pa-card{width:70%;background:var(--surface);border-radius:var(--r-sm);padding:var(--sp-3) 14px;display:flex;flex-direction:column;gap:var(--sp-2);box-shadow:0 1px 2px rgba(16,24,40,.05),0 6px 14px rgba(16,24,40,.06);transform:rotate(2deg)}
-.pa-card .pa-title.s{width:30%}
-.pa-chips{display:flex;gap:6px}
-.pa-chips b{height:16px;width:44px;border-radius:var(--r-pill);border:1.5px solid var(--ink-300);background:var(--surface)}
-.pa-chips b.on{background:var(--ink);border-color:var(--ink)}
-.pa-rev{display:flex;align-items:center;justify-content:center;background:var(--olive-50)}
-.pa-rev .pa-f.inv{position:relative;top:auto;inset-inline-start:auto}
-.pa-badge{position:absolute;font-size:var(--fs-2xs);font-weight:var(--fw-semibold);padding:var(--sp-1) 10px;border-radius:var(--r-pill);background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(16,24,40,.06),0 6px 14px rgba(16,24,40,.09)}
-.pa-badge.b1{top:30px;inset-inline-start:calc(50% + 44px);transform:rotate(4deg)}
-.pa-badge.b2{bottom:30px;inset-inline-end:calc(50% + 44px);transform:rotate(-4deg)}
-
-/* about */
-.about{display:flex;align-items:center;gap:44px}
-.polaroid{flex:none;margin:0;width:250px;position:relative;background:var(--paper);padding:14px 14px var(--sp-14);border-radius:3px;box-shadow:var(--shadow-photo);transform:rotate(-4deg)}
-.polaroid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:50% 50%;border-radius:1px}
-.about-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
-.about h2{font-size:var(--fs-h2);line-height:1.15}
-.about-txt{display:flex;flex-direction:column;gap:14px}
-.about-txt p{margin:0;font-size:var(--fs-lg);line-height:1.8;color:var(--muted);text-wrap:pretty;max-width:65ch}
-.about-txt p:first-child{color:var(--ink)}
-@media (max-width:640px){.about{flex-direction:column;gap:var(--sp-8)}.polaroid{width:min(270px,78%)}}
+/* closing: זית כהה, ממורכז, כפתור ראשי בנייר, ענף אחד בשוליים */
+.home-close{text-align:center;overflow:hidden}
+.home-close h2{text-wrap:balance}
+.home-close .lead{margin:var(--sp-4) auto var(--sp-8)}
+.close-sprig{bottom:var(--sp-8);inset-inline-end:6%;transform:rotate(-10deg)}
+@media (max-width:640px){.close-sprig{--sprig-size:34px;bottom:var(--sp-4);inset-inline-end:var(--sp-4)}}
 
 /* cta box */
 .cta{position:relative;overflow:hidden;border-radius:32px;background:var(--surface-cream);padding:var(--sp-14) var(--sp-7) 100px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
@@ -743,19 +686,12 @@ body.has-bar{padding-bottom:96px}
 /* ==========================================================================
    Responsive
    ========================================================================== */
-@media (max-width:860px){.svcs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){
   :root{--gutter:16px}
   .bar{flex-wrap:wrap;padding-block:var(--sp-3) 0;row-gap:0}
   .nav{order:3;width:100%;justify-content:center;margin-inline-start:0;gap:0;border-top:1px solid var(--line-soft)}
   .nav a{padding:0 var(--sp-2);white-space:nowrap}
   .b-card{padding:22px 18px}
-  .faq{padding:var(--sp-1) 18px}
-  .svcs{gap:var(--sp-8) var(--sp-4)}
-  .svc-art{height:88px}.svc-art > .art{width:88px;height:88px}
-  .svc-set .art{width:64px;height:64px}
-  .svc h3{font-size:var(--fs-base)}
-  .svc > p{font-size:var(--fs-sm)}
   .cf-card{padding:22px var(--sp-4)}
 }
 
