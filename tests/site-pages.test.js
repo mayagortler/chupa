@@ -136,13 +136,13 @@ function surfaces(page) {
   return { main: main, secs: secs.map(function (s) { return s.surface; }) };
 }
 
-/* events: paper head with kicker + h1, eleven polaroids with pegs, cream closing section */
+/* events: paper head with kicker + h1, eleven straight invitation-style cards, cream closing section */
 (function () {
   var r = surfaces('events.html');
   assert.deepStrictEqual(r.secs, ['paper', 'cream'], 'events.html: surface order');
   assert.ok(/<span class="kicker">[^<]+<\/span><h1>/.test(r.main), 'events.html: head needs .kicker before h1');
-  var cards = r.main.match(/<a class="ev pol pol-solo" href="event-[a-z-]+\.html"><span class="peg"><\/span><div class="pol-sway">/g) || [];
-  assert.strictEqual(cards.length, 11, 'events.html: expected 11 polaroid event cards, found ' + cards.length);
+  var cards = r.main.match(/<a class="ev" href="event-[a-z-]+\.html"><div class="ev-in"><div class="ev-art">/g) || [];
+  assert.strictEqual(cards.length, 11, 'events.html: expected 11 event cards, found ' + cards.length);
   assert.ok(!/class="cloud"/.test(r.main), 'events.html: sky cloud still in the closing box');
 })();
 
