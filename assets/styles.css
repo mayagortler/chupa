@@ -15,7 +15,9 @@
      משטחים הם הגוונים הבהירים (50), וטקסט צבעוני הוא הגוון הכהה (700) */
 
   /* נייר */
-  --paper-50:#FCFCF6; --paper-white:#FFFFFF; --cream-50:#FAFBEE; --cream-300:#F6F8DB;
+  --paper-50:#FCFCF6; --paper-white:#FFFFFF;
+  /* דף צבעי מים: בהיר כמעט לבן, עם מרקם נייר כבוש־קר עדין (אריח שקוף שנפרס מעל כל צבע רקע) */
+  --paper-page:#FFFEFA; --paper-tex:url(paper-texture.webp); --cream-50:#FAFBEE; --cream-300:#F6F8DB;
   /* דיו: טקסט. 500 הוא הבהיר ביותר שעובר 4.5:1 על כל המשטחים */
   --ink-900:#2E2D28; --ink-700:#4A4840; --ink-500:#6B685E; --ink-300:#B5B1A5; --ink-100:#E8E6DC;
 
@@ -67,7 +69,7 @@
 
   /* ===================== 2. סמנטיים ===================== */
 
-  --bg-page:var(--paper-50);
+  --bg-page:var(--paper-page);
   --text:var(--ink-900);
   --text-body:var(--ink-700);
   --text-muted:var(--ink-500);
@@ -83,7 +85,7 @@
 
   /* ---- משטחי סקשנים: כל סקשן בוחר אחד דרך מחלקת .surface-* ---- */
   /* רוב העמוד על נייר. קרם משמש להפרדה בין סקשנים */
-  --surface-paper:var(--paper-50);
+  --surface-paper:var(--paper-page);
   --surface-cream:var(--cream-50);
   /* משטחים כהים: אותם גוונים של הטקסט הצבעוני (700). טקסט עליהם בנייר/קרם, 4.9:1 ומעלה */
   --surface-olive:var(--olive-700);
@@ -154,7 +156,7 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;interpolate-size:allow-keywords;scrollbar-color:var(--ink-300) transparent;accent-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{margin:0;background:var(--bg-page);color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh-body);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--bg-page);background-image:var(--paper-tex);background-size:512px;color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh-body);min-height:100vh;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--olive-100);color:var(--text)}
 a{color:var(--text-accent);text-underline-offset:.25em;text-decoration-thickness:1px}
 img{max-width:100%}
@@ -193,8 +195,8 @@ p{margin:0}
    בהירים: נייר (ברירת מחדל) וקרם. כהים: זית, ערפל, ורוד, משמש בגוון הטקסט (700).
    שני סקשני נייר צמודים מופרדים בקו דק (.rule-top). שני סקשנים צבעוניים לא צמודים.
    ========================================================================== */
-.surface-paper{--sec-bg:var(--surface-paper);background:var(--sec-bg)}
-.surface-cream{--sec-bg:var(--surface-cream);background:var(--sec-bg)}
+.surface-paper{--sec-bg:var(--surface-paper);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
+.surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 .surface-olive{--sec-bg:var(--surface-olive)}
 .surface-mist{--sec-bg:var(--surface-mist)}
 .surface-petal{--sec-bg:var(--surface-petal)}
@@ -342,7 +344,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
   .btn-ghost.bar-cta:hover{background:var(--wa-hover);border-color:var(--wa-hover);color:var(--wa-fg)}}
 
 /* --- פוטר: נייר, ממורכז, טקסט שקט --- */
-.foot{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-3);padding-top:var(--sp-12);padding-bottom:var(--sp-10);font-size:var(--fs-sm);color:var(--text-muted);background:var(--surface-paper)}
+.foot{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--sp-3);padding-top:var(--sp-12);padding-bottom:var(--sp-10);font-size:var(--fs-sm);color:var(--text-muted);background-color:var(--surface-paper);background-image:var(--paper-tex);background-size:512px}
 .foot-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-1) var(--sp-2)}
 .foot .foot-nav a{font-size:var(--fs-sm);color:var(--text-body);text-decoration:none;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-xs);transition:color var(--dur-2) var(--ease)}
 .foot-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3) var(--sp-5)}
@@ -675,7 +677,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .total strong{font-family:var(--font-display);font-weight:var(--fw-regular);font-size:var(--fs-5xl);letter-spacing:var(--tr-title);line-height:1.1;color:var(--text)}
 
 /* פס תחתון קבוע */
-.bar-fixed{position:fixed;inset-inline:0;bottom:0;z-index:30;background:rgba(252,252,246,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line-soft);padding:10px var(--sp-4) calc(10px + env(safe-area-inset-bottom))}
+.bar-fixed{position:fixed;inset-inline:0;bottom:0;z-index:30;background:rgba(255,254,250,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line-soft);padding:10px var(--sp-4) calc(10px + env(safe-area-inset-bottom))}
 .bar-in{width:min(var(--w-narrow),100%);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)}
 .bar-p{font-family:var(--font-display);font-size:var(--fs-3xl);font-weight:var(--fw-regular);color:var(--text);letter-spacing:var(--tr-tight);white-space:nowrap}
 @media (max-width:400px){.bar-p{font-size:var(--fs-2xl)}}
