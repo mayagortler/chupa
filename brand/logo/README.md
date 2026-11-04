@@ -12,9 +12,9 @@
 | שימוש | קובץ |
 |---|---|
 | הלוגו הראשי: הזמנות, מסמכים, חתימת מייל, סימן מים | `chupa-badge` |
-| כותרת האתר: השיבולת מעל השם, ממורכז | `chupa-vertical` (וגם `-mono-white`, `-mono-olive`, `-mono-ink`, `-mono-olive-dark`) |
+| השיבולת מעל השם, ממורכז (הזמנות, שלטים, עמודי שער) | `chupa-vertical` (וגם `-mono-white`, `-mono-olive`, `-mono-ink`, `-mono-olive-dark`) |
 | תמונת הפרופיל של העסק בוואטסאפ | `png/chupa-whatsapp-profile.png` (1080×1080, מתאים לחיתוך העגול) |
-| גרסה משנית, לא בשימוש באתר: השיבולת לצד השם | `chupa-horizontal` |
+| כותרת האתר: השיבולת לצד השם | `chupa-horizontal` |
 | התג בלי טקסט: מדבקות, חותמת על עבודות, כשהשם כבר כתוב לידו | `chupa-badge-notext` (וגם `-mono-olive`, `-mono-white`) |
 | חותמת בצבע אחד, הדפסה בצבע אחד, הטבעה | `chupa-badge-mono-olive` / `-olive-dark` / `-ink` |
 | על רקע כהה או על תמונה | `chupa-badge-mono-white`, `chupa-horizontal-mono-white`, `chupa-wordmark-white` |
