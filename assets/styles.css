@@ -316,7 +316,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .pol-sway{position:relative;background:var(--pol-bg);padding:var(--pol-pad) var(--pol-pad) 0;border-radius:var(--pol-radius);box-shadow:var(--pol-shadow);
   transform-origin:50% 0;animation:sway var(--dur-sway) var(--ease-soft) infinite alternate;transition:box-shadow var(--dur-2) var(--ease)}
 .pol:hover .pol-sway{box-shadow:var(--shadow-2)}
-.pol-art{aspect-ratio:1/1;background:var(--paper-50);overflow:hidden;position:relative}
+.pol-art{aspect-ratio:1/1;background:var(--paper-white);overflow:hidden;position:relative}
 .pol-name{display:block;text-align:center;font-family:var(--font-display);font-size:var(--fs-xl);padding:var(--sp-3) var(--sp-2) var(--sp-4)}
 .peg{position:absolute;top:calc(var(--peg-h) / -2);left:50%;margin-left:calc(var(--peg-w) / -2);width:var(--peg-w);height:var(--peg-h);border-radius:3px;
   background:linear-gradient(180deg,var(--peg-cap) 0 6px,var(--peg-color) 6px);box-shadow:inset 0 0 0 1px rgba(120,80,40,.16),0 2px 3px rgba(60,48,28,.18)}
@@ -384,7 +384,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
   background:var(--pol-bg);border-radius:var(--pol-radius);padding:var(--pol-pad) var(--pol-pad) 0;box-shadow:var(--pol-shadow);text-align:center;transition:box-shadow var(--dur-2) var(--ease)}
 .rope-peg{position:absolute;z-index:1;top:calc(var(--peg-h) / -2);left:50%;margin-left:calc(var(--peg-w) / -2);width:var(--peg-w);height:var(--peg-h);border-radius:3px;
   background:linear-gradient(180deg,var(--peg-cap) 0 6px,var(--peg-color) 6px);box-shadow:inset 0 0 0 1px rgba(120,80,40,.16),0 2px 3px rgba(60,48,28,.18)}
-.rope-art{aspect-ratio:1/1;background:var(--paper-50);border-radius:1px;overflow:hidden}
+.rope-art{aspect-ratio:1/1;background:var(--paper-white);border-radius:1px;overflow:hidden}
 .rope-art svg{display:block;width:100%;height:100%}
 .rope-name{display:block;font-family:var(--font-display);font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-snug);padding:var(--sp-3) var(--sp-2) var(--sp-4)}
 /* עכבר מעל החבל או פוקוס מקלדת בתוכו: הכול עוצר. הכרטיס שבפוקוס זז למרכז החבל כדי שלא יישאר מחוץ למסך */
