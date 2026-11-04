@@ -364,7 +364,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3)}
 /* כתב יד ליד החבל: רמז קטן שהפולארואידים לחיצים, עם חץ מצויר שיורד אליהם */
 .rope-hint{position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:center;gap:var(--sp-1);margin:var(--sp-6) 0 0;
-  font:var(--fw-regular) clamp(1.375rem,3vw,1.75rem)/1 var(--font-hand);color:var(--text-accent);transform:rotate(-3deg);pointer-events:none}
+  font:var(--fw-regular) clamp(1.375rem,3vw,1.75rem)/1 var(--font-hand);color:var(--text-accent);transform:translate(-40px,44px) rotate(-3deg);pointer-events:none}   /* קצת שמאלה ולמטה: באמצע בין הכפתורים לחבל */
 .rope-hint svg{width:42px;height:31px;margin-top:var(--sp-3);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 /* מיקומי הענפים כמו בתצוגה (120/260/110/72), פחות ~80px של הניווט שכאן יושב מעל הסקשן ולא בתוכו */
 .hero-sprig-poppy{top:40px;inset-inline-end:4%;transform:rotate(-12deg)}
