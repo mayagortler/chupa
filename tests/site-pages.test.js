@@ -173,6 +173,11 @@ function surfaces(page) {
   assert.ok(!/rotate|scale/.test(stick), 'styles.css: .rv-hide.rv-stick still tilts or scales');
   var mo = (css.match(/@keyframes mo-stick\{[^}]*\}\}?/) || [''])[0];
   assert.ok(!/rotate|scale/.test(mo), 'styles.css: mo-stick still tilts or scales');
+  /* reduced motion: the rope becomes a static row that scrolls inside itself, so all 10 cards stay reachable */
+  var reduce = (css.match(/@media \(prefers-reduced-motion:reduce\)\{[^@]*\.rope-track\{[^}]*\}[^@]*/) || [''])[0];
+  assert.ok(/\.rope-track\{[^}]*overflow-x:auto/.test(reduce), 'styles.css: reduced motion keeps the rope-track from scrolling');
+  assert.ok(/\.rope-card\{[^}]*offset-path:none/.test(reduce), 'styles.css: reduced motion leaves rope cards on the offset path');
+  assert.ok(/\.rope\{[^}]*pointer-events:auto/.test(reduce), 'styles.css: reduced motion leaves the rope without pointer events');
 })();
 
 /* one version per asset across all pages */
