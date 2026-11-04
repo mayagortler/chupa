@@ -25,23 +25,6 @@
     if (v) { a.setAttribute('href', v); a.hidden = false; }
   });
 
-  /* בלונים מעל ההיגדים: לחיצה מפוצצת בלון, והוא מתנפח שוב אחרי רגע */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-balloons] .bl-item'), function (it) {
-    var btn = it.querySelector('.bl-b');
-    btn.addEventListener('click', function () {
-      if (it.classList.contains('popped')) { return; }
-      it.classList.add('popped');
-      setTimeout(function () { it.classList.remove('popped'); }, 1800);
-    });
-  });
-
-  /* רשימת המשימות בפתיחה: לחיצה מוחקת את השורה בקו, לחיצה נוספת מחזירה */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-todo]'), function (b) {
-    b.addEventListener('click', function () {
-      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
-    });
-  });
-
   /* איך זה עובד: לחיצה על כרטיס פותחת את הפירוט (בלי JavaScript הפירוט פשוט פתוח) */
   Array.prototype.forEach.call(document.querySelectorAll('.pc-tog'), function (b) {
     var dl = document.getElementById(b.getAttribute('aria-controls'));
@@ -60,8 +43,8 @@
      פריטים שנכנסים יחד נכנסים בהשהיה קטנה זה אחרי זה, ו-.rv יורד בסוף כדי להחזיר את המעברים של ה-hover */
   (function () {
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
-    var rise = '.sec > h2, .sec > .sub, .about, .faq, .rev-more';
-    var stick = '.prints > li, .notes > li, .svcs > li, .rev > .chat, .std';
+    var rise = '.section-head, .about, .faq';
+    var stick = '.svcs > li, .rev > .chat';
     var io = new IntersectionObserver(function (es) {
       var n = 0;
       es.forEach(function (e) {
@@ -88,57 +71,6 @@
     }
     prep(rise, false);
     prep(stick, true);
-  })();
-
-  /* מגנטים: גוררים אותם לכל מקום על הדלת. נגיעה בלי תזוזה נשארת לחיצה רגילה.
-     ההזזה יושבת ב-translate, כך שההטיה (transform) של כל מגנט נשמרת */
-  (function () {
-    var z = 20;
-    function lift(el) {
-      /* מעלים את כל השרשרת עד המקרר, כדי שהמגנט לא ייעלם מתחת לכרטיס הבא */
-      z++;
-      for (var a = el; a && !a.classList.contains('fridge') && a !== document.body; a = a.parentElement) {
-        if (getComputedStyle(a).position === 'static') { a.style.position = 'relative'; }
-        a.style.zIndex = z;
-      }
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('.mag, .loose, .hero-logo'), function (el) {
-      el.classList.add('mv');
-      if (el.tagName === 'IMG') { el.draggable = false; }
-      var x = 0, y = 0, sx, sy, id = null, moved = false;
-      el.addEventListener('pointerdown', function (e) {
-        if (e.button !== 0 || id !== null) { return; }
-        id = e.pointerId; moved = false;
-        sx = e.clientX - x; sy = e.clientY - y;
-        el.setPointerCapture(id);
-      });
-      el.addEventListener('pointermove', function (e) {
-        if (e.pointerId !== id) { return; }
-        var nx = e.clientX - sx, ny = e.clientY - sy;
-        if (!moved) {
-          if (Math.abs(nx - x) + Math.abs(ny - y) < 4) { return; }
-          moved = true;
-          el.style.animation = 'none';
-          el.classList.add('mv-drag');
-          lift(el);
-        }
-        x = nx; y = ny;
-        el.style.translate = x + 'px ' + y + 'px';
-      });
-      function drop(e) {
-        if (e.pointerId !== id) { return; }
-        id = null;
-        el.classList.remove('mv-drag');
-        if (moved) {
-          /* גרירה שהסתיימה מעל קישור לא פותחת אותו */
-          var stop = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
-          window.addEventListener('click', stop, { capture: true, once: true });
-          setTimeout(function () { window.removeEventListener('click', stop, { capture: true }); }, 0);
-        }
-      }
-      el.addEventListener('pointerup', drop);
-      el.addEventListener('pointercancel', drop);
-    });
   })();
 
   /* איך זה עובד: הכרטיסים נכנסים בגלילה */
