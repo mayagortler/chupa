@@ -20,7 +20,7 @@
 | על רקע כהה או על תמונה | `chupa-badge-mono-white`, `chupa-horizontal-mono-white`, `chupa-wordmark-white` |
 | השם לבד, כשאין מקום לפרח | `chupa-wordmark-ink` / `-olive` |
 | תמונת פרופיל באינסטגרם, בוואטסאפ ובפייסבוק | `png/chupa-avatar-1080.png` (נחתך יפה גם לעיגול) |
-| אייקון לשונית בדפדפן | `web/favicon.ico`, `web/favicon-32.png` (נבנים מ-`svg/chupa-icon-small.svg`) |
+| אייקון לשונית בדפדפן (פרח הזכריני לבד) | `svg/chupa-flower-icon.svg`, `web/chupa-flower-512.png`, `web/favicon-flower.ico` |
 | אייקון במסך הבית בטלפון | `web/apple-touch-icon.png` (180), `web/chupa-icon-192.png`, `web/chupa-icon-512.png` |
 
 ## כללים קצרים
