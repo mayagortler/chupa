@@ -27,7 +27,7 @@ Everything is conducted in WhatsApp. Files are delivered digitally (for sending,
 - Name: צ׳ופה, written with a geresh.
 - Voice: warm, direct, second-person plural, no jargon, no "digging".
 - Visual references chosen by the owner (2026-11-02): printed photo prints and polaroids pinned on a string, paper stationery (envelopes, postcards, stamps), hand-drawn pencil and gouache illustration, textured paper. Elegant, not childish. No blue in the palette.
-- Logo: final files in `brand/logo/` (round badge with a forget-me-not spike, see `brand/logo/README.md`). `assets/logo.svg` is the old temporary mark and the site header still shows the text name.
+- Logo: final files in `brand/logo/` (round badge with a forget-me-not spike, see `brand/logo/README.md`). The site header shows the horizontal lockup (`assets/logo.svg`), and the favicon and apple-touch icon come from the same set.
 
 ## Evidence on Hand
 - Two real client WhatsApp reviews with photos (`assets/event-photo.webp`, `assets/review-ceremony.webp`); one needs written publication consent (`CONTENT-TODO.md`).

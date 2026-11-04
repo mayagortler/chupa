@@ -31,7 +31,7 @@ pages.forEach(function (page) {
   assert.ok(!/class="fridge/.test(html), page + ': still has the fridge wrapper');
   assert.ok(!/class="vr"/.test(html), page + ': header still has the .vr divider');
   assert.ok(!/lt-icon/.test(html), page + ': header still has the letter-tile logo');
-  assert.match(html, /<a class="logo" href="index\.html"[^>]*>צ׳ופה<\/a>/, page + ': logo is not the word צ׳ופה');
+  assert.match(html, /<a class="logo" href="index\.html" aria-label="צ׳ופה, לדף הבית"><img src="assets\/logo\.svg\?v=\d+" alt=""/, page + ': header logo is not the forget-me-not logo image');
   assert.match(html, /class="btn btn-ghost bar-cta"/, page + ': header CTA is not a ghost button');
 });
 
