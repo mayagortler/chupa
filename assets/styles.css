@@ -119,6 +119,9 @@
   /* קישוט פרחוני */
   --sprig-size:clamp(44px,7vw,72px); --sprig-opacity:.92;
 
+  /* פוקוס מקלדת: קו מתאר, כדי שאף box-shadow של רכיב לא יסתיר אותו. על משטח כהה הוא בנייר */
+  --focus-width:2px; --focus-color:var(--olive-700); --focus-offset:3px;
+
   /* ===================== legacy aliases =====================
      שמות מהעיצוב הקודם שעדיין בשימוש בבילדר, בטופס ובעמוד האירועים.
      כל אחד מצביע על טוקן חדש. נמחקים כשהרכיבים שמשתמשים בהם נכתבים מחדש */
@@ -151,7 +154,7 @@ body{margin:0;background:var(--bg-page);color:var(--text-body);font-family:var(-
 a{color:var(--text-accent);text-underline-offset:.25em;text-decoration-thickness:1px}
 img{max-width:100%}
 input,textarea,select{caret-color:var(--text)}
-:focus-visible{outline:none;box-shadow:var(--ring);border-radius:var(--r-xs)}
+:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
 /* hidden תמיד מנצח, גם כשלרכיב יש display משלו */
 [hidden]{display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -208,7 +211,7 @@ p{margin:0}
 .surface-dark .sheet h3{color:var(--text)}
 .surface-dark .sheet .kicker{color:var(--text-accent)}
 .surface-dark .sheet .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
-.surface-dark :focus-visible{box-shadow:0 0 0 3px var(--sec-bg),0 0 0 5px var(--paper-50)}
+.surface-dark{--focus-color:var(--paper-50)}
 .rule-top>.wrap{border-top:1px solid var(--line-soft);padding-top:var(--sp-section)}
 .section.rule-top{padding-top:0}
 
@@ -391,7 +394,8 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
   transform-origin:50% 100%;animation:bl-float 3.6s ease-in-out infinite alternate;animation-delay:calc(var(--d) * -1);
   transition:transform .45s var(--ease-spring),opacity .3s}
 .bl-shape{position:absolute;left:0;top:0;width:130px;height:166px;overflow:visible;transition:transform var(--dur-2) var(--ease)}
-.bl-b:focus-visible{outline:3px solid var(--ink);outline-offset:4px;border-radius:var(--r-md)}
+/* הבלון עצמו בלי פינות: הקו המתאר מקבל פינות משלו */
+.bl-b:focus-visible{border-radius:var(--r-md)}
 .bl-conf{position:absolute;left:65px;top:70px;width:0;height:0}
 .bl-conf i{position:absolute;left:-3px;top:-3px;width:7px;height:10px;border-radius:2px;opacity:0}
 .bl-item p{margin:14px 0 0;max-width:230px;font-size:var(--fs-base);line-height:var(--lh-body);text-align:center;text-wrap:balance}
@@ -448,7 +452,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .pc-tog{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;width:100%;min-height:var(--tap);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);text-align:start;cursor:pointer;letter-spacing:inherit;-webkit-tap-highlight-color:transparent}
 .pc-tog::after{content:"";position:absolute;inset:0;border-radius:var(--r-xl)}
 .pc-tog:focus-visible{outline:none}
-.pc:has(.pc-tog:focus-visible){outline:3px solid var(--ink);outline-offset:4px}
+.pc:has(.pc-tog:focus-visible){outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
 .pc-more{flex:none;display:inline-flex;align-items:center;gap:var(--sp-1);min-height:28px;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--sky-700);background:var(--sky-100);border-radius:var(--r-pill);padding:var(--sp-1) 10px var(--sp-1) var(--sp-2);transition:background-color var(--dur-2) var(--ease)}
 .pc-more svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s var(--ease)}
 .pc-tog[aria-expanded="true"] .pc-more svg{transform:rotate(180deg)}
@@ -711,7 +715,7 @@ body.has-bar{padding-bottom:96px}
 .cf-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
 .cf-chip{position:relative}
 .cf-chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
-.cf-chip input:focus-visible + span{outline:3px solid var(--ink);outline-offset:3px}
+.cf-chip input:focus-visible + span{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
 .cf-err{font-size:var(--fs-sm);color:var(--danger);font-weight:var(--fw-medium)}
 .cf-bad .cf-chip span{border-color:var(--danger)}
 .cf-submit{align-self:stretch}
@@ -764,7 +768,8 @@ body.has-bar{padding-bottom:96px}
 .sample-media video{display:block;width:100%;height:100%;object-fit:cover}
 .sample-ctl{position:absolute;inset-block-end:var(--sp-3);inset-inline-start:var(--sp-3);display:flex;gap:var(--sp-2)}
 .sample-ctl button{font:inherit;font-size:var(--fs-sm);font-weight:var(--fw-medium);display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 var(--sp-4);border:0;border-radius:var(--r-pill);background:rgba(255,255,255,.92);color:var(--ink);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.18);-webkit-tap-highlight-color:transparent}
-.sample-ctl button:focus-visible{outline:3px solid var(--on-ink);outline-offset:2px}
+/* על הווידאו הכהה: קו מתאר בנייר */
+.sample-ctl button{--focus-color:var(--paper-50)}
 .sample-ctl button svg{flex:none}
 .sample-txt{padding:var(--sp-5) var(--sp-6) var(--sp-6)}
 .sample-tag{display:inline-block;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--ink-700);background:var(--sky-soft);border-radius:var(--r-pill);padding:4px 12px;margin-bottom:var(--sp-2)}
