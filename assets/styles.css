@@ -1,5 +1,8 @@
 /* צ׳ופה – עיצוב גרפי ומדיה לאירועים */
 
+/* כתב היד: גופן של רינת זיגדון ז״ל, מיזם ההנצחה אות.חיים (ot-hayim.co.il). הקובץ בשימוש כמו שהוא, בלי שינויים. הקרדיט בפוטר. */
+@font-face{font-family:'OH Rinat Zigdon';src:url(fonts/OHRinatZigdon-Regular.woff2) format('woff2'),url(fonts/OHRinatZigdon-Regular.woff) format('woff');font-weight:400;font-style:normal;font-display:swap}
+
 /* ==========================================================================
    Design tokens – גרסת "חתונת צהריים" (מקור: docs/design-system/tokens.css)
    שלוש שכבות: פרימיטיביים (ערכים גולמיים) → סמנטיים (תפקיד) → רכיבים.
@@ -30,8 +33,9 @@
   --glow-core:#FFF3C4; --glow-edge:#F1CF6A; --glow-halo:#FFD978;
 
   /* טיפוגרפיה */
-  --font-display:'Frank Ruhl Libre','David Libre',Georgia,serif;
-  --font-sans:'Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-display:'Bona Nova','David Libre',Georgia,serif;
+  --font-sans:'Assistant',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-hand:'OH Rinat Zigdon','Assistant',cursive;   /* נגיעה בלבד: שורה אחת, לא טקסט רץ */
   --fs-2xs:.75rem; --fs-xs:.8125rem; --fs-sm:.875rem; --fs-md:.9375rem; --fs-base:1rem; --fs-lg:1.0625rem;
   --fs-xl:1.125rem; --fs-2xl:1.25rem; --fs-3xl:1.375rem; --fs-4xl:1.5rem; --fs-5xl:2rem;
   --fs-h3:clamp(1.25rem,2.6vw,1.5rem);
@@ -93,9 +97,11 @@
   /* ===================== 3. רכיבים ===================== */
 
   /* כפתור */
-  --btn-h:52px; --btn-px:var(--sp-7); --btn-radius:var(--r-pill); --btn-font:var(--fw-medium);
-  --btn-primary-bg:var(--ink-900); --btn-primary-fg:var(--paper-50); --btn-primary-bg-hover:#000;
-  --btn-ghost-border:var(--ink-900); --btn-ghost-fg:var(--ink-900); --btn-ghost-bg-hover:rgba(43,42,38,.05);
+  /* כפתור: מלבן דק עם ריווח אותיות, מתמלא בדיו בריחוף */
+  --btn-h:50px; --btn-px:var(--sp-8); --btn-radius:0; --btn-font:var(--fw-regular); --btn-fs:var(--fs-sm); --btn-tracking:.22em;
+  --btn-primary-bg:transparent; --btn-primary-fg:var(--ink-900); --btn-primary-border:var(--ink-900);
+  --btn-primary-bg-hover:var(--ink-900); --btn-primary-fg-hover:var(--paper-50);
+  --btn-ghost-border:var(--line-strong); --btn-ghost-fg:var(--ink-900); --btn-ghost-bg-hover:var(--ink-900);
   --btn-soft-bg:var(--olive-50); --btn-soft-fg:var(--olive-800); --btn-soft-bg-hover:var(--olive-100);
 
   /* פולארויד */
@@ -197,14 +203,13 @@ p{margin:0}
 .surface-dark h1,.surface-dark h2,.surface-dark h3{color:var(--text-on-dark)}
 .surface-dark .kicker,.surface-dark .lead{color:var(--text-on-dark-body)}
 .surface-dark a:not(.btn){color:var(--text-on-dark)}
-.surface-dark .btn-primary{background:var(--paper-50);color:var(--sec-bg)}
-.surface-dark .btn-primary:hover{background:var(--paper-white)}
-.surface-dark .btn-ghost{color:var(--text-on-dark);border-color:var(--text-on-dark-body)}
-.surface-dark .btn-ghost:hover{background:rgba(252,252,246,.1)}
+/* על כהה: מסגרת קרם וכיתוב נייר, מתמלא בנייר בריחוף */
+.surface-dark .btn,.surface-dark .btn-primary,.surface-dark .btn-ghost{background:transparent;color:var(--text-on-dark);border-color:var(--text-on-dark-body)}
+@media (hover:hover){.surface-dark .btn:hover,.surface-dark .btn-primary:hover,.surface-dark .btn-ghost:hover{background:var(--paper-50);border-color:var(--paper-50);color:var(--sec-bg)}}
 .surface-dark .sheet{color:var(--text-body)}
 .surface-dark .sheet h3{color:var(--text)}
 .surface-dark .sheet .kicker{color:var(--text-accent)}
-.surface-dark .sheet .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.surface-dark .sheet .btn,.surface-dark .sheet .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg);border-color:var(--btn-primary-border)}
 .surface-dark{--focus-color:var(--paper-50)}
 .rule-top>.wrap{border-top:1px solid var(--line-soft);padding-top:var(--sp-section)}
 .section.rule-top{padding-top:0}
@@ -219,24 +224,24 @@ p{margin:0}
 .sheet-framed{outline:1px solid var(--line);outline-offset:-10px}
 
 /* --- כפתורים: .btn לבד הוא הראשי (דיו). רפאים, רך ווואטסאפ הם וריאציות --- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:var(--btn-h);padding:0 var(--btn-px);border-radius:var(--btn-radius);border:1px solid transparent;
-  font:var(--btn-font) var(--fs-md)/1.2 var(--font-sans);text-decoration:none;cursor:pointer;
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:var(--btn-h);padding:0 var(--btn-px);border-radius:var(--btn-radius);border:1px solid var(--btn-primary-border);
+  font:var(--btn-font) var(--btn-fs)/1.2 var(--font-sans);letter-spacing:var(--btn-tracking);text-decoration:none;cursor:pointer;
   background:var(--btn-primary-bg);color:var(--btn-primary-fg);-webkit-tap-highlight-color:transparent;
   transition:background-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease),box-shadow var(--dur-2) var(--ease)}
 .btn svg{flex:none}
 .btn:active{transform:scale(var(--press))}
-.btn.big{min-height:var(--ctl-lg);padding:0 30px}
+.btn.big{min-height:var(--ctl-lg);padding:0 var(--sp-10)}
 .btn-primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
 .btn-ghost,.btn.light{background:transparent;color:var(--btn-ghost-fg);border-color:var(--btn-ghost-border)}
-.btn-soft{background:var(--btn-soft-bg);color:var(--btn-soft-fg)}
-.btn-wa{background:var(--wa);color:var(--paper-white)}
+.btn-soft{background:var(--btn-soft-bg);color:var(--btn-soft-fg);border-color:transparent}
+.btn-wa{background:var(--wa);border-color:var(--wa);color:var(--paper-white)}
 .btn[aria-disabled="true"],.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .wa-ic{width:20px;height:20px;flex:none;fill:currentColor}
 @media (hover:hover){
-  .btn:hover,.btn-primary:hover{background:var(--btn-primary-bg-hover)}
-  .btn-ghost:hover,.btn.light:hover{background:var(--btn-ghost-bg-hover)}
+  .btn:hover,.btn-primary:hover{background:var(--btn-primary-bg-hover);color:var(--btn-primary-fg-hover)}
+  .btn-ghost:hover,.btn.light:hover{background:var(--btn-ghost-bg-hover);border-color:var(--btn-ghost-bg-hover);color:var(--btn-primary-fg-hover)}
   .btn-soft:hover{background:var(--btn-soft-bg-hover)}
-  .btn-wa:hover{background:var(--wa-hover)}
+  .btn-wa:hover{background:var(--wa-hover);border-color:var(--wa-hover);color:var(--paper-white)}
   .btn[aria-disabled="true"]:hover,.btn:disabled:hover{transform:none}
 }
 
@@ -328,9 +333,9 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .nav{display:flex;align-items:center;gap:var(--sp-1);margin-inline-start:auto}
 .nav a{font-family:var(--font-sans);font-size:var(--fs-sm);color:var(--text-body);text-decoration:none;text-underline-offset:.35em;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-xs);-webkit-tap-highlight-color:transparent;transition:color var(--dur-2) var(--ease)}
 .nav a[aria-current="page"]{color:var(--text);text-decoration:underline;text-decoration-color:var(--olive-300)}
-.bar-cta{min-height:var(--tap);padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.bar-cta{min-height:var(--tap);padding:0 var(--sp-5);font-size:var(--fs-xs)}
 .bar-cta svg{width:16px;height:16px}
-.bar-cta[aria-current="page"]{background:var(--btn-ghost-bg-hover)}
+.bar-cta[aria-current="page"]{background:var(--btn-ghost-bg-hover);border-color:var(--btn-ghost-bg-hover);color:var(--btn-primary-fg-hover)}
 @media (hover:hover){.nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}}
 
 /* --- פוטר: נייר, ממורכז, טקסט שקט --- */
@@ -339,6 +344,8 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .foot .foot-nav a{font-size:var(--fs-sm);color:var(--text-body);text-decoration:none;min-height:var(--tap);display:inline-flex;align-items:center;padding:0 var(--sp-3);border-radius:var(--r-xs);transition:color var(--dur-2) var(--ease)}
 .foot-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3) var(--sp-5)}
 .foot-meta a{min-height:var(--tap);display:inline-flex;align-items:center;color:var(--text-muted)}
+.credit{font-size:var(--fs-xs);color:var(--text-muted)}
+.credit a{min-height:0;display:inline;text-decoration:underline}
 @media (hover:hover){.foot .foot-nav a:hover{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}}
 
 /* ==========================================================================
@@ -472,7 +479,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .about-cert .pol-sway{display:block;padding:6px 6px 16px;transform:rotate(5deg)}
 .about-cert img{display:block;width:100%;height:auto}
 .about-body{flex:1;min-width:0;display:flex;flex-direction:column}
-.about-body h2{text-wrap:balance}
+.about-body h2{text-wrap:balance;font-family:var(--font-hand);font-weight:var(--fw-regular);font-size:clamp(2.25rem,6vw,3.25rem);line-height:1.1;letter-spacing:0}
 .about-txt{display:flex;flex-direction:column;gap:var(--sp-4);margin-top:var(--sp-6)}
 .about-txt p{font-size:var(--fs-lg);font-weight:var(--fw-light);line-height:var(--lh-relaxed);color:var(--text-on-dark-body);text-wrap:pretty;max-width:65ch}
 .about-txt p:first-child{color:var(--text-on-dark)}
@@ -482,8 +489,9 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .home-close{text-align:center;overflow:hidden}
 .home-close h2{text-wrap:balance}
 .home-close .lead{margin:var(--sp-4) auto var(--sp-8)}
-.close-sprig{bottom:var(--sp-8);inset-inline-end:6%;transform:rotate(-10deg)}
-@media (max-width:640px){.close-sprig{--sprig-size:34px;bottom:var(--sp-4);inset-inline-end:var(--sp-4)}}
+/* בפינה העליונה, הרחק מהכפתורים (הם רחבים בגלל ריווח האותיות) */
+.close-sprig{top:var(--sp-8);inset-inline-end:6%;transform:rotate(-10deg)}
+@media (max-width:640px){.close-sprig{--sprig-size:34px;top:var(--sp-4);inset-inline-end:var(--sp-4)}}
 
 
 /* ==========================================================================

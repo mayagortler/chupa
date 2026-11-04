@@ -13,9 +13,11 @@ var versions = {}; /* asset file -> {n: true} */
 pages.forEach(function (page) {
   var html = fs.readFileSync(path.join(root, page), 'utf8');
   assert.ok(!/fridge\.css/.test(html), page + ': still loads fridge.css');
-  assert.ok(/family=Frank\+Ruhl\+Libre:wght@300;400;500/.test(html), page + ': missing Frank Ruhl Libre');
-  assert.ok(/family=Heebo:wght@300;400;500/.test(html), page + ': missing Heebo');
-  assert.ok(!/family=Assistant/.test(html), page + ': still loads Assistant');
+  assert.ok(/family=Bona\+Nova:wght@400;700/.test(html), page + ': missing Bona Nova');
+  assert.ok(/family=Assistant:wght@300;400;500;600/.test(html), page + ': missing Assistant');
+  assert.ok(!/Frank\+Ruhl/.test(html), page + ': still loads Frank Ruhl Libre');
+  assert.ok(/<link rel="preload" href="assets\/fonts\/OHRinatZigdon-Regular\.woff2"/.test(html), page + ': handwriting font not preloaded');
+  assert.ok(/class="credit">כתב היד באתר: רינת זיגדון ז״ל/.test(html), page + ': handwriting font credit missing from the footer');
   assert.match(html, /<html lang="he" dir="rtl">/, page + ': html lang/dir');
   var re = /assets\/([A-Za-z0-9_.-]+)\?v=(\d+)/g, m;
   while ((m = re.exec(html))) {
