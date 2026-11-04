@@ -12,13 +12,13 @@
 | שימוש | קובץ |
 |---|---|
 | הלוגו הראשי: הזמנות, מסמכים, חתימת מייל, סימן מים | `chupa-badge` |
-| כותרת האתר: השיבולת מעל השם, ממורכז | `chupa-vertical` (וגם `-mono-white`, `-mono-terracotta`, `-mono-ink`, `-mono-olive`) |
+| כותרת האתר: השיבולת מעל השם, ממורכז | `chupa-vertical` (וגם `-mono-white`, `-mono-olive`, `-mono-ink`, `-mono-olive-dark`) |
 | תמונת הפרופיל של העסק בוואטסאפ | `png/chupa-whatsapp-profile.png` (1080×1080, מתאים לחיתוך העגול) |
 | גרסה משנית, לא בשימוש באתר: השיבולת לצד השם | `chupa-horizontal` |
-| התג בלי טקסט: מדבקות, חותמת על עבודות, כשהשם כבר כתוב לידו | `chupa-badge-notext` (וגם `-mono-terracotta`, `-mono-white`) |
-| חותמת בצבע אחד, הדפסה בצבע אחד, הטבעה | `chupa-badge-mono-terracotta` / `-olive` / `-ink` |
+| התג בלי טקסט: מדבקות, חותמת על עבודות, כשהשם כבר כתוב לידו | `chupa-badge-notext` (וגם `-mono-olive`, `-mono-white`) |
+| חותמת בצבע אחד, הדפסה בצבע אחד, הטבעה | `chupa-badge-mono-olive` / `-olive-dark` / `-ink` |
 | על רקע כהה או על תמונה | `chupa-badge-mono-white`, `chupa-horizontal-mono-white`, `chupa-wordmark-white` |
-| השם לבד, כשאין מקום לפרח | `chupa-wordmark-ink` / `-terracotta` |
+| השם לבד, כשאין מקום לפרח | `chupa-wordmark-ink` / `-olive` |
 | תמונת פרופיל באינסטגרם, בוואטסאפ ובפייסבוק | `png/chupa-avatar-1080.png` (נחתך יפה גם לעיגול) |
 | אייקון לשונית בדפדפן | `web/favicon.ico`, `web/favicon-32.png` (נבנים מ-`svg/chupa-icon-small.svg`) |
 | אייקון במסך הבית בטלפון | `web/apple-touch-icon.png` (180), `web/chupa-icon-192.png`, `web/chupa-icon-512.png` |
@@ -34,10 +34,11 @@
 
 | תפקיד | צבע |
 |---|---|
-| ורוד עלה כהה (טבעת, טקסט) | `#96564F` |
+| ירוק זית (טבעת, טקסט) | `#5E6532` |
 | נייר (רקע התג) | `#FCFCF6` |
 | פרחים (בגרסאות הצבעוניות עם גוונים בהירים וכהים קרובים) | `#ADBACB` |
 | ניצנים בקצה השיבולת | `#E5A39D` |
+| נקודות הצד בתג | `#A1AC4E` |
 | עלים | `#A1AC4E` |
 | גבעול | `#969F4A` |
 | מרכזי הפרחים | `#EEC474` |
