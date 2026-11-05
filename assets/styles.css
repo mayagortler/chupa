@@ -199,6 +199,11 @@ p{margin:0}
    ========================================================================== */
 .surface-paper{--sec-bg:var(--surface-paper);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 .surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
+/* "מה אומרים לקוחות": דוגמה חוזרת של פרחי הזכריני מהלוגו, עדינה, מעל מרקם הנייר */
+.has-flowers{background-image:url(flower-pattern.webp),var(--paper-tex);background-size:260px,512px}
+.has-flowers .section-head{position:relative}
+.has-flowers .section-head::before{content:"";position:absolute;inset:-28px -64px;z-index:-1;background:radial-gradient(closest-side,var(--sec-bg) 62%,transparent)}
+.has-flowers .section-head{isolation:isolate}
 .surface-olive{--sec-bg:var(--surface-olive)}
 .surface-mist{--sec-bg:var(--surface-mist)}
 .surface-petal{--sec-bg:var(--surface-petal)}
