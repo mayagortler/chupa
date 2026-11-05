@@ -86,35 +86,4 @@
     });
   });
 
-  /* כפתור צף: בדף הבית "למעלה" אחרי שגוללים, בשאר העמודים "לדף הבית" אחרי שעוברים את הכותרת */
-  (function () {
-    var home = /(^|\/)(index\.html)?$/.test(location.pathname);
-    var up = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16V4M5 9l5-5 5 5"/></svg>';
-    var house = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L10 3.5l7 6"/><path d="M5 8.2V16.5h10V8.2"/><path d="M8.3 16.5v-4.3h3.4v4.3"/></svg>';
-    var b = document.createElement('a');
-    b.className = 'float-nav';
-    b.href = home ? '#top' : 'index.html';
-    b.setAttribute('aria-label', home ? 'חזרה לראש העמוד' : 'חזרה לדף הבית');
-    b.innerHTML = (home ? up : house) + '<span>' + (home ? 'למעלה' : 'לדף הבית') + '</span>';
-    if (home) {
-      b.addEventListener('click', function (e) {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        var logo = document.querySelector('.logo'); if (logo) { logo.focus({ preventScroll: true }); }
-      });
-    }
-    document.body.appendChild(b);
-    var limit = function () { return home ? window.innerHeight * 0.9 : 260; };
-    var tick = false;
-    function update() {
-      tick = false;
-      var max = document.documentElement.scrollHeight - window.innerHeight;          /* עמוד קצר: מופיע כשמגיעים לתחתית */
-      b.classList.toggle('is-on', window.scrollY > Math.min(limit(), Math.max(40, max - 40)));
-      var bar = document.getElementById('bar');            /* סרגל ההצעה התחתון בעמודי האירועים */
-      b.style.bottom = bar && bar.offsetHeight ? (bar.offsetHeight + 12) + 'px' : '';
-    }
-    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
-    window.addEventListener('resize', update);
-    update();
-  })();
 })();
