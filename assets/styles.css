@@ -201,10 +201,11 @@ p{margin:0}
 .surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 /* "מה אומרים לקוחות" נשאר בירוק הבהיר המקורי */
 .section.surface-cream.rev-green{--sec-bg:var(--cream-50)}
-/* "נעים להכיר": צבע הדף, עם שני ענפי זכריני מהלוגו (עם הגבעול) שצומחים מהפינות התחתונות */
-.about-flowers{background-image:url(sprig-corner-a.webp),url(sprig-corner-b.webp),var(--paper-tex);background-repeat:no-repeat,no-repeat,repeat;
-  background-size:120px 200px,96px 160px,512px;background-position:left 4% bottom 0,right 4% bottom 0,0 0}
-@media (max-width:640px){.about-flowers{background-size:72px 120px,60px 100px,512px;background-position:left 8px bottom 0,right 8px bottom 0,0 0}}
+/* "נעים להכיר": צבע הדף, עם זר קטן לצד הטקסט משמאל: ענף הזכריני מהלוגו ולבנדר */
+.about-flowers{background-image:url(sprig-logo.webp),url(sprig-lavender.webp),var(--paper-tex);background-repeat:no-repeat,no-repeat,repeat;
+  background-size:60px auto,46px auto,512px;background-position:left calc(50% - 404px) bottom 64px,left calc(50% - 440px) bottom 64px,0 0}
+@media (max-width:1100px){.about-flowers{background-position:left calc(2% + 32px) bottom 40px,left 2% bottom 40px,0 0;background-size:52px auto,40px auto,512px}}
+@media (max-width:640px){.about-flowers{background-size:40px auto,30px auto,512px;background-position:left 14px bottom 0,left 44px bottom 0,0 0}}
 .surface-olive{--sec-bg:var(--surface-olive)}
 .surface-mist{--sec-bg:var(--surface-mist)}
 .surface-petal{--sec-bg:var(--surface-petal)}
