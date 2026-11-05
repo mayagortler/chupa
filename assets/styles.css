@@ -199,11 +199,12 @@ p{margin:0}
    ========================================================================== */
 .surface-paper{--sec-bg:var(--surface-paper);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 .surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
-/* "מה אומרים לקוחות": דוגמה חוזרת של פרחי הזכריני מהלוגו, עדינה, מעל מרקם הנייר */
-.has-flowers{background-image:url(flower-pattern.webp),var(--paper-tex);background-size:260px,512px}
-.has-flowers .section-head{position:relative}
-.has-flowers .section-head::before{content:"";position:absolute;inset:-28px -64px;z-index:-1;background:radial-gradient(closest-side,var(--sec-bg) 62%,transparent)}
-.has-flowers .section-head{isolation:isolate}
+/* "מה אומרים לקוחות" נשאר בירוק הבהיר המקורי */
+.section.surface-cream.rev-green{--sec-bg:var(--cream-50)}
+/* "נעים להכיר": צבע הדף, עם כמה פרחי זכריני מהלוגו בפינות */
+.about-flowers{background-image:url(flowers-corner-a.webp),url(flowers-corner-b.webp),var(--paper-tex);background-repeat:no-repeat,no-repeat,repeat;
+  background-size:190px,190px,512px;background-position:left 3% top 24px,right 3% bottom 24px,0 0}
+@media (max-width:640px){.about-flowers{background-size:120px,120px,512px;background-position:left 0 top 8px,right 0 bottom 8px,0 0}}
 .surface-olive{--sec-bg:var(--surface-olive)}
 .surface-mist{--sec-bg:var(--surface-mist)}
 .surface-petal{--sec-bg:var(--surface-petal)}
@@ -484,7 +485,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 @media (max-width:1040px){.rev{gap:var(--sp-5)}}
 @media (max-width:760px){.rev{grid-template-columns:1fr;max-width:340px;margin-inline:auto}.chat:nth-child(n){transform:rotate(0)}}
 
-/* about: ערפל כהה. התמונה של מאיה כפולארויד בודד על אטב, התעודה פולארויד קטן שני (קישור) */
+/* about: על צבע הדף. התמונה של מאיה כפולארויד בודד על אטב, התעודה פולארויד קטן שני (קישור) */
 .about{display:flex;align-items:center;gap:var(--sp-14)}
 .about-pics{flex:none;position:relative;width:280px;padding:var(--sp-4) 0 var(--sp-12)}
 .about-pics .peg{z-index:1}
@@ -499,8 +500,8 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .send-wish{margin:var(--sp-6) 0 0;text-align:center;font:var(--fw-regular) clamp(1.75rem,5vw,2.25rem)/1.1 var(--font-hand);color:var(--text-accent);transform:rotate(-2deg)}
 .about-body h2{text-wrap:balance;font-family:var(--font-hand);font-weight:var(--fw-regular);font-size:clamp(2.25rem,6vw,3.25rem);line-height:1.1;letter-spacing:0}
 .about-txt{display:flex;flex-direction:column;gap:var(--sp-4);margin-top:var(--sp-6)}
-.about-txt p{font-size:var(--fs-lg);font-weight:var(--fw-light);line-height:var(--lh-relaxed);color:var(--text-on-dark-body);text-wrap:pretty;max-width:65ch}
-.about-txt p:first-child{color:var(--text-on-dark)}
+.about-txt p{font-size:var(--fs-lg);font-weight:var(--fw-light);line-height:var(--lh-relaxed);color:var(--text-body);text-wrap:pretty;max-width:65ch}
+.about-txt p:first-child{color:var(--text)}
 @media (max-width:760px){.about{flex-direction:column;align-items:stretch;gap:var(--sp-8)}.about-pics{align-self:center}}
 
 /* closing: זית כהה, ממורכז, כפתור ראשי בנייר, ענף אחד בשוליים */

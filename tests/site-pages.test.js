@@ -66,7 +66,7 @@ pages.forEach(function (page) {
     return { surface: surf[0].slice(8), dark: cls.indexOf('surface-dark') !== -1, rule: cls.indexOf('rule-top') !== -1 };
   });
   assert.deepStrictEqual(secs.map(function (s) { return s.surface; }),
-    ['paper', 'paper', 'cream', 'paper', 'cream', 'mist', 'paper', 'olive'], 'index.html: surface order');
+    ['paper', 'paper', 'cream', 'paper', 'cream', 'paper', 'paper', 'olive'], 'index.html: surface order');
   var darks = secs.filter(function (s) { return s.dark; });
   assert.ok(darks.length <= 2, 'index.html: more than two dark sections');
   secs.forEach(function (s, i) {
