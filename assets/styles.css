@@ -22,6 +22,8 @@
   --ink-900:#2E2D28; --ink-700:#4A4840; --ink-500:#6B685E; --ink-300:#B5B1A5; --ink-100:#E8E6DC;
 
   /* זית: הצבע המוביל */
+  /* תכלת מתוך פרח הזכריני בלוגו (#ADBACB), לרקעים הבהירים במקום הירוק־בהיר */
+  --flower-50:#EEF2F8; --flower-100:#DFE6F0;
   --olive-50:#F3F5E7; --olive-100:#E4E8C9; --olive-300:#A1AC4E; --olive-700:#5E6532; --olive-800:#4A5027;
   /* כחול ערפל */
   --mist-50:#F1F4F7; --mist-100:#DFE5EC; --mist-300:#ADBACB; --mist-700:#56657A;
@@ -78,7 +80,7 @@
   --line:rgba(43,42,38,.12); --line-soft:rgba(43,42,38,.07); --line-strong:rgba(43,42,38,.28);
   --line-input:#9C968A;
 
-  --accent:var(--olive-700);  --accent-hover:var(--olive-800); --accent-soft:var(--olive-50);
+  --accent:var(--olive-700);  --accent-hover:var(--olive-800); --accent-soft:var(--flower-50);
 
   --wa:var(--olive-700); --wa-hover:var(--olive-800); --wa-fg:var(--paper-50);   /* כפתורי וואטסאפ: ירוק זית מהפלטה, כמו בלוגו; טקסט בהיר עובר 6:1 */
   --danger:#A8322A; --danger-ring:rgba(168,50,42,.16); --success:#3F7A4E;
@@ -86,7 +88,7 @@
   /* ---- משטחי סקשנים: כל סקשן בוחר אחד דרך מחלקת .surface-* ---- */
   /* רוב העמוד על נייר. קרם משמש להפרדה בין סקשנים */
   --surface-paper:var(--paper-page);
-  --surface-cream:var(--cream-50);
+  --surface-cream:var(--flower-50);
   /* משטחים כהים: אותם גוונים של הטקסט הצבעוני (700). טקסט עליהם בנייר/קרם, 4.9:1 ומעלה */
   --surface-olive:var(--olive-700);
   --surface-mist:var(--mist-700);
@@ -104,7 +106,7 @@
   --btn-primary-bg:transparent; --btn-primary-fg:var(--ink-900); --btn-primary-border:var(--ink-900);
   --btn-primary-bg-hover:var(--ink-900); --btn-primary-fg-hover:var(--paper-50);
   --btn-ghost-border:var(--line-strong); --btn-ghost-fg:var(--ink-900); --btn-ghost-bg-hover:var(--ink-900);
-  --btn-soft-bg:var(--olive-50); --btn-soft-fg:var(--olive-800); --btn-soft-bg-hover:var(--olive-100);
+  --btn-soft-bg:var(--flower-50); --btn-soft-fg:var(--olive-800); --btn-soft-bg-hover:var(--flower-100);
 
   /* פולארויד */
   --pol-w:204px; --pol-pad:12px; --pol-bottom:46px; --pol-bg:var(--paper-white); --pol-radius:var(--r-photo);
@@ -135,8 +137,8 @@
   --ink:var(--ink-900); --muted:var(--ink-500); --on-ink:var(--paper-50);
   --page:var(--paper-50); --surface:var(--paper-white); --paper:var(--paper-white);
   --chat:var(--apricot-50); --chat-line:var(--apricot-100); --highlight:var(--apricot-100);
-  --sky-50:var(--olive-50); --sky-100:var(--olive-50); --sky-200:var(--olive-100);
-  --sky-300:var(--olive-300); --sky-500:var(--olive-300); --sky-700:var(--olive-700); --sky-soft:var(--olive-50);
+  --sky-50:var(--flower-50); --sky-100:var(--flower-50); --sky-200:var(--flower-100);
+  --sky-300:var(--olive-300); --sky-500:var(--olive-300); --sky-700:var(--olive-700); --sky-soft:var(--flower-50);
   --string:var(--twine); --wood:var(--wood-300); --wood-cap:var(--wood-500);
   --success-ink:var(--success);
   --fw-bold:var(--fw-semibold); --fs-display:var(--fs-h1);
@@ -157,7 +159,7 @@
 html{-webkit-text-size-adjust:100%;interpolate-size:allow-keywords;scrollbar-color:var(--ink-300) transparent;accent-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{margin:0;background-color:var(--bg-page);background-image:var(--paper-tex);background-size:512px;color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh-body);min-height:100vh;-webkit-font-smoothing:antialiased}
-::selection{background:var(--olive-100);color:var(--text)}
+::selection{background:var(--flower-100);color:var(--text)}
 a{color:var(--text-accent);text-underline-offset:.25em;text-decoration-thickness:1px}
 img{max-width:100%}
 input,textarea,select{caret-color:var(--text)}
@@ -280,7 +282,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .chip[aria-pressed="true"],.dq-opt[aria-pressed="true"],.cf-chip input:checked + span{background:var(--chip-on-bg);color:var(--chip-on-fg);border-color:var(--chip-on-bg)}
 @media (hover:hover){
   .chip:hover,.dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{border-color:var(--line-strong)}
-  .dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{background:var(--olive-50)}
+  .dq-opt:hover:not([aria-pressed="true"]),.cf-chip input:not(:checked) + span:hover{background:var(--flower-50)}
 }
 
 /* --- כרטיסי בחירה: מצבי ההזמנה והפריטים. הבחירה בטבעת פנימית, בלי קפיצה בפריסה --- */
