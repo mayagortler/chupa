@@ -201,10 +201,10 @@ p{margin:0}
 .surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 /* "מה אומרים לקוחות" נשאר בירוק הבהיר המקורי */
 .section.surface-cream.rev-green{--sec-bg:var(--cream-50)}
-/* "נעים להכיר": צבע הדף, עם כמה פרחי זכריני מהלוגו בפינות */
-.about-flowers{background-image:url(flowers-corner-a.webp),url(flowers-corner-b.webp),var(--paper-tex);background-repeat:no-repeat,no-repeat,repeat;
-  background-size:190px,190px,512px;background-position:left 3% top 24px,right 3% bottom 24px,0 0}
-@media (max-width:640px){.about-flowers{background-size:120px,120px,512px;background-position:left 0 top 8px,right 0 bottom 8px,0 0}}
+/* "נעים להכיר": צבע הדף, עם שני ענפי זכריני מהלוגו (עם הגבעול) שצומחים מהפינות התחתונות */
+.about-flowers{background-image:url(sprig-corner-a.webp),url(sprig-corner-b.webp),var(--paper-tex);background-repeat:no-repeat,no-repeat,repeat;
+  background-size:120px 200px,96px 160px,512px;background-position:left 4% bottom 0,right 4% bottom 0,0 0}
+@media (max-width:640px){.about-flowers{background-size:72px 120px,60px 100px,512px;background-position:left 8px bottom 0,right 8px bottom 0,0 0}}
 .surface-olive{--sec-bg:var(--surface-olive)}
 .surface-mist{--sec-bg:var(--surface-mist)}
 .surface-petal{--sec-bg:var(--surface-petal)}
