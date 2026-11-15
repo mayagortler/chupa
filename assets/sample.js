@@ -17,8 +17,10 @@
     function sync() {
       play.innerHTML = (v.paused ? IC_PLAY + 'לנגן' : IC_PAUSE + 'לעצור');
       play.setAttribute('aria-pressed', String(!v.paused));
-      sound.innerHTML = (v.muted ? IC_OFF + 'עם קול' : IC_ON + 'בלי קול');
-      sound.setAttribute('aria-pressed', String(!v.muted));
+      if (sound) {
+        sound.innerHTML = (v.muted ? IC_OFF + 'עם קול' : IC_ON + 'בלי קול');
+        sound.setAttribute('aria-pressed', String(!v.muted));
+      }
     }
     function tryPlay() { var p = v.play(); if (p && p.catch) { p.catch(sync); } }
 
@@ -33,7 +35,7 @@
     play.addEventListener('click', function () {
       if (v.paused) { item.stopped = false; tryPlay(); } else { item.stopped = true; v.pause(); }
     });
-    sound.addEventListener('click', function () {
+    if (sound) sound.addEventListener('click', function () {
       if (v.muted) {
         /* קול רק בסרטון אחד בכל פעם */
         all.forEach(function (o) { if (o !== item) { o.v.muted = true; } });
