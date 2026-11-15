@@ -756,6 +756,8 @@ body.has-bar{padding-bottom:96px}
 @media (max-width:360px){.nav a{padding:0 var(--sp-2);font-size:var(--fs-sm)}}
 .sample-media{position:relative;aspect-ratio:16/9;background:var(--ink);border-radius:var(--r-photo);overflow:hidden}
 .sample-media video{display:block;width:100%;height:100%;object-fit:cover}
+.sample-poster{aspect-ratio:auto;background:var(--paper-50)}
+.sample-poster img{display:block;width:100%;height:auto}
 .sample-ctl{position:absolute;inset-block-end:var(--sp-3);inset-inline-start:var(--sp-3);display:flex;gap:var(--sp-2)}
 .sample-ctl button{font:inherit;font-size:var(--fs-sm);font-weight:var(--fw-medium);display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 var(--sp-4);border:0;border-radius:var(--r-pill);background:rgba(252,252,246,.92);color:var(--ink);cursor:pointer;box-shadow:var(--shadow-1);-webkit-tap-highlight-color:transparent}
 /* על הווידאו הכהה: קו מתאר בנייר */
