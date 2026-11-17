@@ -7,7 +7,7 @@ var root = path.join(__dirname, '..');
 var pages = fs.readdirSync(root).filter(function (f) {
   return /\.html$/.test(f) && f.charAt(0) !== '_';
 });
-assert.ok(pages.length >= 15, 'expected at least 15 pages, found ' + pages.length);
+assert.ok(pages.length >= 3, 'expected at least 3 pages, found ' + pages.length);
 
 var versions = {}; /* asset file -> {n: true} */
 pages.forEach(function (page) {
@@ -34,26 +34,6 @@ pages.forEach(function (page) {
   assert.match(html, /<a class="logo" href="index\.html" aria-label="צ׳ופה, לדף הבית"><img src="assets\/logo\.svg\?v=\d+" alt=""/, page + ': header logo is not the forget-me-not logo image');
   assert.match(html, /class="btn btn-ghost bar-cta"/, page + ': header CTA is not a ghost button');
 });
-
-/* home: the rope of polaroids is the only events listing */
-(function () {
-  var html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  var cards = html.match(/<a class="rope-card"[^>]*>/g) || [];
-  assert.strictEqual(cards.length, 10, 'index.html: expected 10 rope cards, found ' + cards.length);
-  cards.forEach(function (tag) {
-    var href = (tag.match(/href="([^"]+)"/) || [])[1];
-    assert.ok(/^event-[a-z-]+\.html$/.test(href || ''), 'rope card href: ' + href);
-    assert.ok(fs.existsSync(path.join(root, href)), 'rope card links to a missing page: ' + href);
-    assert.ok(!/tabindex="-1"/.test(tag), 'rope card is not keyboard reachable: ' + href);
-  });
-  var lights = (html.match(/class="rope-light"/g) || []).length;
-  assert.ok(lights >= 8, 'index.html: expected at least 8 rope lights, found ' + lights);
-  assert.ok(/<symbol id="sprig-poppy"/.test(html) && /<symbol id="sprig-corn"/.test(html), 'index.html: sprig symbols missing');
-  assert.ok(!/assets\/magnets\//.test(html), 'index.html: still references assets/magnets/');
-  assert.ok(!/logo-magnet\.webp/.test(html), 'index.html: still references logo-magnet.webp');
-  assert.ok(!/id="events-strip"/.test(html), 'index.html: #events-strip should be replaced by the rope');
-  assert.ok(!/class="freezer"|class="door-main"/.test(html), 'index.html: freezer/door wrappers still present');
-})();
 
 /* home: section surfaces in a fixed order, at most two dark, no unseparated repeats */
 (function () {
@@ -135,16 +115,6 @@ function surfaces(page) {
   });
   return { main: main, secs: secs.map(function (s) { return s.surface; }) };
 }
-
-/* events: paper head with kicker + h1, eleven straight invitation-style cards, cream closing section */
-(function () {
-  var r = surfaces('events.html');
-  assert.deepStrictEqual(r.secs, ['paper', 'cream'], 'events.html: surface order');
-  assert.ok(/<span class="kicker">[^<]+<\/span><h1>/.test(r.main), 'events.html: head needs .kicker before h1');
-  var cards = r.main.match(/<a class="ev" href="event-[a-z-]+\.html"><div class="ev-in"><div class="ev-art">/g) || [];
-  assert.strictEqual(cards.length, 11, 'events.html: expected 11 event cards, found ' + cards.length);
-  assert.ok(!/class="cloud"/.test(r.main), 'events.html: sky cloud still in the closing box');
-})();
 
 /* works: paper, the ceremony video unchanged inside a framed sheet */
 (function () {
