@@ -199,8 +199,6 @@ p{margin:0}
    ========================================================================== */
 .surface-paper{--sec-bg:var(--surface-paper);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
 .surface-cream{--sec-bg:var(--surface-cream);background-color:var(--sec-bg);background-image:var(--paper-tex);background-size:512px}
-/* "מה אומרים לקוחות" נשאר בירוק הבהיר המקורי */
-.section.surface-cream.rev-green{--sec-bg:var(--cream-50)}
 /* "נעים להכיר": צבע הדף, ושני ענפים מפוזרים כמו בפתיחה: הזכריני מהלוגו למעלה משמאל, הלבנדר למטה מימין */
 .about-flowers{position:relative;overflow:hidden;background-image:var(--paper-tex);background-size:512px}
 .about-flowers .sprig{height:auto}
@@ -394,7 +392,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .rope-line path{fill:none;stroke:var(--rope-color);stroke-width:var(--rope-width);stroke-linecap:round}
 .rope-light{fill:url(#rope-halo);animation:twinkle var(--dur-twinkle) var(--ease-soft) infinite alternate}
 .rope-light-core{fill:var(--glow-core);stroke:var(--glow-edge);stroke-width:.6}
-.rope-card{position:absolute;left:0;top:0;width:var(--pol-w);display:block;pointer-events:auto;text-decoration:none;color:var(--text);-webkit-tap-highlight-color:transparent;
+.rope-card{position:absolute;left:0;top:0;width:var(--pol-w);display:block;pointer-events:none;text-decoration:none;color:var(--text);-webkit-tap-highlight-color:transparent;
   offset-path:path("M -250 20 Q 1000 400 2250 20");offset-rotate:auto;offset-anchor:50% 0;transform-origin:50% 0;animation:rope-run var(--dur-drift) linear infinite}
 .rope-sway{position:relative;margin-top:var(--sp-1);transform-origin:50% 0;animation:sway var(--dur-sway) var(--ease-soft) infinite alternate;
   background:var(--pol-bg);border-radius:var(--pol-radius);padding:var(--pol-pad) var(--pol-pad) 0;box-shadow:var(--pol-shadow);text-align:center;transition:box-shadow var(--dur-2) var(--ease)}
