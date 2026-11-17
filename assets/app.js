@@ -25,6 +25,24 @@
     if (v) { a.setAttribute('href', v); a.hidden = false; }
   });
 
+
+  /* מצב כהה: הבחירה נשמרת בדפדפן, והאורות בחבל מאירים */
+  Array.prototype.forEach.call(document.querySelectorAll('.theme-toggle'), function (b) {
+    var root = document.documentElement;
+    function sync() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      b.setAttribute('aria-pressed', String(dark));
+      b.setAttribute('aria-label', dark ? 'מעבר למצב בהיר' : 'מעבר למצב כהה');
+    }
+    b.addEventListener('click', function () {
+      var dark = root.getAttribute('data-theme') !== 'dark';
+      if (dark) { root.setAttribute('data-theme', 'dark'); } else { root.removeAttribute('data-theme'); }
+      try { localStorage.setItem('chopa-theme', dark ? 'dark' : 'light'); } catch (e) {}
+      sync();
+    });
+    sync();
+  });
+
   /* איך זה עובד: לחיצה על כרטיס פותחת את הפירוט (בלי JavaScript הפירוט פשוט פתוח) */
   Array.prototype.forEach.call(document.querySelectorAll('.pc-tog'), function (b) {
     var dl = document.getElementById(b.getAttribute('aria-controls'));

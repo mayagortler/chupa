@@ -34,6 +34,8 @@
   /* עץ וחבל */
   --wood-300:#DDBF94; --wood-500:#C9A578; --twine:#B4A386;
   /* אור */
+  /* פלטת מצב כהה: הערכים כאן, והכללים בסוף הקובץ מפנים אליהם */
+  --dk-161714:#161714; --dk-1e201b:#1E201B; --dk-2b2e26:#2B2E26; --dk-f3f0e7:#F3F0E7; --dk-dad6ca:#DAD6CA; --dk-aeaa9e:#AEAA9E; --dk-6f6c62:#6F6C62; --dk-34352e:#34352E; --dk-7c786c:#7C786C; --dk-c6d07f:#C6D07F; --dk-d8e19a:#D8E19A; --dk-22231e:#22231E; --dk-5e6532:#5E6532; --dk-363b1d:#363B1D; --dk-2f3948:#2F3948; --dk-5a312d:#5A312D; --dk-5a4113:#5A4113; --dk-9a8b6e:#9A8B6E; --dk-2a281f:#2A281F; --dk-3a3626:#3A3626; --dk-4a3e1e:#4A3E1E; --dk-4a5027:#4A5027; --dk-2e2d28:#2E2D28; --dk-4a4840:#4A4840; --dk-fff6d2:#FFF6D2; --dk-ffe9a0:#FFE9A0;
   --glow-core:#FFF3C4; --glow-edge:#F1CF6A; --glow-halo:#FFD978;
 
   /* טיפוגרפיה */
@@ -475,7 +477,7 @@ select.field{appearance:none;-webkit-appearance:none;padding-inline-end:var(--sp
 .chat:nth-child(3){transform:rotate(-1deg)}
 .chat .who{margin-bottom:auto;padding:0 var(--sp-1) 6px;font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text-accent)}
 .chat .msg{position:relative;align-self:flex-start;max-width:100%;background:var(--surface);color:var(--ink-900);border-radius:14px 0 14px 14px;margin-inline-end:var(--sp-2);padding:7px 10px 8px;box-shadow:0 1px 1px rgba(11,20,26,.13);font-size:var(--fs-md);line-height:1.5}
-.msg::before{content:"";position:absolute;top:0;right:-7.5px;width:8px;height:13px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M6.467 3.568 0 12.837V1h5.5c1.2 0 1.9 1.4.967 2.568z' fill='%23fff'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;filter:drop-shadow(1px 1px 0 rgba(11,20,26,.07))}
+.msg::before{content:"";position:absolute;top:0;right:-7.5px;width:8px;height:13px;background:var(--surface);-webkit-mask:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M6.467 3.568 0 12.837V1h5.5c1.2 0 1.9 1.4.967 2.568z' fill='%23fff'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M6.467 3.568 0 12.837V1h5.5c1.2 0 1.9 1.4.967 2.568z' fill='%23fff'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;filter:drop-shadow(1px 1px 0 rgba(11,20,26,.07))}
 .msg.photo{padding:3px 3px 8px}
 .msg.photo img{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover;border-radius:11px}
 .msg.photo p{margin:6px var(--sp-2) 0}
@@ -797,3 +799,43 @@ a.sample-media{display:block}
 .deck-prev{inset-inline-start:var(--sp-3)}
 .deck-next{inset-inline-end:var(--sp-3)}
 .deck-count{position:absolute;inset-block-end:var(--sp-3);inset-inline-start:50%;transform:translateX(50%);padding:2px 12px;border-radius:var(--r-pill);background:rgba(252,252,246,.92);font-size:var(--fs-sm);color:var(--ink-700);direction:ltr}
+
+/* ==========================================================================
+   מצב כהה: מחליפים טוקנים ולא כללים. הפולארואידים נשארים בנייר, והאורות בחבל מאירים
+   ========================================================================== */
+.theme-toggle{flex:none;width:var(--tap);height:var(--tap);display:inline-grid;place-items:center;padding:0;border:1px solid var(--line-strong);border-radius:50%;background:transparent;color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background var(--dur-2) var(--ease)}
+.theme-toggle:hover{background:var(--line-soft)}
+.theme-toggle svg{grid-area:1/1}
+.theme-toggle .ic-sun{display:none}
+.logo .logo-dk{display:none}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper-tex:none;
+  --paper-page:var(--dk-161714); --flower-50:var(--dk-1e201b); --flower-100:var(--dk-2b2e26);
+  --ink-900:var(--dk-f3f0e7); --ink-700:var(--dk-dad6ca); --ink-500:var(--dk-aeaa9e); --ink-300:var(--dk-6f6c62); --ink-100:var(--dk-34352e);
+  --line:rgba(243,240,231,.14); --line-soft:rgba(243,240,231,.08); --line-strong:rgba(243,240,231,.34); --line-input:var(--dk-7c786c);
+  --text-accent:var(--dk-c6d07f); --accent:var(--dk-c6d07f); --accent-hover:var(--dk-d8e19a); --btn-soft-fg:var(--dk-c6d07f);
+  --surface-card:var(--dk-22231e); --field-bg:var(--dk-22231e); --chip-bg:var(--dk-22231e); --chip-on-bg:var(--dk-5e6532); --card-border:1px solid var(--line-soft);
+  --surface-olive:var(--dk-363b1d); --surface-mist:var(--dk-2f3948); --surface-petal:var(--dk-5a312d); --surface-apricot:var(--dk-5a4113);
+  --btn-primary-fg-hover:var(--dk-161714);
+  --focus-color:var(--dk-c6d07f);
+  --twine:var(--dk-9a8b6e); --rope-color:var(--dk-9a8b6e);
+  --shadow-xs:0 1px 2px rgba(0,0,0,.4);
+  --shadow-1:0 1px 2px rgba(0,0,0,.35),0 8px 22px rgba(0,0,0,.35);
+  --shadow-2:0 2px 4px rgba(0,0,0,.4),0 16px 34px rgba(0,0,0,.5);
+  --surface:var(--dk-22231e); --paper:var(--dk-22231e); --chat:var(--dk-2a281f); --chat-line:var(--dk-3a3626); --highlight:var(--dk-4a3e1e);
+}
+:root[data-theme="dark"] .theme-toggle .ic-moon{display:none}
+:root[data-theme="dark"] .theme-toggle .ic-sun{display:block}
+:root[data-theme="dark"] .logo .logo-lt{display:none}
+:root[data-theme="dark"] .logo .logo-dk{display:block}
+:root[data-theme="dark"] ::selection{background:var(--dk-4a5027);color:var(--text)}
+/* פולארואידים ואיורים עליהם נשארים בנייר בהיר */
+:root[data-theme="dark"] .rope-sway,:root[data-theme="dark"] .pol-sway,:root[data-theme="dark"] .pol{--text:var(--dk-2e2d28);--text-body:var(--dk-4a4840);--ink-900:var(--dk-2e2d28);--ink-700:var(--dk-4a4840);--ink:var(--dk-2e2d28);color:var(--dk-2e2d28)}
+:root[data-theme="dark"] .deck-btn,:root[data-theme="dark"] .deck-count,:root[data-theme="dark"] .sample-open,:root[data-theme="dark"] .sample-ctl button{color:var(--dk-2e2d28)}
+/* האורות מאירים */
+:root[data-theme="dark"] .rope::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 38%,rgba(255,217,120,.16),transparent 70%);pointer-events:none}
+:root[data-theme="dark"] .rope-light{transform-box:fill-box;transform-origin:center;transform:scale(2.6)}
+:root[data-theme="dark"] .rope-light-core{fill:var(--dk-fff6d2);filter:drop-shadow(0 0 3px var(--dk-ffe9a0)) drop-shadow(0 0 9px rgba(255,217,120,.9))}
+:root[data-theme="dark"] .rope-sway{box-shadow:var(--pol-shadow),0 0 30px rgba(255,217,120,.2)}
