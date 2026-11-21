@@ -21,6 +21,7 @@ function createStore(env, fetchFn) {
     set: function (key, value, ttlSeconds) {
       return cmd(['SET', key, JSON.stringify(value), 'EX', ttlSeconds]).then(function () { });
     },
+    release: function (key) { return cmd(['DEL', key]).then(function () { }); },
     /* true רק בפעם הראשונה שהמפתח נתפס. כך מזהים הודעה שמטא שלחה פעמיים. */
     claim: function (key, ttlSeconds) {
       return cmd(['SET', key, '1', 'NX', 'EX', ttlSeconds]).then(function (r) { return r === 'OK'; });

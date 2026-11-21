@@ -5,7 +5,7 @@ var C = require('./copy.js');
 var D = data.D, L = data.L, Dir = data.Dir;
 
 var MAX = 4000;
-var HEADERS = { complete: 'פנייה חדשה מהבוט', partial: 'שיחה שנעצרה, הלקוח ביקש נציגה' };
+var HEADERS = { complete: 'פנייה חדשה מהבוט', partial: 'שיחה שנעצרה, הלקוח ביקש נציגה', stuck: 'שיחה שנתקעה, הבוט לא הצליח להבין את הלקוח' };
 
 function build(st, kind) {
   var out = [HEADERS[kind]];
@@ -26,7 +26,7 @@ function build(st, kind) {
       out.push(l.indexOf('שם: ') === 0 ? 'שם האירוע: ' + l.slice(4) : l);
     });
   }
-  if (kind === 'partial') { out.push('נעצר בשלב: ' + (C.phaseLabel[st.phase] || st.phase)); }
+  if (kind !== 'complete') { out.push('נעצר בשלב: ' + (C.phaseLabel[st.phase] || st.phase)); }
   var text = out.join('\n');
   return text.length > MAX ? text.slice(0, MAX - 1) + '…' : text;
 }

@@ -8,6 +8,10 @@ module.exports = {
   more: 'עוד אפשרויות',
   moreDesc: 'אירועים נוספים',
   retry: 'לא הבנתי. אפשר לבחור מהאפשרויות.',
+  retryText: 'לא הבנתי. אפשר לכתוב את זה שוב במילים?',
+  retryDate: 'לא הבנתי את התאריך. אפשר לכתוב למשל 10/6/2027, או ללחוץ על "עוד לא קבענו".',
+  mediaReply: 'קיבלתי, אבל אני יכולה לקרוא רק טקסט ובחירות מהרשימה. אפשר לכתוב במילים?',
+  errorSummary: function (phone) { return 'שיחה שנתקעה בגלל תקלה בבוט. הלקוח: https://wa.me/' + phone; },
   eventNameAsk: 'איזה אירוע זה? כתבו במילים שלכם.',
   modeAsk: function (E, q) {
     return E.bundle.name + ': ' + E.bundle.names + '. ' + q.totalText + '.\nאפשר גם לבנות בעצמכם, או לבקש עיצוב אישי.';

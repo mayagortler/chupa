@@ -210,8 +210,15 @@ var PH = {
 };
 
 function nextDir(st) {
+  var qs = D.direction.questions;
   st.dirIdx += 1;
-  if (st.dirIdx >= D.direction.questions.length) { st.phase = 'gen'; }
+  while (st.dirIdx < qs.length && st.dir.sel[qs[st.dirIdx].k].length) { st.dirIdx += 1; } /* כבר נענתה (למשל בהודעה מהאתר) */
+  if (st.dirIdx >= qs.length) { st.phase = 'gen'; }
+}
+
+function retryFor(phase) {
+  if (phase === 'date') { return C.retryDate; }
+  return FREE_TEXT[phase] ? C.retryText : C.retry;
 }
 
 function finish(st) {
@@ -245,11 +252,11 @@ function wantsHandoff(st, input) {
   return FREE_TEXT[st.phase] ? HANDOFF_EXACT.test(t) : HANDOFF_ANY.test(t);
 }
 
-function handoff(st) {
-  var sum = summary.build(st, 'partial'); /* לפני שהשלב הופך ל-done, כדי שהסיכום ידע איפה הלקוח עצר */
+function handoff(st, kind) {
+  var sum = summary.build(st, kind); /* לפני שהשלב הופך ל-done, כדי שהסיכום ידע איפה הלקוח עצר */
   st.phase = 'done';
   st.handedOff = true;
-  return { state: st, out: [text(C.handoff)], notify: { kind: 'partial', summary: sum } };
+  return { state: st, out: [text(C.handoff)], notify: { kind: kind, summary: sum } };
 }
 
 /* השלב הבא אחרי התאריך: מדלג על מה שכבר נענה (הודעה מהאתר), ובשיחה רגילה מתחיל מהשאלה הראשונה */
@@ -296,12 +303,14 @@ function step(prev, input) {
   }
   var st = clone(prev);
   if (st.phase === 'done') { return { state: st, out: [], notify: null }; }
-  if (wantsHandoff(st, input)) { return handoff(st); }
+  if (wantsHandoff(st, input)) { return handoff(st, 'partial'); }
+  /* תמונה, הקלטה וכדומה: תשובה מיוחדת, לא נחשבת טעות ולא מעבירה למאיה */
+  if (input.type === 'other') { return { state: st, out: [text(C.mediaReply)].concat(ask(st)), notify: null }; }
   var res = PH[st.phase].accept(st, input, now);
   if (res === false) {
     st.retries += 1;
-    if (st.retries >= 2) { return handoff(st); }
-    return { state: st, out: [text(C.retry)].concat(ask(st)), notify: null };
+    if (st.retries >= 2) { return handoff(st, 'stuck'); }
+    return { state: st, out: [text(retryFor(st.phase))].concat(ask(st)), notify: null };
   }
   st.retries = 0;
   if (res === true) { return { state: st, out: ask(st), notify: null }; }

@@ -42,6 +42,14 @@ var pl = p.notify.summary.split('\n');
 assert.strictEqual(pl[0], 'שיחה שנעצרה, הלקוח ביקש נציגה');
 assert.strictEqual(pl[pl.length - 1], 'נעצר בשלב: ' + C.phaseLabel.date);
 
+/* a chat that stalled on misses is reported as such, not as "asked for Maya" */
+var stuck = run(engine.step(null, tx('היי')).state, [ch('ev:Wedding'), ch('mode:set'), tx('בקרוב'), tx('מתישהו')]);
+assert.strictEqual(stuck.notify.kind, 'stuck');
+var sl = stuck.notify.summary.split('\n');
+assert.ok(sl[0].indexOf('ביקש נציגה') < 0, sl[0]);
+assert.ok(sl[0].length > 0);
+assert.strictEqual(sl[sl.length - 1], 'נעצר בשלב: ' + C.phaseLabel.date);
+
 /* Other shows the customer's own event name and a custom quote */
 var o = run(engine.step(null, tx('היי')).state, [ch('ev:Other'), tx('יום הולדת סודי'), tx('1/1/2027'), ch('dq:mood:0'), ch('dq:pal:0'), ch('dq:font:0'), ch('dq:el:done'), ch('skip'), ch('wh:wa'), ch('hv:done'), ch('skip'), tx('נועה')]);
 var ol = o.notify.summary.split('\n');

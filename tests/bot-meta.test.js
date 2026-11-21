@@ -54,6 +54,13 @@ assert.deepStrictEqual(inc[1], { id: 'm2', from: '972501234567', name: 'דנה',
 assert.deepStrictEqual(inc[2], { id: 'm3', from: '972501234567', name: 'דנה', type: 'choice', text: 'חתונה', choiceId: 'ev:Wedding' });
 assert.strictEqual(inc[3].type, 'other');
 assert.strictEqual(inc[4].type, 'other');
+/* reactions and system notices are not customer input */
+var ign = meta.parseIncoming(hook([
+  { id: 'r1', from: '972501234567', type: 'reaction', reaction: { message_id: 'm1', emoji: '👍' } },
+  { id: 'r2', from: '972501234567', type: 'system', system: { body: 'changed number' } },
+  { id: 'r3', from: '972501234567', type: 'text', text: { body: 'כן' } }
+]));
+assert.deepStrictEqual(ign.map(function (x) { return x.id; }), ['r3']);
 assert.deepStrictEqual(meta.parseIncoming(hook(undefined, { statuses: [{ id: 's', status: 'delivered' }] })), []);
 assert.deepStrictEqual(meta.parseIncoming({}), []);
 assert.deepStrictEqual(meta.parseIncoming(null), []);

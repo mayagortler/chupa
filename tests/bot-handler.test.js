@@ -9,17 +9,19 @@ var ENV = { WHATSAPP_VERIFY_TOKEN: 'verify-me', WHATSAPP_APP_SECRET: 'secret', M
 var PHONE = '972501234567';
 
 function memStore() {
-  var m = {};
+  var m = {}, ttl = {};
   return {
-    data: m,
+    data: m, ttl: ttl,
     get: function (k) { return Promise.resolve(m[k] ? JSON.parse(m[k]) : null); },
-    set: function (k, v) { m[k] = JSON.stringify(v); return Promise.resolve(); },
+    set: function (k, v, t) { m[k] = JSON.stringify(v); ttl[k] = t; return Promise.resolve(); },
+    release: function (k) { delete m[k]; return Promise.resolve(); },
     claim: function (k) { if (m[k]) { return Promise.resolve(false); } m[k] = '1'; return Promise.resolve(true); }
   };
 }
 function makeDeps(over) {
   var sent = [], templates = [];
   var deps = {
+    lockRetryMs: 5,
     env: ENV, store: memStore(), sent: sent, templates: templates,
     send: function (to, msg) { sent.push({ to: to, msg: msg }); return Promise.resolve({ ok: true }); },
     sendTemplate: function (to, name, text) { templates.push({ to: to, name: name, text: text }); return Promise.resolve({ ok: true }); }
@@ -176,6 +178,66 @@ t('the Vercel adapter answers webhook verification and disables body parsing', f
     assert.strictEqual(res.statusCode, 200);
     assert.strictEqual(res.body, 'abc');
   });
+});
+
+t('a completed chat is remembered for 90 days so the bot stays silent long after', function () {
+  var deps = makeDeps();
+  return runFlow(deps).then(function () { assert.strictEqual(deps.store.ttl['chat:' + PHONE], 90 * 86400); });
+});
+
+t('the summary falls back to the template on any failed send, not only 131047', function () {
+  var deps = makeDeps();
+  deps.send = function (to, msg) { deps.sent.push({ to: to, msg: msg }); return Promise.resolve(to === ENV.MAYA_PHONE ? { ok: false } : { ok: true }); };
+  return runFlow(deps).then(function () { assert.strictEqual(deps.templates.length, 1); });
+});
+
+t('two messages from one customer at once are handled one after the other', function () {
+  var D = require('../bot/site-data.js').D;
+  var free = D.events.Wedding.items.filter(function (x) { return !x.group; }).slice(0, 2).map(function (x) { return x.id; });
+  assert.strictEqual(free.length, 2);
+  var deps = makeDeps();
+  var slow = deps.send;
+  deps.send = function (to, msg) { return new Promise(function (r) { setTimeout(r, 15); }).then(function () { return slow(to, msg); }); };
+  return [textMsg('c1', 'היי'), choiceMsg('c2', 'ev:Wedding'), choiceMsg('c3', 'mode:build')].reduce(function (p, m) {
+    return p.then(function () { return handler.handle(post([m]), deps); });
+  }, Promise.resolve()).then(function () {
+    return Promise.all([handler.handle(post([choiceMsg('c4', 'it:' + free[0])]), deps), handler.handle(post([choiceMsg('c5', 'it:' + free[1])]), deps)]);
+  }).then(function () { return deps.store.get('chat:' + PHONE); }).then(function (st) {
+    assert.ok(st.S.sel[free[0]] && st.S.sel[free[1]], 'both selections survive: ' + JSON.stringify(st.S.sel));
+    assert.strictEqual(deps.store.data['lock:' + PHONE], undefined, 'the lock is released');
+  });
+});
+
+t('a chat the engine cannot continue gets a handoff, Maya gets a summary, and the bot goes quiet', function () {
+  var deps = makeDeps();
+  return deps.store.set('chat:' + PHONE, { v: 1, phone: PHONE, phase: 'bogus', ev: 'Wedding', S: null, dir: null, dirIdx: 0, retries: 0, name: '', handedOff: false }, 100).then(function () {
+    return handler.handle(post([textMsg('e1', 'שלום')]), deps);
+  }).then(function (r) {
+    assert.strictEqual(r.status, 200);
+    var toCustomer = deps.sent.filter(function (s) { return s.to === PHONE; });
+    assert.strictEqual(toCustomer.length, 1);
+    assert.strictEqual(toCustomer[0].msg.kind, 'text');
+    var toMaya = deps.sent.filter(function (s) { return s.to === ENV.MAYA_PHONE; });
+    assert.strictEqual(toMaya.length, 1);
+    assert.ok(toMaya[0].msg.body.indexOf('https://wa.me/' + PHONE) >= 0, toMaya[0].msg.body);
+    return handler.handle(post([textMsg('e2', 'עוד הודעה')]), deps);
+  }).then(function () { assert.strictEqual(deps.sent.length, 2, 'nothing more is sent after the handoff'); });
+});
+
+t('the adapter reads the body from req.body when the platform already consumed the stream', function () {
+  process.env.WHATSAPP_APP_SECRET = ENV.WHATSAPP_APP_SECRET;
+  var adapter = require('../api/whatsapp.js');
+  var p = post(null, { statuses: [{ id: 's', status: 'delivered' }] });
+  var req = Readable.from([]);
+  req.resume();
+  req.method = 'POST';
+  req.headers = p.headers;
+  req.query = {};
+  req.body = Buffer.from(p.rawBody);
+  var res = { statusCode: 0, body: null, end: function (b) { this.body = b; } };
+  return new Promise(function (ok) { req.on('end', ok); req.read(); }).then(function () {
+    return Promise.race([adapter(req, res), new Promise(function (_, no) { setTimeout(function () { no(new Error('adapter hung on a consumed stream')); }, 1500); })]);
+  }).then(function () { assert.strictEqual(res.statusCode, 200); assert.strictEqual(res.body, 'ok'); });
 });
 
 tests.reduce(function (p, x) {

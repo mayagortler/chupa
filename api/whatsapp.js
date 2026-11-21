@@ -5,7 +5,15 @@ var store = require('../bot/store.js');
 var meta = require('../bot/meta.js');
 
 /* החתימה של מטא מחושבת על הגוף הגולמי, לכן קוראים אותו כמו שהוא מהזרם. */
+function fromBody(b) {
+  if (Buffer.isBuffer(b)) { return b; }
+  if (typeof b === 'string') { return Buffer.from(b); }
+  return Buffer.from(b == null ? '' : JSON.stringify(b));
+}
+
 function readRaw(req) {
+  /* אם הפלטפורמה כבר קראה את הזרם, ממתינים ל-end לא יעזור: לוקחים את req.body */
+  if (req.readableEnded) { return Promise.resolve(fromBody(req.body)); }
   return new Promise(function (resolve, reject) {
     var chunks = [];
     req.on('data', function (c) { chunks.push(Buffer.from(c)); });

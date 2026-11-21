@@ -57,6 +57,7 @@ function parseIncoming(body) {
       var names = {};
       (v.contacts || []).forEach(function (k) { names[k.wa_id] = (k.profile && k.profile.name) || ''; });
       v.messages.forEach(function (m) {
+        if (m.type === 'reaction' || m.type === 'system') { return; } /* לא הודעה מהלקוח */
         var item = { id: m.id, from: m.from, name: names[m.from] || '', type: 'other', text: '' };
         if (m.type === 'text' && m.text) { item.type = 'text'; item.text = m.text.body || ''; }
         else if (m.type === 'interactive' && m.interactive) {

@@ -129,7 +129,7 @@ assert.strictEqual(g1.state.phase, 'date');
 assert.ok(texts(g1).indexOf('לא הבנתי') >= 0);
 var g2 = sayAt(g1.state, 'בקרוב');
 assert.strictEqual(g2.state.phase, 'done');
-assert.strictEqual(g2.notify.kind, 'partial');
+assert.strictEqual(g2.notify.kind, 'stuck', 'two misses is a stuck chat, not a request for Maya');
 
 /* a past date is accepted with the dateInfo warning */
 r = sayAt(toDate('Wedding'), '1/1/2020');
@@ -173,7 +173,7 @@ assert.strictEqual(t2.notify, null);
 /* images and other media count as unexpected input and never throw */
 var img = engine.step(say(null, 'x').state, { from: PHONE, type: 'other', text: '' });
 assert.strictEqual(img.state.phase, 'event');
-assert.ok(texts(img).indexOf('לא הבנתי') >= 0);
+assert.ok(texts(img).indexOf('לקרוא רק טקסט') >= 0, texts(img));
 
 /* a full wedding flow ends with a complete notification and a closing text */
 var f = sayAt(toDate('Wedding'), '10/6/2027').state;
@@ -216,5 +216,48 @@ D.order.forEach(function (k) {
   assert.strictEqual(s.state.phase, 'done', k + ' did not finish, stuck at ' + s.state.phase);
   all.forEach(function (m, i) { assertLimits(m, k + '#' + i); });
 });
+
+/* ---------- review fixes ---------- */
+/* media in a free-text step: a media-specific reply, never counted as a miss, never a handoff */
+var nameState = (function () {
+  var f2 = sayAt(toDate('Wedding'), '10/6/2027').state;
+  f2 = pick(pick(pick(pick(f2, 'dq:mood:1').state, 'dq:pal:2').state, 'dq:font:0').state, 'dq:el:done').state;
+  f2 = pick(say(f2, 'בלי הערות').state, 'wh:both').state;
+  f2 = pick(pick(f2, 'hv:done').state, 'skip').state;
+  return f2;
+})();
+assert.strictEqual(nameState.phase, 'name');
+var m1 = engine.step(nameState, { from: PHONE, type: 'other', text: '' });
+var m2 = engine.step(m1.state, { from: PHONE, type: 'other', text: '' });
+assert.strictEqual(m2.state.phase, 'name');
+assert.strictEqual(m2.notify, null);
+assert.ok(texts(m2).indexOf('לקרוא רק טקסט') >= 0);
+assert.strictEqual(m2.state.retries, 0);
+
+/* the retry wording fits the step: text steps do not say "pick from the options" */
+var badName = engine.step(say(nameState, '   ').state, { from: PHONE, type: 'choice', id: 'zzz', text: 'zzz' });
+assert.ok(texts(badName).indexOf('לבחור מהאפשרויות') < 0, texts(badName));
+var badDate = sayAt(toDate('Wedding'), 'בעוד חודש');
+assert.ok(texts(badDate).indexOf('10/6/2027') >= 0, texts(badDate));
+assert.ok(texts(badDate).indexOf('לבחור מהאפשרויות') < 0, texts(badDate));
+
+/* asking for Maya in words stays a "partial" request */
+assert.strictEqual(say(nameState, 'נציגה').notify.kind, 'partial');
+
+/* a site chat that already has the palette does not get asked about it again */
+(function () {
+  var entryMod = require('../bot/entry.js');
+  var Ev = D.events.Wedding, S = L.initialState(Ev), d = data.Dir.emptyState(D.direction);
+  S.date = '2027-06-10'; S.where = 'wa';
+  data.Dir.pick(d, D.direction.questions[1], 2); /* pal only */
+  var msg = L.message(Ev, S, data.Dir.lines(d, D.direction));
+  assert.ok(entryMod.prefill(msg));
+  var st = engine.step(null, { from: PHONE, type: 'text', text: msg, now: NOW }).state;
+  assert.strictEqual(st.phase, 'dir');
+  assert.strictEqual(st.dirIdx, 0);
+  var after = pick(st, 'dq:mood:1');
+  assert.strictEqual(after.state.dirIdx, 2, 'pal is already answered: the next question is the font');
+  assert.strictEqual(last(after).rows[0].id, 'dq:font:0');
+})();
 
 console.log('bot-engine: ok');
