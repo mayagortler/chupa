@@ -245,9 +245,10 @@ function wantsHandoff(st, input) {
 }
 
 function handoff(st) {
+  var sum = summary.build(st, 'partial'); /* לפני שהשלב הופך ל-done, כדי שהסיכום ידע איפה הלקוח עצר */
   st.phase = 'done';
   st.handedOff = true;
-  return { state: st, out: [text(C.handoff)], notify: { kind: 'partial', summary: summary.build(st, 'partial') } };
+  return { state: st, out: [text(C.handoff)], notify: { kind: 'partial', summary: sum } };
 }
 
 function chooseEvent(st, id) {
