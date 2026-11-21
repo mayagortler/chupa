@@ -3,6 +3,7 @@
 var data = require('./site-data.js');
 var C = require('./copy.js');
 var summary = require('./summary.js');
+var entry = require('./entry.js');
 var D = data.D, L = data.L, Dir = data.Dir;
 
 var FIRST_PAGE = 9; /* ברשימה של וואטסאפ יש מקום ל-10 שורות, אחת מהן "עוד" */
@@ -60,7 +61,7 @@ var PH = {
     accept: function (st, input) {
       if (input.type !== 'text' || !input.text.trim()) { return false; }
       st.S.eventName = cut(input.text.trim(), 500);
-      st.phase = 'date';
+      st.phase = st.S.date ? afterDate(st) : 'date';
       return true;
     }
   },
@@ -78,7 +79,7 @@ var PH = {
       if (!m) { return false; }
       st.S.mode = m[1];
       if (m[1] !== 'set') { st.S.sel = {}; }
-      st.phase = m[1] === 'build' ? 'items' : 'date';
+      st.phase = m[1] === 'build' ? 'items' : (st.S.date ? afterDate(st) : 'date');
       return true;
     }
   },
@@ -92,7 +93,7 @@ var PH = {
       if (m[1] === 'done') {
         var can = L.canAdvance(E, st.S, 'items');
         if (!can.ok) { return [text(can.why)].concat(PH.items.ask(st)); }
-        st.phase = 'date';
+        st.phase = st.S.date ? afterDate(st) : 'date';
         return true;
       }
       var x = E.items.filter(function (i) { return i.id === m[1]; })[0];
@@ -108,12 +109,12 @@ var PH = {
       return [{ kind: 'buttons', body: C.dateAsk, buttons: [{ id: 'date:unknown', title: C.dateUnknown }] }];
     },
     accept: function (st, input, now) {
-      if (input.type === 'choice' && input.id === 'date:unknown') { st.S.date = ''; st.phase = 'dir'; return true; }
+      if (input.type === 'choice' && input.id === 'date:unknown') { st.S.date = ''; st.phase = afterDate(st); return true; }
       if (input.type !== 'text') { return false; }
       var iso = parseDate(input.text, now);
       if (!iso) { return false; }
       st.S.date = iso;
-      st.phase = 'dir';
+      st.phase = afterDate(st);
       var note = L.dateInfo(st.S, now).note;
       return (note ? [text(note)] : []).concat(ask(st));
     }
@@ -251,6 +252,26 @@ function handoff(st) {
   return { state: st, out: [text(C.handoff)], notify: { kind: 'partial', summary: sum } };
 }
 
+/* השלב הבא אחרי התאריך: מדלג על מה שכבר נענה (הודעה מהאתר), ובשיחה רגילה מתחיל מהשאלה הראשונה */
+function afterDate(st) {
+  var qs = D.direction.questions, i = 0;
+  while (i < qs.length && (qs[i].multi || st.dir.sel[qs[i].k].length)) { i += 1; }
+  if (i < qs.length) { st.dirIdx = i; return 'dir'; }
+  return st.S.where ? 'name' : 'where';
+}
+
+function fromSite(fresh, pre) {
+  var E = D.events[pre.ev], st = fresh;
+  st.greeted = true;
+  st.ev = pre.ev;
+  st.S = L.initialState(E);
+  Object.keys(pre.S).forEach(function (k) { st.S[k] = pre.S[k]; });
+  if (pre.S.mode === 'custom' || pre.S.mode === 'build') { st.S.sel = pre.S.sel || {}; }
+  st.dir = pre.dir;
+  st.phase = !pre.S.mode ? 'mode' : !st.S.date ? 'date' : afterDate(st);
+  return { state: st, out: [text(C.fromSite(L.isOther(E) ? st.S.eventName : E.what))].concat(ask(st)), notify: null };
+}
+
 function chooseEvent(st, id) {
   var m = /^ev:(.+)$/.exec(id || ''), E = m && D.events[m[1]];
   if (!E) { return false; }
@@ -267,6 +288,8 @@ function step(prev, input) {
   if (!prev) {
     var fresh = newState(input.from);
     fresh.profileName = cut(input.name || '', 100);
+    var pre = entry.prefill(input.text);
+    if (pre) { return fromSite(fresh, pre); }
     var out0 = ask(fresh);
     fresh.greeted = true;
     return { state: fresh, out: out0, notify: null };
