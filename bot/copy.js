@@ -21,5 +21,22 @@ module.exports = {
   itemsDone: 'סיימתי',
   itemsDoneDesc: 'להמשיך לשלב הבא',
   checked: '✓ ',
-  datePlaceholder: 'ממתינה לשאלות הבאות.'
+  dateAsk: 'מתי האירוע? כתבו תאריך, למשל 10/6/2027.',
+  dateUnknown: 'עוד לא קבענו',
+  dirNote: 'ועכשיו כמה שאלות על העיצוב.',
+  multiDone: 'סיימתי',
+  multiDoneDesc: 'להמשיך לשאלה הבאה',
+  genAsk: function (extra) { return extra.t + ' ' + extra.ph + '.'; },
+  skip: 'דלגו',
+  whereAsk: 'איפה זה יוצג?',
+  haveAsk: 'מה כבר יש לכם? אפשר לבחור כמה, ובסוף "סיימתי".',
+  haveButton: 'לבחירה',
+  titleAsk: function (E) { return 'איך קוראים לאירוע?' + (E.titleEx ? ' ' + E.titleEx + '.' : '') + ' אפשר לדלג.'; },
+  nameAsk: 'ואיך קוראים לכם?',
+  closing: 'תודה! מאיה תחזור אליכם בקרוב.',
+  handoff: 'בטח, מעבירה את זה למאיה. היא תחזור אליכם בקרוב.',
+  phaseLabel: {
+    event: 'בחירת אירוע', event2: 'בחירת אירוע', eventName: 'שם האירוע', mode: 'סוג ההזמנה', items: 'בחירת פריטים',
+    date: 'תאריך', dir: 'כיוון עיצובי', gen: 'הערות', where: 'איפה יוצג', have: 'מה כבר יש', title: 'שם האירוע', name: 'שם הלקוח'
+  }
 };

@@ -90,4 +90,131 @@ var s0 = say(null, 'x').state, snap = JSON.stringify(s0);
 pick(s0, 'ev:Wedding');
 assert.strictEqual(JSON.stringify(s0), snap);
 
+/* ---------- Task 2: the rest of the flow ---------- */
+var NOW = Date.UTC(2026, 10, 21);
+function sayAt(state, text) { return engine.step(state, { from: PHONE, type: 'text', text: text, now: NOW }); }
+function toDate(ev) {
+  var s = pick(say(null, 'x').state, 'ev:' + ev).state;
+  return pick(s, 'mode:set').state;
+}
+function texts(r) { return r.out.filter(function (m) { return m.kind === 'text'; }).map(function (m) { return m.body; }).join('\n'); }
+
+function assertLimits(m, where) {
+  if (m.kind === 'text') { assert.ok(m.body.length > 0 && m.body.length <= 4096, where + ' text'); return; }
+  assert.ok(m.body.length > 0 && m.body.length <= 1024, where + ' body: ' + m.body.length);
+  if (m.kind === 'buttons') {
+    assert.ok(m.buttons.length >= 1 && m.buttons.length <= 3, where + ' buttons count');
+    m.buttons.forEach(function (b) { assert.ok(b.title.length <= 20, where + ' button title: ' + b.title); });
+  } else {
+    assert.strictEqual(m.kind, 'list', where);
+    assert.ok(m.button.length <= 20, where + ' list button');
+    assert.ok(m.rows.length >= 1 && m.rows.length <= 10, where + ' rows count: ' + m.rows.length);
+    m.rows.forEach(function (x) {
+      assert.ok(x.title.length <= 24, where + ' row title: ' + x.title);
+      assert.ok(!x.description || x.description.length <= 72, where + ' row desc: ' + x.description);
+    });
+  }
+}
+
+/* date parsing */
+r = sayAt(toDate('Wedding'), '10/6/2027');
+assert.strictEqual(r.state.S.date, '2027-06-10');
+assert.strictEqual(r.state.phase, 'dir');
+r = sayAt(toDate('Wedding'), '10.6');
+assert.strictEqual(r.state.S.date, '2027-06-10', 'a date without a year means the next occurrence');
+
+/* garbled date: re-ask once, a second miss hands off */
+var g1 = sayAt(toDate('Wedding'), 'בעוד חודש');
+assert.strictEqual(g1.state.phase, 'date');
+assert.ok(texts(g1).indexOf('לא הבנתי') >= 0);
+var g2 = sayAt(g1.state, 'בקרוב');
+assert.strictEqual(g2.state.phase, 'done');
+assert.strictEqual(g2.notify.kind, 'partial');
+
+/* a past date is accepted with the dateInfo warning */
+r = sayAt(toDate('Wedding'), '1/1/2020');
+assert.strictEqual(r.state.S.date, '2020-01-01');
+assert.ok(texts(r).indexOf('כבר עבר') >= 0, texts(r));
+
+/* "we have not decided yet" moves on with an empty date */
+r = pick(toDate('Wedding'), 'date:unknown');
+assert.strictEqual(r.state.S.date, '');
+assert.strictEqual(r.state.phase, 'dir');
+
+/* direction questions: single choice moves on, el is multi with a done row */
+var dq = D.direction.questions;
+r = sayAt(toDate('Wedding'), '10/6/2027');
+assert.strictEqual(r.state.dirIdx, 0);
+assert.strictEqual(last(r).rows[0].id, 'dq:' + dq[0].k + ':0');
+r = pick(r.state, 'dq:mood:1');
+assert.deepStrictEqual(r.state.dir.sel.mood, [1]);
+assert.strictEqual(r.state.dirIdx, 1);
+r = pick(pick(pick(r.state, 'dq:pal:2').state, 'dq:font:0').state, 'dq:el:0');
+assert.strictEqual(r.state.phase, 'dir');
+assert.strictEqual(r.state.dirIdx, 3);
+assert.ok(last(r).rows[0].title.indexOf('✓') === 0);
+r = pick(pick(r.state, 'dq:el:2').state, 'dq:el:done');
+assert.deepStrictEqual(r.state.dir.sel.el, [0, 2]);
+assert.strictEqual(r.state.phase, 'gen');
+
+/* handoff words in any phase stop the bot and send a partial summary */
+r = pick(pick(sayAt(toDate('Wedding'), '10/6/2027').state, 'dq:mood:1').state, 'dq:pal:1');
+var h = say(r.state, 'אפשר לדבר עם מאיה?');
+assert.strictEqual(h.state.phase, 'done');
+assert.strictEqual(h.state.handedOff, true);
+assert.strictEqual(h.notify.kind, 'partial');
+/* but a name or a title that merely contains the word does not */
+var free = pick(pick(pick(pick(pick(pick(pick(sayAt(toDate('Wedding'), '10/6/2027').state, 'dq:mood:1').state, 'dq:pal:1').state, 'dq:font:0').state, 'dq:el:done').state, 'skip').state, 'wh:wa').state, 'hv:done').state;
+assert.strictEqual(free.phase, 'title');
+var t2 = say(free, 'החתונה של מאיה ודני');
+assert.strictEqual(t2.state.phase, 'name');
+assert.strictEqual(t2.notify, null);
+
+/* images and other media count as unexpected input and never throw */
+var img = engine.step(say(null, 'x').state, { from: PHONE, type: 'other', text: '' });
+assert.strictEqual(img.state.phase, 'event');
+assert.ok(texts(img).indexOf('לא הבנתי') >= 0);
+
+/* a full wedding flow ends with a complete notification and a closing text */
+var f = sayAt(toDate('Wedding'), '10/6/2027').state;
+f = pick(pick(pick(pick(f, 'dq:mood:1').state, 'dq:pal:2').state, 'dq:font:0').state, 'dq:el:done').state;
+f = pick(say(f, 'בלי הערות').state, 'wh:both').state;
+f = pick(pick(f, 'hv:photos').state, 'hv:done').state;
+f = pick(f, 'skip').state;
+assert.strictEqual(f.phase, 'name');
+r = say(f, 'דנה');
+assert.strictEqual(r.state.phase, 'done');
+assert.strictEqual(r.state.name, 'דנה');
+assert.strictEqual(r.state.handedOff, true);
+assert.strictEqual(r.notify.kind, 'complete');
+assert.ok(texts(r).length > 0);
+
+/* the profile name is offered as a button */
+var withProfile = engine.step(null, { from: PHONE, type: 'text', text: 'x', name: 'דנה כהן' }).state;
+assert.strictEqual(withProfile.profileName, 'דנה כהן');
+
+/* after done the bot is silent */
+var quiet = say(r.state, 'שלום?');
+assert.deepStrictEqual(quiet.out, []);
+assert.strictEqual(quiet.notify, null);
+
+/* every message of every event flow respects Meta's limits */
+D.order.forEach(function (k) {
+  var s = say(null, 'x'), all = s.out.slice();
+  function go(inp) { s = engine.step(s.state, inp); all = all.concat(s.out); }
+  var ch = function (id) { return { from: PHONE, type: 'choice', id: id, text: id, now: NOW }; };
+  var tx = function (t) { return { from: PHONE, type: 'text', text: t, now: NOW }; };
+  go(ch('ev:' + k));
+  if (s.state.phase === 'eventName') { go(tx('יום הולדת סודי')); }
+  if (s.state.phase === 'mode') { go(ch('mode:build')); }
+  if (s.state.phase === 'items') { D.events[k].items.forEach(function (x) { go(ch('it:' + x.id)); }); go(ch('it:done')); }
+  go(tx('10/6/2027'));
+  dq.forEach(function (q) { go(ch('dq:' + q.k + ':0')); if (q.multi) { go(ch('dq:' + q.k + ':done')); } });
+  go(tx('הערה'));
+  go(ch('wh:screen')); go(ch('hv:song')); go(ch('hv:done')); go(tx('כותרת'));
+  go(tx('דנה'));
+  assert.strictEqual(s.state.phase, 'done', k + ' did not finish, stuck at ' + s.state.phase);
+  all.forEach(function (m, i) { assertLimits(m, k + '#' + i); });
+});
+
 console.log('bot-engine: ok');
